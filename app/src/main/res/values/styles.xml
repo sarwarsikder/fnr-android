@@ -9,7 +9,9 @@
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:endColor">#FF1A54CD</item>
+        <item name="android:startColor">#FF3275FF</item>
+        <item name="android:type">radial</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -21,40 +23,65 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="SignIn">
-        <item name="android:fontFamily">Proxima Nova</item>
-        <item name="android:textColor">#FF132A58</item>
-        <item name="android:textSize">22sp</item>
+    <style name="SignInTxt">
+        <item name="android:fontFamily">@font/proxima_nova_semibold</item>
+        <item name="android:textColor">#FF162637</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="SignIn">
+        <item name="android:fontFamily">@font/proxima_nova_semibold</item>
+        <item name="android:textColor">#FFA3B2CB</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
     <style name="EnterYourMailId">
-        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:fontFamily">@font/proxima_nova_semibold</item>
         <item name="android:textColor">#FFA3B2CB</item>
         <item name="android:textSize">14sp</item>
     </style>
 
     <style name="ButtonTheme">
-        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:fontFamily">@font/proxima_nova_semibold</item>
         <item name="android:textColor">#FFFFFFFF</item>
         <item name="android:textSize">20sp</item>
     </style>
 
     <style name="DonTHaveAAccountOne">
-        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:fontFamily">@font/proxima_nova_semibold</item>
         <item name="android:textColor">#FFA3B2CB</item>
         <item name="android:textSize">14sp</item>
     </style>
 
     <style name="DonTHaveAAccount">
-        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:fontFamily">@font/proxima_nova_semibold</item>
         <item name="android:textColor">#FF3174FF</item>
         <item name="android:textSize">14sp</item>
     </style>
 
     <style name="SignUpField">
-        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:fontFamily">@font/proxima_nova_semibold</item>
         <item name="android:textColor">#FFA3B2CB</item>
         <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="ScanTxt">
+        <item name="android:fontFamily">@font/proxima_nova_semibold</item>
+        <item name="android:textColor">#FF132A58</item>
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <style name="ScanSuggestion">
+        <item name="android:fontFamily">@font/proxima_nova_semibold</item>
+        <item name="android:textColor">#FF5B739B</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style	name="ScanSkip"	>
+        <item name="android:fontFamily">@font/proxima_nova_semibold</item>
+        <item name="android:textColor">#FFA3B2CB</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 </resources>

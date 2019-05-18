@@ -30,7 +30,7 @@
         android:letterSpacing="0.1"
         android:lineSpacingMultiplier="1.23"
         android:text="@string/sign_in_text"
-        android:theme="@style/SignIn"
+        android:theme="@style/SignInTxt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="8dp"
         android:text="@string/email"
-        android:theme="@style/SignIn"
+        android:theme="@style/SignInTxt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.02"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
         android:layout_marginTop="35dp"
         android:layout_marginEnd="15dp"
         android:text="@string/password"
-        android:theme="@style/SignIn"
+        android:theme="@style/SignInTxt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,7 +93,7 @@
         android:layout_marginEnd="15dp"
         android:height="17dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="enter password"
         android:inputType="textPassword"
         android:letterSpacing="0.1"
         android:lineSpacingMultiplier="1.21"
@@ -104,7 +104,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/sign_in"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -134,7 +134,7 @@
         android:text="Don’t have a account?"
         android:theme="@style/DonTHaveAAccountOne"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_in" />
 
     <TextView
         android:id="@+id/go_sign_up_button"
@@ -148,6 +148,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_in" />
 
 </android.support.constraint.ConstraintLayout>
