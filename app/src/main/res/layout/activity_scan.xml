@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:color="#FFFFFFFF"
     tools:context=".ScanActivity">
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="214dp"
-        android:layout_height="351dp"
+        android:layout_width="223dp"
+        android:layout_height="280dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,6 +24,7 @@
         android:layout_width="151dp"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="8dp"
         android:width="74dp"
         android:height="32dp"
@@ -39,7 +40,7 @@
         android:layout_width="312dp"
         android:layout_height="42dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="8dp"
         android:width="313dp"
         android:height="34dp"
@@ -52,20 +53,20 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/scan_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="15dp"
         android:width="77dp"
         android:height="24dp"
         android:background="@drawable/sign_button"
         android:gravity="center"
-        android:text="NEXT"
-        android:theme="@style/ButtonTheme"
         android:letterSpacing="0.1"
         android:lineSpacingMultiplier="1.20"
+        android:text="NEXT"
+        android:theme="@style/ButtonTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -75,7 +76,7 @@
         android:layout_width="69dp"
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="11dp"
         android:layout_marginEnd="8dp"
         android:width="29dp"
         android:height="17dp"
@@ -85,5 +86,5 @@
         android:theme="@style/ScanSkip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/scan_button" />
 </android.support.constraint.ConstraintLayout>

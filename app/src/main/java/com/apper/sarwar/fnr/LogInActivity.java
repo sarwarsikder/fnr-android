@@ -16,17 +16,7 @@ public class LogInActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        go_sign_up_button = (TextView) findViewById(R.id.go_sign_up_button);
         sign_in = (Button) findViewById(R.id.sign_in);
-
-        go_sign_up_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), SignUpActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
         sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
