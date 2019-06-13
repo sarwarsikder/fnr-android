@@ -11,33 +11,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.apper.sarwar.fnr.adapter.ProjectListAdapter;
-import com.apper.sarwar.fnr.model.ProjectListModel;
-import com.apper.sarwar.fnr.project_swipe.SwipeController;
+import com.apper.sarwar.fnr.adapter.BuildingListAdapter;
+import com.apper.sarwar.fnr.model.BuildingListModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectActivity extends AppCompatActivity {
+public class BuildingListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private ProjectListAdapter adapter;
+    private BuildingListAdapter adapter;
 
-    /*Projects Models objects from repository*/
-
-    private List<ProjectListModel> lists;
-
-    SwipeController swipeController = null;
+    private List<BuildingListModel> lists;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project);
+        setContentView(R.layout.activity_building_list);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         // Title and subtitle
-        toolbar.setTitle(R.string.title_activity_project);
+        toolbar.setTitle(R.string.title_activity_building);
         toolbar.setBackgroundColor(Color.WHITE);
         toolbar.setTitleTextColor(Color.BLACK);
 
@@ -58,7 +54,7 @@ public class ProjectActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        recyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.building_recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -68,38 +64,17 @@ public class ProjectActivity extends AppCompatActivity {
 
             System.out.println("Testing" + i);
 
-            ProjectListModel myList = new ProjectListModel(
+            BuildingListModel myList = new BuildingListModel(
                     i,
-                    "Scott Bradley",
-                    "29-B, North Carolin, USA",
-                    "80/100" + i,
-                    85
+                    "Haus-" + i,
+                    "19 task",
+                    "27"
 
             );
             lists.add(myList);
         }
 
-        adapter = new ProjectListAdapter(lists, this);
+        adapter = new BuildingListAdapter(lists, this);
         recyclerView.setAdapter(adapter);
-
-        /*swipeController = new SwipeController(new SwipeControllerActions() {
-            @Override
-            public void onRightClicked(int position) {
-                adapter.projectAdapterList.remove(position);
-                adapter.notifyItemRemoved(position);
-                adapter.notifyItemRangeChanged(position, adapter.getItemCount());
-            }
-        });
-
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
-        itemTouchhelper.attachToRecyclerView(recyclerView);
-
-        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                swipeController.onDraw(c);
-            }
-        });*/
     }
-
 }

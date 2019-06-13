@@ -20,8 +20,7 @@
         <item name="android:fontFamily">@font/proxima_nova_semibold</item>
     </style>
 
-    <style name="ToolBarTheme">
-    </style>
+    <style name="ToolBarTheme"></style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -96,6 +95,30 @@
 
     <style name="progressBarStyle" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
         <item name="android:indeterminateDrawable">@drawable/progress_bar_drawable</item>
+    </style>
+
+    <style name="BuildingName">
+        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:textColor">#FF44515F</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="BuildingTask">
+        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="BuildingFlat">
+        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:textColor">#FF7C8FAF</item>
+        <item name="android:textSize">33sp</item>
+    </style>
+
+    <style name="BuildingFlatLevel">
+        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:textColor">#FF7C8FAF</item>
+        <item name="android:textSize">7sp</item>
     </style>
 
 </resources>
