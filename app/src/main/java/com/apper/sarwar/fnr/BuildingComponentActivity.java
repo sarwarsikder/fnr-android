@@ -3,9 +3,9 @@ package com.apper.sarwar.fnr;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
@@ -16,31 +16,35 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.apper.sarwar.fnr.adapter.BuildingListAdapter;
-import com.apper.sarwar.fnr.model.BuildingListModel;
-
 import java.util.ArrayList;
-import java.util.List;
 
-public class BuildingListActivity extends AppCompatActivity {
+public class BuildingComponentActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private BuildingListAdapter adapter;
-
-    private List<BuildingListModel> lists;
+    TabLayout building_tabs;
+    ViewPager pager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_building_list);
+        setContentView(R.layout.activity_building_component);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         // Title and subtitle
-        toolbar.setTitle(R.string.title_activity_building);
+        toolbar.setTitle(R.string.title_activity_building_component);
         toolbar.setBackgroundColor(Color.WHITE);
         toolbar.setTitleTextColor(Color.BLACK);
+
+        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), BuildingListActivity.class);
+                view.getContext().startActivity(intent);
+                finish();
+            }
+        });
 
 
         final CharSequence title = toolbar.getTitle();
@@ -56,43 +60,38 @@ public class BuildingListActivity extends AppCompatActivity {
             toolbar.requestLayout();
         }
 
-        toolbar.setNavigationIcon(R.drawable.ic_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        setSupportActionBar(toolbar);
+
+        building_tabs = (TabLayout) findViewById(R.id.building_tabs);
+
+        building_tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        Toast.makeText(BuildingComponentActivity.this, "Wohnungen", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 1:
+                        Toast.makeText(BuildingComponentActivity.this, "Katagorie", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 2:
+                        Toast.makeText(BuildingComponentActivity.this, "Plannen", Toast.LENGTH_SHORT).show();
+                        return;
+                }
+            }
 
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), ProjectActivity.class);
-                view.getContext().startActivity(intent);
-                finish();
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
 
 
-        setSupportActionBar(toolbar);
-
-
-        recyclerView = (RecyclerView) findViewById(R.id.building_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        lists = new ArrayList<>();
-
-        for (int i = 1; i <= 10; i++) {
-
-            System.out.println("Testing" + i);
-
-            BuildingListModel myList = new BuildingListModel(
-                    i,
-                    "Haus-" + i,
-                    "19 task",
-                    "27"
-
-            );
-            lists.add(myList);
-        }
-
-        adapter = new BuildingListAdapter(lists, this);
-        recyclerView.setAdapter(adapter);
     }
 
     @Override

@@ -9,6 +9,7 @@
     <string name="password">PASSWORD</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="scan_skip"><u>SKIP</u></string>
+    <string name="plan">Plannen</string>
 
 
     <!--ToolBar Text-->
@@ -23,5 +24,11 @@
 
     <!--Building Title and Names-->
     <string name="title_activity_building">HAUSER</string>
+
+    <!--Building Title and Names-->
+    <string name="title_activity_building_component">HAUS</string>
+    <string name="building_flat">Wohnungen</string>
+    <string name="building_component">Katagorie</string>
+
 
 </resources>

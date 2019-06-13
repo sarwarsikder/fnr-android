@@ -13,9 +13,9 @@
 
     <item
         android:id="@+id/navigation_scan"
-        android:icon="@drawable/ic_scan"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:icon="@drawable/ic_scan_screen"
         android:title="@string/title_scan" />
 
     <item

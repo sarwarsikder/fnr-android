@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apper.sarwar.fnr.BuildingComponentActivity;
 import com.apper.sarwar.fnr.BuildingListActivity;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.model.BuildingListModel;
@@ -65,7 +66,7 @@ public class BuildingListAdapter extends RecyclerView.Adapter<BuildingListAdapte
                 public void onClick(View view) {
 
                     Toast.makeText(view.getContext(), "Will Be Added Loader", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(view.getContext(), BuildingListActivity.class);
+                    Intent intent = new Intent(view.getContext(), BuildingComponentActivity.class);
                     view.getContext().startActivity(intent);
                 }
             });

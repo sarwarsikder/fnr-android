@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".VuildingComponentActivity"></activity>
+        <activity android:name=".BuildingComponentActivity"></activity>
         <activity android:name=".BuildingListActivity" />
         <activity
             android:name=".ProjectActivity"
