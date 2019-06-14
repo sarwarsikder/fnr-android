@@ -125,6 +125,7 @@
         <item name="android:fontFamily">Proxima Nova</item>
         <item name="android:textColor">#FF0787FF</item>
         <item name="android:textSize">17sp</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
 </resources>

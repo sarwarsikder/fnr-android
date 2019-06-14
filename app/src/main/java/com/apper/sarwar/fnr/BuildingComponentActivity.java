@@ -16,11 +16,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apper.sarwar.fnr.fragment.fragement_adapter.BuildingTabsAdapter;
+
 import java.util.ArrayList;
 
 public class BuildingComponentActivity extends AppCompatActivity {
 
-    TabLayout building_tabs;
+    TabLayout building_tab_layout;
     ViewPager pager;
 
 
@@ -62,22 +64,19 @@ public class BuildingComponentActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        building_tabs = (TabLayout) findViewById(R.id.building_tabs);
+        building_tab_layout = (TabLayout) findViewById(R.id.building_tabs);
 
-        building_tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        building_tab_layout.setTabGravity(TabLayout.GRAVITY_FILL);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        BuildingTabsAdapter tabsAdapter = new BuildingTabsAdapter(getSupportFragmentManager(), building_tab_layout.getTabCount());
+
+        viewPager.setAdapter(tabsAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(building_tab_layout));
+
+        building_tab_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        Toast.makeText(BuildingComponentActivity.this, "Wohnungen", Toast.LENGTH_SHORT).show();
-                        return;
-                    case 1:
-                        Toast.makeText(BuildingComponentActivity.this, "Katagorie", Toast.LENGTH_SHORT).show();
-                        return;
-                    case 2:
-                        Toast.makeText(BuildingComponentActivity.this, "Plannen", Toast.LENGTH_SHORT).show();
-                        return;
-                }
+                viewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override

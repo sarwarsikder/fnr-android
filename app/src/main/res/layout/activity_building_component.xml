@@ -15,7 +15,8 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back" />
 
 
     <android.support.design.widget.BottomNavigationView
@@ -41,51 +42,40 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:tabIndicatorAnimationDuration="@android:integer/config_longAnimTime"
         app:tabIndicatorColor="@color/colorPrimary"
-        app:tabSelectedTextColor="@color/colorPrimary"
-        app:tabRippleColor="@color/colorPrimary">
+        app:tabRippleColor="@color/colorPrimary"
+        app:tabSelectedTextColor="@color/colorPrimary">
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/building_flat" />
+            android:text="@string/building_flat"
+            android:theme="@style/BuildingTabs" />
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/building_component" />
+            android:text="@string/building_component"
+            android:theme="@style/BuildingTabs" />
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/plan" />
+            android:text="@string/plan"
+            android:theme="@style/BuildingTabs" />
     </android.support.design.widget.TabLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="394dp"
-        android:layout_height="480dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="5dp"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="375dp"
+        android:layout_height="478dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/building_tabs">
+        app:layout_constraintTop_toBottomOf="@+id/building_tabs"></android.support.v4.view.ViewPager>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/building_component_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="0dp" />
-        </RelativeLayout>
-    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>
