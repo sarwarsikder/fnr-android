@@ -1,4 +1,4 @@
-package com.apper.sarwar.fnr.model;
+package com.apper.sarwar.fnr.model.building_model;
 
 public class BuildingPlanModel {
 

@@ -1,4 +1,4 @@
-package com.apper.sarwar.fnr.adapter;
+package com.apper.sarwar.fnr.adapter.building_adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apper.sarwar.fnr.BuildingComponentActivity;
-import com.apper.sarwar.fnr.BuildingListActivity;
 import com.apper.sarwar.fnr.R;
-import com.apper.sarwar.fnr.model.BuildingListModel;
+import com.apper.sarwar.fnr.model.building_model.BuildingListModel;
 
 import java.util.List;
 

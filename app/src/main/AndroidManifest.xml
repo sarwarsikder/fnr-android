@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BuildingComponentActivity"></activity>
+        <activity
+            android:name=".FlatComponentActivity"
+            android:label="@string/title_activity_flat_component"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".BuildingComponentActivity" />
         <activity android:name=".BuildingListActivity" />
         <activity
             android:name=".ProjectActivity"

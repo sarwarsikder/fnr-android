@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.apper.sarwar.fnr.fragment.fragement_adapter.BuildingTabsAdapter;
+import com.apper.sarwar.fnr.fragment.tabs_adapter.BuildingTabsAdapter;
 
 import java.util.ArrayList;
 

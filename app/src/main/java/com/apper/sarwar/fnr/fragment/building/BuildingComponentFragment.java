@@ -1,4 +1,4 @@
-package com.apper.sarwar.fnr.fragment;
+package com.apper.sarwar.fnr.fragment.building;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,33 +9,30 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.apper.sarwar.fnr.R;
-import com.apper.sarwar.fnr.adapter.ProjectListAdapter;
-import com.apper.sarwar.fnr.model.ProjectListModel;
+import com.apper.sarwar.fnr.adapter.building_adapter.BuildingComponentAdapter;
+import com.apper.sarwar.fnr.model.building_model.BuildingComponentListModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class BuildingFlatFragment extends Fragment {
+public class BuildingComponentFragment extends Fragment {
 
     RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private ProjectListAdapter adapter;
+    private BuildingComponentAdapter adapter;
     private View view;
 
-    private List<ProjectListModel> lists;
+    private List<BuildingComponentListModel> lists;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
 
-
         try {
-/*
-            view = inflater.inflate(R.layout.fragment_building_flat, viewGroup, false);
-*/
-            view = inflater.from(viewGroup.getContext()).inflate(R.layout.fragment_building_flat, viewGroup, false);
 
-            recyclerView = (RecyclerView) view.findViewById(R.id.building_flat_recycler_view);
+            view = inflater.inflate(R.layout.fragment_building_component, viewGroup, false);
+
+            recyclerView = (RecyclerView) view.findViewById(R.id.building_component_recycler_view);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -46,10 +43,9 @@ public class BuildingFlatFragment extends Fragment {
 
                 System.out.println("Testing" + i);
 
-                ProjectListModel myList = new ProjectListModel(
+                BuildingComponentListModel myList = new BuildingComponentListModel(
                         i,
-                        "Scott Bradley",
-                        "29-B, North Carolin, USA",
+                        "Building-" + i,
                         "80/100" + i,
                         85
 
@@ -57,15 +53,15 @@ public class BuildingFlatFragment extends Fragment {
                 lists.add(myList);
             }
 
-            adapter = new ProjectListAdapter(lists, inflater.getContext());
+            adapter = new BuildingComponentAdapter(lists, getActivity());
             recyclerView.setAdapter(adapter);
 
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             e.printStackTrace();
         }
 
         return view;
-
     }
 
 }

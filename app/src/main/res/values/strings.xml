@@ -31,5 +31,8 @@
     <string name="building_component">Katagorie</string>
 
 
+    <!--Flat and flat related title, name string-->
+    <string name="title_activity_flat_component">WOHNUNGEN</string>
+
 
 </resources>

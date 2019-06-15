@@ -128,4 +128,16 @@
         <item name="android:textAlignment">center</item>
     </style>
 
+    <style name="BuildingFlatCardView">
+        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:textColor">#FF162637</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="PlanText">
+        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:textColor">#FF44515F</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

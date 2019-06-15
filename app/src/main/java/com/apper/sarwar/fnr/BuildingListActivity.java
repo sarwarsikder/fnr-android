@@ -16,8 +16,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.apper.sarwar.fnr.adapter.BuildingListAdapter;
-import com.apper.sarwar.fnr.model.BuildingListModel;
+import com.apper.sarwar.fnr.adapter.building_adapter.BuildingListAdapter;
+import com.apper.sarwar.fnr.model.building_model.BuildingListModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +107,7 @@ public class BuildingListActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.menu_screen_info:
-                Toast.makeText(this, "You clicked menu screen info", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You clicked menu scrhhhheen info", Toast.LENGTH_SHORT).show();
                 break;
 
         }

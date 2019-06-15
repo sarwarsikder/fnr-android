@@ -1,7 +1,6 @@
-package com.apper.sarwar.fnr.adapter;
+package com.apper.sarwar.fnr.adapter.building_adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,12 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.apper.sarwar.fnr.BuildingComponentActivity;
 import com.apper.sarwar.fnr.R;
-import com.apper.sarwar.fnr.model.BuildingComponentListModel;
-import com.apper.sarwar.fnr.model.ProjectListModel;
+import com.apper.sarwar.fnr.model.building_model.BuildingComponentListModel;
 
 import java.util.List;
 

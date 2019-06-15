@@ -1,4 +1,4 @@
-package com.apper.sarwar.fnr.model;
+package com.apper.sarwar.fnr.model.project_model;
 
 public class ProjectListModel {
 

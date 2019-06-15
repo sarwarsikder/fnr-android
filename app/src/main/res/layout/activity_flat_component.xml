@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BuildingComponentActivity">
+    tools:context=".FlatComponentActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -32,7 +32,7 @@
         app:menu="@menu/bottom_nav_menu" />
 
     <android.support.design.widget.TabLayout
-        android:id="@+id/building_tabs"
+        android:id="@+id/flat_tabs"
         android:layout_width="395dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -48,12 +48,6 @@
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/building_flat"
-            android:theme="@style/BuildingTabs" />
-
-        <android.support.design.widget.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/building_component"
             android:theme="@style/BuildingTabs" />
 
@@ -65,7 +59,7 @@
     </android.support.design.widget.TabLayout>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
+        android:id="@+id/view_pager_flat"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="2dp"
@@ -74,8 +68,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/building_tabs"></android.support.v4.view.ViewPager>
-
+        app:layout_constraintTop_toBottomOf="@+id/flat_tabs"></android.support.v4.view.ViewPager>
 
 
 </android.support.constraint.ConstraintLayout>

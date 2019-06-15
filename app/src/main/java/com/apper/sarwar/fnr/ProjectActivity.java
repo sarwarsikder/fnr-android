@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.apper.sarwar.fnr.adapter.ProjectListAdapter;
-import com.apper.sarwar.fnr.model.ProjectListModel;
+import com.apper.sarwar.fnr.adapter.project_adapter.ProjectListAdapter;
+import com.apper.sarwar.fnr.model.project_model.ProjectListModel;
 import com.apper.sarwar.fnr.project_swipe.SwipeController;
 
 import java.util.ArrayList;
@@ -65,12 +65,9 @@ public class ProjectActivity extends AppCompatActivity {
         lists = new ArrayList<>();
 
         for (int i = 1; i <= 10; i++) {
-
-            System.out.println("Testing" + i);
-
             ProjectListModel myList = new ProjectListModel(
                     i,
-                    "Scott Bradley",
+                    "Project - " + i,
                     "29-B, North Carolin, USA",
                     "80/100" + i,
                     85

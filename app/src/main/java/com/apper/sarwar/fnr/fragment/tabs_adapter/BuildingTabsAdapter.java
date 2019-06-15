@@ -1,12 +1,12 @@
-package com.apper.sarwar.fnr.fragment.fragement_adapter;
+package com.apper.sarwar.fnr.fragment.tabs_adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.apper.sarwar.fnr.fragment.BuildingComponentFragment;
-import com.apper.sarwar.fnr.fragment.BuildingFlatFragment;
-import com.apper.sarwar.fnr.fragment.BuildingPlanFragment;
+import com.apper.sarwar.fnr.fragment.building.BuildingComponentFragment;
+import com.apper.sarwar.fnr.fragment.building.BuildingFlatFragment;
+import com.apper.sarwar.fnr.fragment.building.BuildingPlanFragment;
 
 public class BuildingTabsAdapter extends FragmentStatePagerAdapter {
 
