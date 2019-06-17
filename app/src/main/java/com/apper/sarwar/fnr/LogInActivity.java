@@ -7,9 +7,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.apper.sarwar.fnr.utils.Loader;
+
 public class LogInActivity extends AppCompatActivity {
 
-    TextView go_sign_up_button,sign_in;
+    TextView go_sign_up_button, sign_in;
+    Loader loader;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +25,11 @@ public class LogInActivity extends AppCompatActivity {
         sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loader.startLoading(view.getContext());
                 Intent intent = new Intent(view.getContext(), ScanActivity.class);
                 startActivity(intent);
                 finish();
+
             }
         });
 

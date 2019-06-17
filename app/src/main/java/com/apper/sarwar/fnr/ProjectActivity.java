@@ -2,11 +2,14 @@ package com.apper.sarwar.fnr;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -29,6 +32,28 @@ public class ProjectActivity extends AppCompatActivity {
     private List<ProjectListModel> lists;
 
     SwipeController swipeController = null;
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    return true;
+                case R.id.navigation_current_activity:
+                    return true;
+                case R.id.navigation_scan:
+                    return true;
+                case R.id.navigation_notifications:
+                    return true;
+                case R.id.navigation_profile:
+                    return true;
+            }
+            return false;
+        }
+    };
 
 
     @Override
@@ -98,5 +123,6 @@ public class ProjectActivity extends AppCompatActivity {
             }
         });*/
     }
+
 
 }
