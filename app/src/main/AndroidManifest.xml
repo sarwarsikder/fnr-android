@@ -9,28 +9,58 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".NotificationActivity"></activity>
+        <activity
+            android:name=".ProfileActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ComponentDetailActivity"
+            android:label="@string/title_activity_component_detail"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SubComponentActivity"
+            android:label="@string/title_activity_sub_component"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".FlatComponentActivity"
             android:label="@string/title_activity_flat_component"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".BuildingComponentActivity" />
-        <activity android:name=".BuildingListActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BuildingComponentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BuildingListActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ProjectActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ScanActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ScanActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SignUpActivity"
             android:label="@string/title_activity_sign_up"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".LogInActivity" />
-        <activity android:name=".SplashActivity">
+        <activity
+            android:name=".LogInActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

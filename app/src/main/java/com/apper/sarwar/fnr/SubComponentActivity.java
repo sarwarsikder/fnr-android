@@ -1,49 +1,44 @@
 package com.apper.sarwar.fnr;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.apper.sarwar.fnr.adapter.building_adapter.BuildingListAdapter;
-import com.apper.sarwar.fnr.model.building_model.BuildingListModel;
+import com.apper.sarwar.fnr.adapter.sub_component.SubComponentAdapter;
+import com.apper.sarwar.fnr.model.project_model.ProjectListModel;
+import com.apper.sarwar.fnr.model.sub_component.SubComponentModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuildingListActivity extends AppCompatActivity {
+public class SubComponentActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private BuildingListAdapter adapter;
+    private SubComponentAdapter subComponentAdapter;
 
-    private List<BuildingListModel> lists;
-
+    private List<SubComponentModel> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_building_list);
+        setContentView(R.layout.activity_sub_component);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         // Title and subtitle
-        toolbar.setTitle(R.string.title_activity_building);
+        toolbar.setTitle(R.string.title_activity_sub_component);
         toolbar.setBackgroundColor(Color.WHITE);
         toolbar.setTitleTextColor(Color.BLACK);
 
@@ -71,29 +66,27 @@ public class BuildingListActivity extends AppCompatActivity {
         });
         setSupportActionBar(toolbar);
 
-
-        recyclerView = (RecyclerView) findViewById(R.id.building_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.sub_component_recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        lists = new ArrayList<>();
+        list = new ArrayList<>();
 
         for (int i = 1; i <= 10; i++) {
-
-            System.out.println("Testing" + i);
-
-            BuildingListModel myList = new BuildingListModel(
+            SubComponentModel myList = new SubComponentModel(
                     i,
-                    "Haus-" + i,
-                    "19 task",
-                    "27"
+                    "Sub Component - " + i,
+                    "We strive for exceptional in everything that…",
+                    "2d ago"
 
             );
-            lists.add(myList);
+            list.add(myList);
         }
 
-        adapter = new BuildingListAdapter(lists, this);
-        recyclerView.setAdapter(adapter);
+        subComponentAdapter = new SubComponentAdapter(list, this);
+        recyclerView.setAdapter(subComponentAdapter);
+
+
     }
 
     @Override
@@ -103,35 +96,5 @@ public class BuildingListActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.menu_screen_info:
-                Toast.makeText(this, "You clicked menu scrhhhheen info", Toast.LENGTH_SHORT).show();
-                showOptions(this);
-                break;
-
-        }
-        return true;
-    }
-
-    private PopupWindow showOptions(Context mcon) {
-        try {
-            LayoutInflater inflater = (LayoutInflater) mcon.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(R.layout.popup_option_documents_type, null);
-            PopupWindow optionspu = new PopupWindow(layout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            optionspu.setAnimationStyle(R.style.popup_window_animation);
-            optionspu.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-            optionspu.setFocusable(true);
-            optionspu.setOutsideTouchable(true);
-            optionspu.update(0, 0, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            optionspu.showAtLocation(layout, Gravity.BOTTOM, 0, 0);
-
-            return optionspu;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

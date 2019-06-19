@@ -1,13 +1,13 @@
 package com.apper.sarwar.fnr.model.sub_component;
 
-public class SubComponent {
+public class SubComponentModel {
     private int Id;
     private String componentName;
     private String componentDescription;
     private String CreatedTime;
 
 
-    public SubComponent(int id, String componentName, String componentDescription, String createdTime) {
+    public SubComponentModel(int id, String componentName, String componentDescription, String createdTime) {
         Id = id;
         this.componentName = componentName;
         this.componentDescription = componentDescription;

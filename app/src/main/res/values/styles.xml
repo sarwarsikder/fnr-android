@@ -146,4 +146,77 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+
+    <style name="SubComponentName">
+        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:textColor">#FF44515F</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
+    <style name="SubComponentDescription">
+        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:textColor">#FF7C8FAF</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="subComponentCreatedTime">
+        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:textColor">#FF44515F</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="SubComponentDetails">
+        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:textColor">#FF7C8FAF</item>
+    </style>
+
+    <style name="SubComponentDetails.ComponentNameLabel">
+        <item name="android:textColor">#FF7C8FAF</item>
+        <item name="android:textSize">8sp</item>
+    </style>
+
+    <style name="SubComponentDetails.ComponentName">
+        <item name="android:textColor">#FF44515F</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="MyProfileLabel">
+        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:textColor">#FF7C8FAF</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="MyProfileName">
+        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:textColor">#FF44515F</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="NotificationInfoArea">
+        <item name="android:fontFamily">Proxima Nova</item>
+        <item name="android:textColor">#FF7C8FAF</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="Notification">
+        <item name="android:fontFamily">Proxima Nova</item>
+    </style>
+
+    <style name="Notification.NotificationText">
+        <item name="android:textColor">#FF7C8FAF</item>
+        <item name="android:textSize">13.5sp</item>
+    </style>
+
+    <style name="Notification.NotificationTime">
+        <item name="android:textColor">#FF7C8FAF</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="popup_window_animation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+
+
+
 </resources>

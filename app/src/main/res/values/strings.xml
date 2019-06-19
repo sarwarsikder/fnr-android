@@ -35,4 +35,18 @@
     <string name="title_activity_flat_component">WOHNUNGEN</string>
 
 
+    <!--Sub Component Related String-->
+    <string name="title_activity_sub_component">Sub Component List</string>
+
+    <!--Component Details-->
+    <string name="title_activity_component_detail">ComponentDetail</string>
+
+    <!--Component Details-->
+    <string name="title_activity_profile">My Profile</string>
+
+
+    <!--Notification Title and others-->
+    <string name="title_activity_notification">NACHRICHTEN</string>
+
+
 </resources>

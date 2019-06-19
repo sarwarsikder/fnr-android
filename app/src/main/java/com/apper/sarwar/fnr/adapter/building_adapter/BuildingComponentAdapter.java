@@ -1,6 +1,7 @@
 package com.apper.sarwar.fnr.adapter.building_adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apper.sarwar.fnr.R;
+import com.apper.sarwar.fnr.SubComponentActivity;
 import com.apper.sarwar.fnr.model.building_model.BuildingComponentListModel;
 
 import java.util.List;
@@ -58,16 +61,15 @@ public class BuildingComponentAdapter extends RecyclerView.Adapter<BuildingCompo
             componentCount = (TextView) itemView.findViewById(R.id.component_count);
             componentProgress = (ProgressBar) itemView.findViewById(R.id.component_progress);
 
-            /*itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                     Toast.makeText(view.getContext(), "Will Be Added Loader", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(view.getContext(), BuildingComponentActivity.class);
+                    Intent intent = new Intent(view.getContext(), SubComponentActivity.class);
                     view.getContext().startActivity(intent);
                 }
             });
-*/
         }
     }
 }

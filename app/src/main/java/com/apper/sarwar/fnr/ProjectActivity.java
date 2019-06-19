@@ -1,5 +1,6 @@
 package com.apper.sarwar.fnr;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apper.sarwar.fnr.adapter.project_adapter.ProjectListAdapter;
 import com.apper.sarwar.fnr.model.project_model.ProjectListModel;
@@ -26,13 +28,13 @@ public class ProjectActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private ProjectListAdapter adapter;
+    Intent intent;
 
     /*Projects Models objects from repository*/
 
     private List<ProjectListModel> lists;
 
     SwipeController swipeController = null;
-
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -47,8 +49,14 @@ public class ProjectActivity extends AppCompatActivity {
                 case R.id.navigation_scan:
                     return true;
                 case R.id.navigation_notifications:
+                    Toast.makeText(getApplicationContext(), "Hello Notification!", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(getApplicationContext(), NotificationActivity.class);
+                    startActivity(intent);
                     return true;
                 case R.id.navigation_profile:
+                    Toast.makeText(getApplicationContext(), "Hello Profile!", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(intent);
                     return true;
             }
             return false;
@@ -82,6 +90,8 @@ public class ProjectActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
+        BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         recyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -92,7 +102,7 @@ public class ProjectActivity extends AppCompatActivity {
         for (int i = 1; i <= 10; i++) {
             ProjectListModel myList = new ProjectListModel(
                     i,
-                    "Project - " + i,
+                    "Projectt - " + i,
                     "29-B, North Carolin, USA",
                     "80/100" + i,
                     85
@@ -123,6 +133,7 @@ public class ProjectActivity extends AppCompatActivity {
             }
         });*/
     }
+
 
 
 }

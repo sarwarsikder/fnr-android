@@ -2,45 +2,28 @@ package com.apper.sarwar.fnr;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ComponentDetailActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_component_detail);
-
+        setContentView(R.layout.activity_profile);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         // Title and subtitle
-        toolbar.setTitle(R.string.title_activity_component_detail);
+        toolbar.setTitle(R.string.title_activity_profile);
         toolbar.setBackgroundColor(Color.WHITE);
         toolbar.setTitleTextColor(Color.BLACK);
-
-        toolbar.setNavigationIcon(R.drawable.ic_back_cross);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), BuildingListActivity.class);
-                view.getContext().startActivity(intent);
-                finish();
-            }
-        });
-
 
         final CharSequence title = toolbar.getTitle();
         final ArrayList<View> outViews = new ArrayList<>(1);
@@ -54,16 +37,6 @@ public class ComponentDetailActivity extends AppCompatActivity {
             layoutParams.setMargins(0, 0, 60, 0);
             toolbar.requestLayout();
         }
-
         setSupportActionBar(toolbar);
-
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
 }
