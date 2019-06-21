@@ -198,6 +198,7 @@
         <item name="android:textColor">#FF7C8FAF</item>
         <item name="android:textSize">12sp</item>
     </style>
+
     <style name="Notification">
         <item name="android:fontFamily">Proxima Nova</item>
     </style>
@@ -217,6 +218,25 @@
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
+
+    <style name="PopupInfo">
+        <item name="android:fontFamily">Proxima Nova</item>
+    </style>
+
+    <style name="PopupInfo.Title">
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="PopupInfo.Label">
+        <item name="android:textColor">#FFB4D9FD</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style		name="PopupInfo.LabelInfo">
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 
 
 </resources>

@@ -1,15 +1,17 @@
 package com.apper.sarwar.fnr;
 
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +19,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +39,9 @@ public class BuildingListActivity extends AppCompatActivity {
     private BuildingListAdapter adapter;
 
     private List<BuildingListModel> lists;
+
+    private PopupWindow mPopupWindow;
+    private ImageView btnClosePopup;
 
 
     @Override
@@ -108,30 +116,51 @@ public class BuildingListActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.menu_screen_info:
-                Toast.makeText(this, "You clicked menu scrhhhheen info", Toast.LENGTH_SHORT).show();
-                showOptions(this);
+                initiatePopupWindow();
+                Toast.makeText(this, "You clicked menu info", Toast.LENGTH_SHORT).show();
                 break;
 
         }
         return true;
     }
 
-    private PopupWindow showOptions(Context mcon) {
+    private void initiatePopupWindow() {
         try {
-            LayoutInflater inflater = (LayoutInflater) mcon.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(R.layout.popup_option_documents_type, null);
-            PopupWindow optionspu = new PopupWindow(layout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            optionspu.setAnimationStyle(R.style.popup_window_animation);
-            optionspu.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-            optionspu.setFocusable(true);
-            optionspu.setOutsideTouchable(true);
-            optionspu.update(0, 0, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            optionspu.showAtLocation(layout, Gravity.BOTTOM, 0, 0);
+            LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            // create the popup window
 
-            return optionspu;
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+           /* width = size.x - 50;*/
+            System.out.println(width);
+            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            View layout = inflater.inflate(R.layout.popup_menu_screen_info, null);
+            layout.setPadding(10,10,10,10);
+            mPopupWindow = new PopupWindow(layout, width,
+                    height, true);
+            mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            mPopupWindow.setOutsideTouchable(true);
+            mPopupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
+
+            layout.findViewById(R.id.popup_menu_screen_info).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPopupWindow.dismiss();
+                }
+            });
+            btnClosePopup = (ImageView) layout.findViewById(R.id.dismiss);
+            btnClosePopup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPopupWindow.dismiss();
+
+                }
+            });
+
+
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
     }
+
 }
