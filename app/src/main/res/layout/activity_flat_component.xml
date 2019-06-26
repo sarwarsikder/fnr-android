@@ -68,7 +68,9 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/flat_tabs"></android.support.v4.view.ViewPager>
+        app:layout_constraintTop_toBottomOf="@+id/flat_tabs">
+
+    </android.support.v4.view.ViewPager>
 
 
 </android.support.constraint.ConstraintLayout>

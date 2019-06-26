@@ -3,6 +3,8 @@ package com.apper.sarwar.fnr;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,9 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apper.sarwar.fnr.adapter.sub_component.SubComponentAdapter;
 import com.apper.sarwar.fnr.model.project_model.ProjectListModel;
@@ -30,6 +34,38 @@ public class SubComponentActivity extends AppCompatActivity {
     private SubComponentAdapter subComponentAdapter;
 
     private List<SubComponentModel> list;
+
+    Intent intent;
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    intent = new Intent(getApplicationContext(), ProjectActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_current_activity:
+                    return true;
+                case R.id.navigation_scan:
+                    return true;
+                case R.id.navigation_notifications:
+                    Toast.makeText(getApplicationContext(), "Hello Notification!", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(getApplicationContext(), NotificationActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_profile:
+                    Toast.makeText(getApplicationContext(), "Hello Profile!", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(intent);
+                    return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +101,7 @@ public class SubComponentActivity extends AppCompatActivity {
             }
         });
         setSupportActionBar(toolbar);
+
 
         recyclerView = (RecyclerView) findViewById(R.id.sub_component_recycler_view);
         recyclerView.setHasFixedSize(true);

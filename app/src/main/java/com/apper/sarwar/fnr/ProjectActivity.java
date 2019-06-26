@@ -43,6 +43,8 @@ public class ProjectActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
+                    intent = new Intent(getApplicationContext(), ProjectActivity.class);
+                    startActivity(intent);
                     return true;
                 case R.id.navigation_current_activity:
                     return true;

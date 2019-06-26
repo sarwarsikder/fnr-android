@@ -2,17 +2,54 @@ package com.apper.sarwar.fnr;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
+    Intent intent;
+
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    intent = new Intent(getApplicationContext(), ProjectActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_current_activity:
+                    return true;
+                case R.id.navigation_scan:
+                    return true;
+                case R.id.navigation_notifications:
+                    Toast.makeText(getApplicationContext(), "Hello Notification!", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(getApplicationContext(), NotificationActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_profile:
+                    Toast.makeText(getApplicationContext(), "Hello Profile!", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(intent);
+                    return true;
+            }
+            return false;
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,5 +75,6 @@ public class ProfileActivity extends AppCompatActivity {
             toolbar.requestLayout();
         }
         setSupportActionBar(toolbar);
+
     }
 }

@@ -37,17 +37,6 @@ public class BuildingComponentActivity extends AppCompatActivity {
         toolbar.setBackgroundColor(Color.WHITE);
         toolbar.setTitleTextColor(Color.BLACK);
 
-        toolbar.setNavigationIcon(R.drawable.ic_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), BuildingListActivity.class);
-                view.getContext().startActivity(intent);
-                finish();
-            }
-        });
-
 
         final CharSequence title = toolbar.getTitle();
         final ArrayList<View> outViews = new ArrayList<>(1);
@@ -63,6 +52,17 @@ public class BuildingComponentActivity extends AppCompatActivity {
         }
 
         setSupportActionBar(toolbar);
+
+        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), BuildingListActivity.class);
+                view.getContext().startActivity(intent);
+                finish();
+            }
+        });
 
         building_tab_layout = (TabLayout) findViewById(R.id.building_tabs);
 

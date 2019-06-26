@@ -7,38 +7,734 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ComponentDetailActivity">
 
-
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/send_message_layout"
+        android:layout_below="@+id/toolbar"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:id="@+id/body_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="YANIK RIEDL"
+                        android:theme="@style/SubComponentDetails.ComponentNameLabel" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imageView10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_details_user_image"
+                            android:scaleType="center"
+                            app:srcCompat="@drawable/ic_man_user" />
+
+                        <TextView
+                            android:id="@+id/textView21"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:text="Jana Strassmann"
+                            android:theme="@style/SubComponentDetails.ComponentName" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="DATUM"
+                        android:theme="@style/SubComponentDetails.ComponentNameLabel" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imageView11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:scaleType="center"
+                            app:srcCompat="@drawable/ic_clock_with_white_face" />
+
+                        <TextView
+                            android:id="@+id/textView22"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_weight="1"
+                            android:text="18th May,2019"
+                            android:theme="@style/SubComponentDetails.ComponentName" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Geschossdecken"
+                            android:theme="@style/SubComponentDetails.MainComponentName" />
+
+                        <TextView
+                            android:id="@+id/textView25"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:background="@color/colorAccent"
+                            android:text="  KOMPLETE"
+                            android:textColor="@android:color/white"
+                            android:theme="@style/SubComponentDetails.Status" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView26"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:gravity="left"
+                        android:text="We are storytellers. We have the freedom to develop in a direction that is true to us, but also be there for others when they need us; sharing our skills."
+                        android:theme="@style/SubComponentDetails.ComponentText" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_below="@id/body_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:padding="5dp">
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/textView28"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="YANK REASD"
-                android:theme="@style/MyProfileLabel" />
+                android:layout_marginTop="16dp"
+                android:text="Nachrichten(17)"
+                android:theme="@style/SubComponentDetails.CommentLabel" />
 
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_man_user" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp">
 
-        </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_commented_user_componenet_details"
+                            android:scaleType="center"
+                            app:srcCompat="@drawable/ic_man_user" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="4dp"
+                                android:text="We are storytellers. We have the freedom to develop in a direction that is true to us, but also be there for others when they need us; sharing our skills."
+                                android:theme="@style/SubComponentDetails.ComponentText" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="4dp"
+                                android:text="We are storytellers. We have the freedom to develop in a direction that is true to us, but also be there for others when they need us; sharing our skills."
+                                android:theme="@style/SubComponentDetails.ComponentText" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="center"
+                            app:srcCompat="@drawable/ic_man_user" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_commented_user_componenet_details"
+                            android:scaleType="center"
+                            app:srcCompat="@drawable/ic_man_user" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="4dp"
+                                android:text="We are storytellers. We have the freedom to develop in a direction that is true to us, but also be there for others when they need us; sharing our skills."
+                                android:theme="@style/SubComponentDetails.ComponentText" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="4dp"
+                                android:text="We are storytellers. We have the freedom to develop in a direction that is true to us, but also be there for others when they need us; sharing our skills."
+                                android:theme="@style/SubComponentDetails.ComponentText" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="center"
+                            app:srcCompat="@drawable/ic_man_user" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_commented_user_componenet_details"
+                            android:scaleType="center"
+                            app:srcCompat="@drawable/ic_man_user" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="4dp"
+                                android:text="We are storytellers. We have the freedom to develop in a direction that is true to us, but also be there for others when they need us; sharing our skills."
+                                android:theme="@style/SubComponentDetails.ComponentText" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="4dp"
+                                android:text="We are storytellers. We have the freedom to develop in a direction that is true to us, but also be there for others when they need us; sharing our skills."
+                                android:theme="@style/SubComponentDetails.ComponentText" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="center"
+                            app:srcCompat="@drawable/ic_man_user" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_commented_user_componenet_details"
+                            android:scaleType="center"
+                            app:srcCompat="@drawable/ic_man_user" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="4dp"
+                                android:text="We are storytellers. We have the freedom to develop in a direction that is true to us, but also be there for others when they need us; sharing our skills."
+                                android:theme="@style/SubComponentDetails.ComponentText" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="4dp"
+                                android:text="We are storytellers. We have the freedom to develop in a direction that is true to us, but also be there for others when they need us; sharing our skills."
+                                android:theme="@style/SubComponentDetails.ComponentText" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/shape_comeneted_image_componenet_details"
+                                    app:srcCompat="@drawable/ic_man_user" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="center"
+                            app:srcCompat="@drawable/ic_man_user" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/send_message_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@id/bottom_navigation_drawer"
+        android:gravity="right">
+
+        <EditText
+            android:id="@+id/editText8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"></RelativeLayout>
+            android:ems="10"
+            android:hint="Write comments"
+            android:inputType="textPersonName" />
+
+        <ImageView
+            android:id="@+id/imageView13"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignRight="@+id/imageView12"
+            app:srcCompat="@drawable/ic_message_photo" />
+
+        <ImageView
+            android:id="@+id/imageView12"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            app:srcCompat="@drawable/ic_message_send" />
+
+
     </LinearLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_nav_menu" />
+
 </RelativeLayout>

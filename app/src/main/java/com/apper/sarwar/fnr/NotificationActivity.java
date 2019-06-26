@@ -2,15 +2,19 @@ package com.apper.sarwar.fnr;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apper.sarwar.fnr.adapter.notification.NotificationListAdapter;
 import com.apper.sarwar.fnr.adapter.project_adapter.ProjectListAdapter;
@@ -29,6 +33,36 @@ public class NotificationActivity extends AppCompatActivity {
     private List<NotificationListModel> lists;
 
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    intent = new Intent(getApplicationContext(), ProjectActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_current_activity:
+                    return true;
+                case R.id.navigation_scan:
+                    return true;
+                case R.id.navigation_notifications:
+                    Toast.makeText(getApplicationContext(), "Hello Notification!", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(getApplicationContext(), NotificationActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_profile:
+                    Toast.makeText(getApplicationContext(), "Hello Profile!", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(intent);
+                    return true;
+            }
+            return false;
+        }
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +70,7 @@ public class NotificationActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         // Title and subtitle
-        toolbar.setTitle(R.string.title_activity_project);
+        toolbar.setTitle(R.string.title_notifications);
         toolbar.setBackgroundColor(Color.WHITE);
         toolbar.setTitleTextColor(Color.BLACK);
 
@@ -55,6 +89,7 @@ public class NotificationActivity extends AppCompatActivity {
         }
 
         setSupportActionBar(toolbar);
+
 
         recyclerView = (RecyclerView) findViewById(R.id.notification_recycler_view);
         recyclerView.setHasFixedSize(true);

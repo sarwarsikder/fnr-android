@@ -1,17 +1,16 @@
 package com.apper.sarwar.fnr;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,8 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -42,6 +39,39 @@ public class BuildingListActivity extends AppCompatActivity {
 
     private PopupWindow mPopupWindow;
     private ImageView btnClosePopup;
+
+    Intent intent;
+
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    intent = new Intent(getApplicationContext(), ProjectActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_current_activity:
+                    return true;
+                case R.id.navigation_scan:
+                    return true;
+                case R.id.navigation_notifications:
+                    Toast.makeText(getApplicationContext(), "Hello Notification!", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(getApplicationContext(), NotificationActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_profile:
+                    Toast.makeText(getApplicationContext(), "Hello Profile!", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(intent);
+                    return true;
+            }
+            return false;
+        }
+    };
 
 
     @Override
@@ -67,17 +97,24 @@ public class BuildingListActivity extends AppCompatActivity {
             layoutParams.setMargins(0, 0, 60, 0);
             toolbar.requestLayout();
         }
+
+        setSupportActionBar(toolbar);
+
+
+
+
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(view.getContext(), ProjectActivity.class);
                 view.getContext().startActivity(intent);
-                finish();
+                 finish();
             }
         });
-        setSupportActionBar(toolbar);
+
 
 
         recyclerView = (RecyclerView) findViewById(R.id.building_recycler_view);
