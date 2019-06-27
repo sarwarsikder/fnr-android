@@ -20,7 +20,7 @@
 
 
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottomNavigationView2"
+        android:id="@+id/bottom_navigation_drawer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -71,10 +71,12 @@
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView2"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_drawer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/building_tabs"></android.support.v4.view.ViewPager>
+        app:layout_constraintTop_toBottomOf="@+id/building_tabs">
+
+    </android.support.v4.view.ViewPager>
 
 
 

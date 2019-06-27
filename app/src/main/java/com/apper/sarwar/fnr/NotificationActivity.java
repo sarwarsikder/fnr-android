@@ -90,6 +90,9 @@ public class NotificationActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
+        BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
 
         recyclerView = (RecyclerView) findViewById(R.id.notification_recycler_view);
         recyclerView.setHasFixedSize(true);

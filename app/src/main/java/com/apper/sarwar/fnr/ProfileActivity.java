@@ -76,5 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
         setSupportActionBar(toolbar);
 
+        BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 }

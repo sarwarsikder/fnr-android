@@ -701,7 +701,7 @@
         android:id="@+id/send_message_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_above="@id/bottom_navigation_drawer"
+        android:layout_alignParentBottom="true"
         android:gravity="right">
 
         <EditText
@@ -730,11 +730,5 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation_drawer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_nav_menu" />
 
 </RelativeLayout>

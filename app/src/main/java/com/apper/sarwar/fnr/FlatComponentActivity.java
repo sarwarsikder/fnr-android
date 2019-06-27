@@ -1,7 +1,9 @@
 package com.apper.sarwar.fnr;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,11 +12,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +31,10 @@ public class FlatComponentActivity extends AppCompatActivity {
 
     TabLayout flat_tab_layout;
     ViewPager pager;
-
     Intent intent;
 
+    private PopupWindow mPopupWindow;
+    private ImageView btnClosePopup;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -63,7 +69,7 @@ public class FlatComponentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        try{
+        try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_flat_component);
 
@@ -73,17 +79,6 @@ public class FlatComponentActivity extends AppCompatActivity {
             toolbar.setTitle(R.string.title_activity_flat_component);
             toolbar.setBackgroundColor(Color.WHITE);
             toolbar.setTitleTextColor(Color.BLACK);
-
-            toolbar.setNavigationIcon(R.drawable.ic_back);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(), BuildingListActivity.class);
-                    view.getContext().startActivity(intent);
-                    finish();
-                }
-            });
 
 
             final CharSequence title = toolbar.getTitle();
@@ -100,6 +95,21 @@ public class FlatComponentActivity extends AppCompatActivity {
             }
 
             setSupportActionBar(toolbar);
+
+            toolbar.setNavigationIcon(R.drawable.ic_backwith_circle);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), BuildingComponentActivity.class);
+                    view.getContext().startActivity(intent);
+                    finish();
+                }
+            });
+
+            BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
+            navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
 
             flat_tab_layout = (TabLayout) findViewById(R.id.flat_tabs);
 
@@ -127,7 +137,7 @@ public class FlatComponentActivity extends AppCompatActivity {
                 }
             });
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -141,16 +151,57 @@ public class FlatComponentActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
             case R.id.menu_screen_info:
-                Toast.makeText(this, "You clicked menu screen info", Toast.LENGTH_SHORT).show();
+                initiatePopupWindow();
+                Toast.makeText(this, "You clicked menu info", Toast.LENGTH_SHORT).show();
                 break;
 
         }
         return true;
+    }
+
+    private void initiatePopupWindow() {
+        try {
+            LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            // create the popup window
+
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            /* width = size.x - 50;*/
+            System.out.println(width);
+            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            View layout = inflater.inflate(R.layout.popup_menu_screen_info, null);
+            layout.setPadding(10, 10, 10, 10);
+            mPopupWindow = new PopupWindow(layout, width,
+                    height, true);
+            mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            mPopupWindow.setOutsideTouchable(true);
+            mPopupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
+
+            layout.findViewById(R.id.popup_menu_screen_info).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPopupWindow.dismiss();
+                }
+            });
+            btnClosePopup = (ImageView) layout.findViewById(R.id.dismiss);
+            btnClosePopup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPopupWindow.dismiss();
+
+                }
+            });
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

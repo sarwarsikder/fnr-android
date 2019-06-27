@@ -102,8 +102,7 @@ public class BuildingListActivity extends AppCompatActivity {
 
 
 
-
-        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setNavigationIcon(R.drawable.ic_backwith_circle);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -115,6 +114,9 @@ public class BuildingListActivity extends AppCompatActivity {
             }
         });
 
+
+        BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
         recyclerView = (RecyclerView) findViewById(R.id.building_recycler_view);

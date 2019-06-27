@@ -1,18 +1,25 @@
 package com.apper.sarwar.fnr;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +31,40 @@ public class BuildingComponentActivity extends AppCompatActivity {
 
     TabLayout building_tab_layout;
     ViewPager pager;
+    Intent intent;
+
+    private PopupWindow mPopupWindow;
+    private ImageView btnClosePopup;
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    intent = new Intent(getApplicationContext(), ProjectActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_current_activity:
+                    return true;
+                case R.id.navigation_scan:
+                    return true;
+                case R.id.navigation_notifications:
+                    Toast.makeText(getApplicationContext(), "Hello Notification!", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(getApplicationContext(), NotificationActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_profile:
+                    Toast.makeText(getApplicationContext(), "Hello Profile!", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(intent);
+                    return true;
+            }
+            return false;
+        }
+    };
 
 
     @Override
@@ -53,7 +94,10 @@ public class BuildingComponentActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        toolbar.setNavigationIcon(R.drawable.ic_back);
+        BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        toolbar.setNavigationIcon(R.drawable.ic_backwith_circle);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -105,10 +149,50 @@ public class BuildingComponentActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.menu_screen_info:
-                Toast.makeText(this, "You clicked menu screen info", Toast.LENGTH_SHORT).show();
+                initiatePopupWindow();
+                Toast.makeText(this, "You clicked menu info", Toast.LENGTH_SHORT).show();
                 break;
 
         }
         return true;
+    }
+
+    private void initiatePopupWindow() {
+        try {
+            LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            // create the popup window
+
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            /* width = size.x - 50;*/
+            System.out.println(width);
+            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            View layout = inflater.inflate(R.layout.popup_menu_screen_info, null);
+            layout.setPadding(10, 10, 10, 10);
+            mPopupWindow = new PopupWindow(layout, width,
+                    height, true);
+            mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            mPopupWindow.setOutsideTouchable(true);
+            mPopupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
+
+            layout.findViewById(R.id.popup_menu_screen_info).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPopupWindow.dismiss();
+                }
+            });
+            btnClosePopup = (ImageView) layout.findViewById(R.id.dismiss);
+            btnClosePopup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPopupWindow.dismiss();
+
+                }
+            });
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

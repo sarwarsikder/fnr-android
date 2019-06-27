@@ -1,20 +1,23 @@
 package com.apper.sarwar.fnr;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,8 @@ public class ComponentDetailActivity extends AppCompatActivity {
 
     Intent intent;
 
+    private PopupWindow mPopupWindow;
+    private ImageView btnClosePopup;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -67,17 +72,6 @@ public class ComponentDetailActivity extends AppCompatActivity {
         toolbar.setBackgroundColor(Color.WHITE);
         toolbar.setTitleTextColor(Color.BLACK);
 
-        toolbar.setNavigationIcon(R.drawable.ic_back_cross);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), BuildingListActivity.class);
-                view.getContext().startActivity(intent);
-                finish();
-            }
-        });
-
 
         final CharSequence title = toolbar.getTitle();
         final ArrayList<View> outViews = new ArrayList<>(1);
@@ -94,6 +88,18 @@ public class ComponentDetailActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
+        toolbar.setNavigationIcon(R.drawable.ic_back_cross_circle);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), SubComponentActivity.class);
+                view.getContext().startActivity(intent);
+                finish();
+            }
+        });
+
+
     }
 
     @Override
@@ -101,6 +107,58 @@ public class ComponentDetailActivity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.toolbar, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.menu_screen_info:
+                initiatePopupWindow();
+                Toast.makeText(this, "You clicked menu info", Toast.LENGTH_SHORT).show();
+                break;
+
+        }
+        return true;
+    }
+
+    private void initiatePopupWindow() {
+        try {
+            LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            // create the popup window
+
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            /* width = size.x - 50;*/
+            System.out.println(width);
+            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            View layout = inflater.inflate(R.layout.popup_menu_screen_info, null);
+            layout.setPadding(10, 10, 10, 10);
+            mPopupWindow = new PopupWindow(layout, width,
+                    height, true);
+            mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            mPopupWindow.setOutsideTouchable(true);
+            mPopupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
+
+            layout.findViewById(R.id.popup_menu_screen_info).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPopupWindow.dismiss();
+                }
+            });
+            btnClosePopup = (ImageView) layout.findViewById(R.id.dismiss);
+            btnClosePopup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPopupWindow.dismiss();
+
+                }
+            });
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
