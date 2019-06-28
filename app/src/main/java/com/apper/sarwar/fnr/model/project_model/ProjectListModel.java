@@ -1,58 +1,96 @@
 package com.apper.sarwar.fnr.model.project_model;
 
-public class ProjectListModel {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-    private int projectId;
-    private String projectTitle;
-    private String projectLocation;
-    private String projectProgressCount;
-    private int projectProgress;
+import java.io.Serializable;
 
-    public ProjectListModel(int projectId, String projectTitle, String projectLocation, String projectProgressCount, int projectProgress) {
-        this.projectId = projectId;
-        this.projectTitle = projectTitle;
-        this.projectLocation = projectLocation;
-        this.projectProgressCount = projectProgressCount;
-        this.projectProgress = projectProgress;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ProjectListModel implements Serializable {
+
+    private int id;
+    private String address;
+    private String description;
+    private String city;
+    private String type;
+    private String energetic_standard;
+    private int total_tasks;
+    private int tasks_done;
+
+    public ProjectListModel(int id, String address, String description, String city, String type, String energetic_standard, int total_tasks, int tasks_done) {
+        this.id = id;
+        this.address = address;
+        this.description = description;
+        this.city = city;
+        this.type = type;
+        this.energetic_standard = energetic_standard;
+        this.total_tasks = total_tasks;
+        this.tasks_done = tasks_done;
     }
 
-    public int getProjectId() {
-        return projectId;
+    public ProjectListModel() {
     }
 
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
+    public int getId() {
+        return id;
     }
 
-    public String getProjectTitle() {
-        return projectTitle;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setProjectTitle(String projectTitle) {
-        this.projectTitle = projectTitle;
+    public String getAddress() {
+        return address;
     }
 
-    public String getProjectLocation() {
-        return projectLocation;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setProjectLocation(String projectLocation) {
-        this.projectLocation = projectLocation;
+    public String getDescription() {
+        return description;
     }
 
-    public String getProjectProgressCount() {
-        return projectProgressCount;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setProjectProgressCount(String projectProgressCount) {
-        this.projectProgressCount = projectProgressCount;
+    public String getCity() {
+        return city;
     }
 
-    public int getGetProjectProgress() {
-        return projectProgress;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public void setGetProjectProgress(int projectProgress) {
-        this.projectProgress = projectProgress;
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getEnergetic_standard() {
+        return energetic_standard;
+    }
+
+    public void setEnergetic_standard(String energetic_standard) {
+        this.energetic_standard = energetic_standard;
+    }
+
+    public int getTotal_tasks() {
+        return total_tasks;
+    }
+
+    public void setTotal_tasks(int total_tasks) {
+        this.total_tasks = total_tasks;
+    }
+
+    public int getTasks_done() {
+        return tasks_done;
+    }
+
+    public void setTasks_done(int tasks_done) {
+        this.tasks_done = tasks_done;
     }
 }
