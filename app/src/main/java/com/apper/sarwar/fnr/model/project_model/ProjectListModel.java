@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class ProjectListModel implements Serializable {
 
     private int id;
+    private String project_name;
     private String address;
     private String description;
     private String city;
@@ -16,8 +17,10 @@ public class ProjectListModel implements Serializable {
     private int total_tasks;
     private int tasks_done;
 
-    public ProjectListModel(int id, String address, String description, String city, String type, String energetic_standard, int total_tasks, int tasks_done) {
+    public ProjectListModel(int id, String project_name, String address, String description, String city, String type, String energetic_standard, int total_tasks, int tasks_done) {
+
         this.id = id;
+        this.project_name = project_name;
         this.address = address;
         this.description = description;
         this.city = city;
@@ -44,6 +47,14 @@ public class ProjectListModel implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getProject_name() {
+        return project_name;
+    }
+
+    public void setProject_name(String project_name) {
+        this.project_name = project_name;
     }
 
     public String getDescription() {

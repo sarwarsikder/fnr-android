@@ -37,7 +37,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     @Override
     public void onBindViewHolder(@NonNull final ProjectListAdapter.ViewHolder viewHolder, int position) {
         ProjectListModel myList = projectAdapterList.get(position);
-        viewHolder.textProjectTitle.setText(myList.getCity());
+        viewHolder.textProjectTitle.setText(myList.getProject_name());
         viewHolder.textProjectLocation.setText(myList.getAddress());
         viewHolder.textProjectProgressCount.setText(myList.getTasks_done() + "/" + myList.getTotal_tasks());
         viewHolder.textProjectProgress.setProgress(80);

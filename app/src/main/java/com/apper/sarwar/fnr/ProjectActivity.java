@@ -38,7 +38,6 @@ public class ProjectActivity extends AppCompatActivity implements ProjectIServic
     Loader loader;
     ProjectApiService projectApiService;
 
-
     /*Projects Models objects from repository*/
 
     private List<ProjectListModel> lists;
@@ -158,12 +157,9 @@ public class ProjectActivity extends AppCompatActivity implements ProjectIServic
 
 
     @Override
-    public void onProjectSuccess(JSONObject projectListJson) {
+    public void onProjectSuccess(final JSONObject projectListJson) {
 
         try {
-            recyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
             lists = new ArrayList<>();
             JSONArray projectList = (JSONArray) projectListJson.get("results");
@@ -171,6 +167,7 @@ public class ProjectActivity extends AppCompatActivity implements ProjectIServic
                 JSONObject row = projectList.getJSONObject(i);
 
                 int id = (int) row.get("id");
+                String project_name = (String) row.get("name");
                 String address = (String) row.get("address");
                 String description = (String) row.get("description");
                 String city = (String) row.get("city");
@@ -181,6 +178,7 @@ public class ProjectActivity extends AppCompatActivity implements ProjectIServic
 
                 ProjectListModel myList = new ProjectListModel(
                         id,
+                        project_name,
                         address,
                         description,
                         city,
@@ -194,8 +192,20 @@ public class ProjectActivity extends AppCompatActivity implements ProjectIServic
                 lists.add(myList);
             }
 
-            adapter = new ProjectListAdapter(lists, this);
-            recyclerView.setAdapter(adapter);
+            runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    recyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                    adapter = new ProjectListAdapter(lists, getApplicationContext());
+                    recyclerView.setAdapter(adapter);
+                }
+            });
+
+
             loader.stopLoading();
         } catch (Exception e) {
             e.printStackTrace();

@@ -62,7 +62,6 @@ public class ProjectApiService {
                     System.out.println("onResponse()");
 
                     String responseBody = response.body().string();
-
                     JSONObject responseObject = new JSONObject(responseBody);
 
                     if (response.code() == 200) {
