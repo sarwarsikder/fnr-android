@@ -2,6 +2,7 @@ package com.apper.sarwar.fnr.adapter.project_adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         viewHolder.textProjectLocation.setText(myList.getAddress());
         viewHolder.textProjectProgressCount.setText(myList.getTasks_done() + "/" + myList.getTotal_tasks());
         viewHolder.textProjectProgress.setProgress(80);
+        viewHolder.itemView.setTag(myList.getId());
     }
 
     @Override
@@ -66,9 +68,11 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    Toast.makeText(view.getContext(), "Will add loader!", Toast.LENGTH_SHORT).show();
+                    int itemProductId = (int) view.getTag();
                     Intent intent = new Intent(view.getContext(), BuildingListActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("EXTRA_PRODUCT_ID", itemProductId);
+                    intent.putExtra("PROJECT_DATA", bundle);
                     view.getContext().startActivity(intent);
                 }
             });

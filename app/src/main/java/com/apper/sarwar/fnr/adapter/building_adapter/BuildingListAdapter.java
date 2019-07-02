@@ -2,6 +2,7 @@ package com.apper.sarwar.fnr.adapter.building_adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,9 +38,10 @@ public class BuildingListAdapter extends RecyclerView.Adapter<BuildingListAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         BuildingListModel myList = buildingListModels.get(position);
-        viewHolder.textBuildingName.setText(myList.getBuildingName());
-        viewHolder.buildingTask.setText(myList.getBuildingTask());
-        viewHolder.buildingFlat.setText(myList.getBuildingFlat());
+        viewHolder.textBuildingName.setText(myList.getDisplayNumber());
+        viewHolder.buildingTask.setText(String.valueOf(myList.getTotalTasks()));
+        viewHolder.buildingFlat.setText(String.valueOf(myList.getTotalFlats()));
+        viewHolder.itemView.setTag(myList.getId());
     }
 
     @Override
@@ -63,10 +65,13 @@ public class BuildingListAdapter extends RecyclerView.Adapter<BuildingListAdapte
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    Toast.makeText(view.getContext(), "Will Be Added Loader", Toast.LENGTH_SHORT).show();
+                    int itemBuildingId = (int) view.getTag();
                     Intent intent = new Intent(view.getContext(), BuildingComponentActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("EXTRA_BUILDING_ID", itemBuildingId);
+                    intent.putExtra("BUILDING_DATA", bundle);
                     view.getContext().startActivity(intent);
+
                 }
             });
 

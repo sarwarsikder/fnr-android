@@ -11,6 +11,7 @@ public class SharedPreferenceUtil {
     public static final String access_token = "access_token";
     private static final String AUTH_USER_PREF = "AUTH_USER_PREF";
     public static final String urlAuthorization = "urlAuthorization";
+    public static final String currentProjectId="";
 
 
     public static void setDefaults(String key, String value, Context context) {

@@ -27,7 +27,7 @@ public class ScanActivity extends AppCompatActivity {
         scan_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), ProjectActivity.class);
+                Intent intent = new Intent(view.getContext(), ScanCaptureActivity.class);
                 view.getContext().startActivity(intent);
 
             }
@@ -42,9 +42,6 @@ public class ScanActivity extends AppCompatActivity {
         });
 
     }
-
-
-
 
 
 }

@@ -112,47 +112,6 @@ public class ProjectActivity extends AppCompatActivity implements ProjectIServic
             e.printStackTrace();
         }
 
-
-
-       /* recyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        lists = new ArrayList<>();
-
-        for (int i = 1; i <= 10; i++) {
-            ProjectListModel myList = new ProjectListModel(
-                    i,
-                    "Projectt - " + i,
-                    "29-B, North Carolin, USA",
-                    "80/100" + i,
-                    85
-
-            );
-            lists.add(myList);
-        }
-
-        adapter = new ProjectListAdapter(lists, this);
-        recyclerView.setAdapter(adapter);*/
-
-        /*swipeController = new SwipeController(new SwipeControllerActions() {
-            @Override
-            public void onRightClicked(int position) {
-                adapter.projectAdapterList.remove(position);
-                adapter.notifyItemRemoved(position);
-                adapter.notifyItemRangeChanged(position, adapter.getItemCount());
-            }
-        });
-
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
-        itemTouchhelper.attachToRecyclerView(recyclerView);
-
-        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                swipeController.onDraw(c);
-            }
-        });*/
     }
 
 

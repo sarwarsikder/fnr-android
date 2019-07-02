@@ -10,6 +10,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,18 +24,30 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apper.sarwar.fnr.adapter.building_adapter.BuildingFlatAdapter;
 import com.apper.sarwar.fnr.fragment.tabs_adapter.BuildingTabsAdapter;
+import com.apper.sarwar.fnr.model.building_model.BuildingFlatListModel;
+import com.apper.sarwar.fnr.utils.Loader;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BuildingComponentActivity extends AppCompatActivity {
 
     TabLayout building_tab_layout;
     ViewPager pager;
     Intent intent;
+    RecyclerView recyclerView;
+    ViewPager viewPager;
+    BuildingTabsAdapter tabsAdapter;
+    Loader loader;
 
     private PopupWindow mPopupWindow;
     private ImageView btnClosePopup;
+    private BuildingFlatAdapter buildingFlatAdapter;
+    private BuildingTabsAdapter buildingTabsAdapter;
+
+    private List<BuildingFlatListModel> lists;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -108,11 +121,15 @@ public class BuildingComponentActivity extends AppCompatActivity {
             }
         });
 
+        loader.startLoading(this);
+
+
         building_tab_layout = (TabLayout) findViewById(R.id.building_tabs);
 
         building_tab_layout.setTabGravity(TabLayout.GRAVITY_FILL);
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        BuildingTabsAdapter tabsAdapter = new BuildingTabsAdapter(getSupportFragmentManager(), building_tab_layout.getTabCount());
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        buildingTabsAdapter = new BuildingTabsAdapter(getSupportFragmentManager(), building_tab_layout.getTabCount());
+        tabsAdapter = buildingTabsAdapter;
 
         viewPager.setAdapter(tabsAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(building_tab_layout));
@@ -195,4 +212,5 @@ public class BuildingComponentActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 }

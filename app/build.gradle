@@ -41,5 +41,7 @@ dependencies {
     /**
      * jackson for serialize & deserialize
      */
-    
+
+    implementation 'com.budiyev.android:code-scanner:2.1.0'
+
 }

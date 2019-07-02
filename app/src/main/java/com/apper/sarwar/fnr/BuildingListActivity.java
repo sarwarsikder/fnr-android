@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,15 +26,25 @@ import android.widget.Toast;
 
 import com.apper.sarwar.fnr.adapter.building_adapter.BuildingListAdapter;
 import com.apper.sarwar.fnr.model.building_model.BuildingListModel;
+import com.apper.sarwar.fnr.service.api_service.BuildingApiService;
+import com.apper.sarwar.fnr.service.iservice.BuildingIServiceListener;
+import com.apper.sarwar.fnr.utils.Loader;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuildingListActivity extends AppCompatActivity {
+public class BuildingListActivity extends AppCompatActivity implements BuildingIServiceListener {
+
+    private static final String TAG = "BuildingListActivity";
+    private String productId;
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private BuildingListAdapter adapter;
+    private BuildingApiService buildingApiService;
 
     private List<BuildingListModel> lists;
 
@@ -41,7 +52,7 @@ public class BuildingListActivity extends AppCompatActivity {
     private ImageView btnClosePopup;
 
     Intent intent;
-
+    Loader loader;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -101,7 +112,6 @@ public class BuildingListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-
         toolbar.setNavigationIcon(R.drawable.ic_backwith_circle);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 
@@ -110,7 +120,7 @@ public class BuildingListActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(view.getContext(), ProjectActivity.class);
                 view.getContext().startActivity(intent);
-                 finish();
+                finish();
             }
         });
 
@@ -118,29 +128,55 @@ public class BuildingListActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        try {
 
-        recyclerView = (RecyclerView) findViewById(R.id.building_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            /*recyclerView = (RecyclerView) findViewById(R.id.building_recycler_view);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        lists = new ArrayList<>();
+            lists = new ArrayList<>();
 
-        for (int i = 1; i <= 10; i++) {
+            for (int i = 1; i <= 10; i++) {
 
-            System.out.println("Testing" + i);
+                System.out.println("Testing" + i);
 
-            BuildingListModel myList = new BuildingListModel(
-                    i,
-                    "Haus-" + i,
-                    "19 task",
-                    "27"
+                BuildingListModel myList = new BuildingListModel(
+                        i,
+                        "Haus-" + i,
+                        "House 56",
+                        "19",
+                        "27",
+                        "10"
 
-            );
-            lists.add(myList);
+                );
+                lists.add(myList);
+            }
+
+*//*
+            Intent intent = getIntent();
+            Bundle extras = intent.getExtras();
+            int productId = extras.getInt("EXTRA_PRODUCT_ID");*/
+
+            Intent intent = getIntent();
+            Bundle bundle = intent.getBundleExtra("PROJECT_DATA");
+            int project_id = bundle.getInt("EXTRA_PRODUCT_ID");
+            int pageId = 1;
+
+            System.out.println("project_id" + project_id);
+
+            loader.startLoading(this);
+
+            buildingApiService = new BuildingApiService(this);
+            buildingApiService.get_building(project_id, pageId);
+
+           /* adapter = new BuildingListAdapter(lists, this);
+            recyclerView.setAdapter(adapter);*/
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        adapter = new BuildingListAdapter(lists, this);
-        recyclerView.setAdapter(adapter);
+
     }
 
     @Override
@@ -169,11 +205,11 @@ public class BuildingListActivity extends AppCompatActivity {
             // create the popup window
 
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
-           /* width = size.x - 50;*/
+            /* width = size.x - 50;*/
             System.out.println(width);
             int height = ViewGroup.LayoutParams.WRAP_CONTENT;
             View layout = inflater.inflate(R.layout.popup_menu_screen_info, null);
-            layout.setPadding(10,10,10,10);
+            layout.setPadding(10, 10, 10, 10);
             mPopupWindow = new PopupWindow(layout, width,
                     height, true);
             mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -202,4 +238,57 @@ public class BuildingListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBuildingSuccess(JSONObject buildingListJson) {
+        try {
+
+            lists = new ArrayList<>();
+            JSONArray buildingList = (JSONArray) buildingListJson.get("results");
+            for (int i = 0; i < buildingList.length(); i++) {
+                JSONObject row = buildingList.getJSONObject(i);
+
+                int id = (int) row.get("id");
+                String hause_number = (String) row.get("hause_number");
+                String description = (String) row.get("description");
+                String display_number = (String) row.get("display_number");
+                int total_tasks = (int) row.get("total_tasks");
+                int tasks_done = (int) row.get("tasks_done");
+                int total_flats = (int) row.get("total_flats");
+
+                BuildingListModel myList = new BuildingListModel(
+                        id,
+                        hause_number,
+                        display_number,
+                        total_tasks,
+                        tasks_done,
+                        total_flats
+                );
+                lists.add(myList);
+            }
+
+            runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    recyclerView = (RecyclerView) findViewById(R.id.building_recycler_view);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+
+                    adapter = new BuildingListAdapter(lists, getApplicationContext());
+                    recyclerView.setAdapter(adapter);
+                }
+            });
+
+
+            loader.stopLoading();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBuildingFailed(JSONObject jsonObject) {
+
+    }
 }

@@ -11,6 +11,13 @@ import android.view.ViewGroup;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.adapter.building_adapter.BuildingComponentAdapter;
 import com.apper.sarwar.fnr.model.building_model.BuildingComponentListModel;
+import com.apper.sarwar.fnr.service.api_service.BuildingComponentApiService;
+import com.apper.sarwar.fnr.service.iservice.BuildingComponentIServiceListener;
+import com.apper.sarwar.fnr.service.iservice.BuildingFlatIServiceListener;
+import com.apper.sarwar.fnr.utils.Loader;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +26,12 @@ import java.util.List;
 public class BuildingComponentFragment extends Fragment {
 
     RecyclerView recyclerView;
+    BuildingFlatIServiceListener buildingFlatIServiceListener;
     private RecyclerView.LayoutManager layoutManager;
     private BuildingComponentAdapter adapter;
     private View view;
+    private BuildingComponentApiService buildingComponentApiService;
+    private Loader loader;
 
     private List<BuildingComponentListModel> lists;
 
@@ -32,29 +42,67 @@ public class BuildingComponentFragment extends Fragment {
 
             view = inflater.inflate(R.layout.fragment_building_component, viewGroup, false);
 
-            recyclerView = (RecyclerView) view.findViewById(R.id.building_component_recycler_view);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+            buildingComponentApiService = new BuildingComponentApiService(getActivity(), new BuildingComponentIServiceListener() {
+
+                @Override
+                public void onBuildingComponentSuccess(JSONObject buildingComponentListModel) {
+                    try {
+
+                        lists = new ArrayList<>();
+                        JSONArray buildingComponentList = (JSONArray) buildingComponentListModel.get("results");
 
 
-            lists = new ArrayList<>();
+                        for (int i = 0; i < buildingComponentList.length(); i++) {
+                            JSONObject row = buildingComponentList.getJSONObject(i);
 
-            for (int i = 1; i <= 10; i++) {
 
-                System.out.println("Testing" + i);
+                            int component_id = (int) row.get("component_id");
+                            String name = (String) row.get("name");
+                            int total_tasks = (int) row.get("total_tasks");
+                            int tasks_done = (int) row.get("tasks_done");
 
-                BuildingComponentListModel myList = new BuildingComponentListModel(
-                        i,
-                        "Building-" + i,
-                        "80/100" + i,
-                        85
 
-                );
-                lists.add(myList);
-            }
+                            System.out.println("Testing" + i);
 
-            adapter = new BuildingComponentAdapter(lists, getActivity());
-            recyclerView.setAdapter(adapter);
+                            BuildingComponentListModel myList = new BuildingComponentListModel(
+                                    component_id,
+                                    name,
+                                    total_tasks,
+                                    tasks_done
+
+                            );
+                            lists.add(myList);
+                        }
+
+                        getActivity().runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                recyclerView = (RecyclerView) view.findViewById(R.id.building_component_recycler_view);
+                                recyclerView.setHasFixedSize(true);
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+                                adapter = new BuildingComponentAdapter(lists, getContext());
+                                recyclerView.setAdapter(adapter);
+                            }
+                        });
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onBuildingComponentFailed(JSONObject jsonObject) {
+
+                }
+            });
+
+            buildingComponentApiService.get_building_component(6);
+            loader.stopLoading();
 
         } catch (
                 Exception e) {

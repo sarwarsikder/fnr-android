@@ -37,8 +37,9 @@ public class BuildingComponentAdapter extends RecyclerView.Adapter<BuildingCompo
     public void onBindViewHolder(@NonNull final BuildingComponentAdapter.ViewHolder viewHolder, int position) {
         BuildingComponentListModel myList = buildingComponentListModels.get(position);
         viewHolder.componentName.setText(myList.getComponentName());
-        viewHolder.componentCount.setText(myList.getComponentCount());
-        viewHolder.componentProgress.setProgress(myList.getComponentProgress());
+        viewHolder.componentCount.setText(myList.getTotalTask() + "");
+        viewHolder.componentProgress.setProgress(myList.getTaskDone());
+        viewHolder.itemView.setTag(myList.getId());
 
 
     }

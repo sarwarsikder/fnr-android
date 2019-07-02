@@ -36,8 +36,8 @@ public class BuildingFlatAdapter extends RecyclerView.Adapter<BuildingFlatAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         BuildingFlatListModel myList = buildingFlatListModels.get(position);
-        viewHolder.flatName.setText(myList.getFlatName());
-        viewHolder.componentCount.setText(myList.getFlatComponent());
+        viewHolder.flatName.setText(myList.getFlatNumber());
+        viewHolder.componentCount.setText(myList.getFlatTotalTask() + "");
 
     }
 
