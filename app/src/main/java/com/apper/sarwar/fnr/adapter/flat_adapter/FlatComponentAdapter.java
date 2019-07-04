@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.SubComponentActivity;
 import com.apper.sarwar.fnr.model.flat_model.FlatComponentListModel;
+import com.google.zxing.client.result.VINParsedResult;
 
 import java.util.List;
 
@@ -37,8 +38,9 @@ public class FlatComponentAdapter extends RecyclerView.Adapter<FlatComponentAdap
     public void onBindViewHolder(@NonNull final FlatComponentAdapter.ViewHolder viewHolder, int position) {
         FlatComponentListModel myList = flatComponentListModels.get(position);
         viewHolder.componentName.setText(myList.getComponentName());
-        viewHolder.componentCount.setText(myList.getComponentCount());
-        viewHolder.componentProgress.setProgress(myList.getComponentProgress());
+        viewHolder.componentCount.setText(myList.getTaskDone() + "/" + myList.getTotalTask());
+        viewHolder.componentProgress.setProgress(0);
+        viewHolder.itemView.setTag(myList.getId());
 
 
     }

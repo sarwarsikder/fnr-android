@@ -34,8 +34,7 @@ public class BuildingPlanAdapter extends RecyclerView.Adapter<BuildingPlanAdapte
     public void onBindViewHolder(@NonNull final BuildingPlanAdapter.ViewHolder viewHolder, int position) {
         BuildingPlanModel myList = buildingPlanModels.get(position);
         viewHolder.textBuildingPlanName.setText(myList.getPlanName());
-
-
+        viewHolder.itemView.setTag(myList.getId());
     }
 
     @Override

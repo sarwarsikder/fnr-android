@@ -106,7 +106,7 @@ public class ProjectActivity extends AppCompatActivity implements ProjectIServic
             navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
             loader.startLoading(this);
             projectApiService = new ProjectApiService(this);
-            projectApiService.get_projects();
+            projectApiService.get_projects(1);
 
         } catch (Exception e) {
             e.printStackTrace();

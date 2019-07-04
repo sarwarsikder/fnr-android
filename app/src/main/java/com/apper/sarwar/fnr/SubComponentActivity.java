@@ -25,14 +25,21 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apper.sarwar.fnr.adapter.project_adapter.ProjectListAdapter;
 import com.apper.sarwar.fnr.adapter.sub_component.SubComponentAdapter;
 import com.apper.sarwar.fnr.model.project_model.ProjectListModel;
 import com.apper.sarwar.fnr.model.sub_component.SubComponentModel;
+import com.apper.sarwar.fnr.service.api_service.SubComponentApiService;
+import com.apper.sarwar.fnr.service.iservice.SubComponentIService;
+import com.apper.sarwar.fnr.utils.Loader;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubComponentActivity extends AppCompatActivity {
+public class SubComponentActivity extends AppCompatActivity implements SubComponentIService {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -43,7 +50,9 @@ public class SubComponentActivity extends AppCompatActivity {
     private ImageView btnClosePopup;
 
     Intent intent;
+    Loader loader;
 
+    private SubComponentApiService subComponentApiService;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -115,28 +124,8 @@ public class SubComponentActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-
-
-        recyclerView = (RecyclerView) findViewById(R.id.sub_component_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        list = new ArrayList<>();
-
-        for (int i = 1; i <= 10; i++) {
-            SubComponentModel myList = new SubComponentModel(
-                    i,
-                    "Sub Component - " + i,
-                    "We strive for exceptional in everything that…",
-                    "2d ago"
-
-            );
-            list.add(myList);
-        }
-
-        subComponentAdapter = new SubComponentAdapter(list, this);
-        recyclerView.setAdapter(subComponentAdapter);
-
+        subComponentApiService = new SubComponentApiService(this);
+        subComponentApiService.get_sub_component(6, 1);
 
     }
 
@@ -199,5 +188,53 @@ public class SubComponentActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onSubComponentSuccess(JSONObject subComponentListModel) {
+        try {
 
+            list = new ArrayList<>();
+            JSONArray subComponentList = (JSONArray) subComponentListModel.get("results");
+            for (int i = 0; i < subComponentList.length(); i++) {
+                JSONObject row = subComponentList.getJSONObject(i);
+
+                int id = (int) row.get("id");
+                String name = "Sub component";
+                String description = (String) row.get("description");
+                list = new ArrayList<>();
+
+
+                SubComponentModel myList = new SubComponentModel(
+                        i,
+                        name,
+                        description,
+                        "2d ago"
+
+                );
+                list.add(myList);
+            }
+
+            runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    recyclerView = (RecyclerView) findViewById(R.id.sub_component_recycler_view);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                    subComponentAdapter = new SubComponentAdapter(list, getApplicationContext());
+                    recyclerView.setAdapter(subComponentAdapter);
+                }
+            });
+
+
+            loader.stopLoading();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onSubComponentFailed(JSONObject jsonObject) {
+
+    }
 }

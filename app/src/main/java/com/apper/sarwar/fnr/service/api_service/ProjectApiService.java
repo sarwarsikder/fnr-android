@@ -29,8 +29,8 @@ public class ProjectApiService {
         appConfigRemote = new AppConfigRemote();
     }
 
-    public void get_projects() {
-        String requestUrl = appConfigRemote.getBASE_URL() + "/api/projects/";
+    public void get_projects(int pageId) {
+        String requestUrl = appConfigRemote.getBASE_URL() + "/api/projects/?page=" + pageId;
 
 
         String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);

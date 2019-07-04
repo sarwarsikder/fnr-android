@@ -38,6 +38,7 @@ public class BuildingFlatAdapter extends RecyclerView.Adapter<BuildingFlatAdapte
         BuildingFlatListModel myList = buildingFlatListModels.get(position);
         viewHolder.flatName.setText(myList.getFlatNumber());
         viewHolder.componentCount.setText(myList.getFlatTotalTask() + "");
+        viewHolder.itemView.setTag(myList.getId());
 
     }
 

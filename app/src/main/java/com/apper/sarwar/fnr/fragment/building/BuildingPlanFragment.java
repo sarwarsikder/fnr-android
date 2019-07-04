@@ -11,6 +11,12 @@ import android.view.ViewGroup;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.adapter.building_adapter.BuildingPlanAdapter;
 import com.apper.sarwar.fnr.model.building_model.BuildingPlanModel;
+import com.apper.sarwar.fnr.service.api_service.BuildingPlanApiService;
+import com.apper.sarwar.fnr.service.iservice.BuildingPlansIService;
+import com.apper.sarwar.fnr.utils.Loader;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +26,11 @@ public class BuildingPlanFragment extends Fragment {
 
 
     RecyclerView recyclerView;
+    Loader loader;
     private RecyclerView.LayoutManager layoutManager;
     private BuildingPlanAdapter adapter;
     private View view;
+    private BuildingPlanApiService buildingPlanApiService;
 
     private List<BuildingPlanModel> buildingPlanModels;
 
@@ -31,31 +39,67 @@ public class BuildingPlanFragment extends Fragment {
 
 
         try {
-/*
-            view = inflater.inflate(R.layout.fragment_building_flat, viewGroup, false);
-*/
+
             view = inflater.from(viewGroup.getContext()).inflate(R.layout.fragment_building_plan, viewGroup, false);
 
-            recyclerView = (RecyclerView) view.findViewById(R.id.building_plan_recycler_view);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            buildingPlanApiService = new BuildingPlanApiService(getActivity(), new BuildingPlansIService() {
+                @Override
+                public void onBuildingPlanSuccess(JSONObject buildingPlansListModel) {
+
+                    try {
+
+                        buildingPlanModels = new ArrayList<>();
+                        JSONArray buildingPlanList = (JSONArray) buildingPlansListModel.get("results");
+
+                        for (int i = 0; i < buildingPlanList.length(); i++) {
+                            JSONObject row = buildingPlanList.getJSONObject(i);
+                            int plan_id = (int) row.get("id");
+                            String plan_name = (String) row.get("title");
+                            String plan_file = (String) row.get("plan_file");
+                            String file_type = (String) row.get("file_type");
 
 
-            buildingPlanModels = new ArrayList<>();
+                            BuildingPlanModel myList = new BuildingPlanModel(
+                                    plan_id,
+                                    plan_name,
+                                    plan_file,
+                                    file_type
+                            );
+                            buildingPlanModels.add(myList);
+                        }
 
-            for (int i = 1; i <= 10; i++) {
+                        getActivity().runOnUiThread(new Runnable() {
 
-                System.out.println("Testing" + i);
+                            @Override
+                            public void run() {
 
-                BuildingPlanModel myList = new BuildingPlanModel(
-                        i,
-                        "Building Plan - " + i
-                );
-                buildingPlanModels.add(myList);
-            }
 
-            adapter = new BuildingPlanAdapter(buildingPlanModels, inflater.getContext());
-            recyclerView.setAdapter(adapter);
+                                recyclerView = (RecyclerView) view.findViewById(R.id.building_plan_recycler_view);
+                                recyclerView.setHasFixedSize(true);
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+                                adapter = new BuildingPlanAdapter(buildingPlanModels, getContext());
+                                recyclerView.setAdapter(adapter);
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+                @Override
+                public void onBuildingPlanFailed(JSONObject jsonObject) {
+
+                }
+            });
+
+
+            buildingPlanApiService.get_building_plan(6);
+            loader.stopLoading();
 
         } catch (Exception e) {
             e.printStackTrace();

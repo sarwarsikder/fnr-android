@@ -3,4 +3,6 @@
     <color name="colorPrimary">#3275FF</color>
     <color name="colorPrimaryDark">#FF1A54CD</color>
     <color name="colorAccent">#00C171</color>
+    <color name="actionbar_opacity">#33000000</color>
+
 </resources>

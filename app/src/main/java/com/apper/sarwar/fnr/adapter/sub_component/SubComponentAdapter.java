@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.apper.sarwar.fnr.ComponentDetailActivity;
 import com.apper.sarwar.fnr.R;
-import com.apper.sarwar.fnr.SubComponentActivity;
 import com.apper.sarwar.fnr.model.sub_component.SubComponentModel;
 
 import java.util.List;
@@ -40,6 +39,8 @@ public class SubComponentAdapter extends RecyclerView.Adapter<SubComponentAdapte
         viewHolder.subComponentName.setText(componentModel.getComponentName());
         viewHolder.subComponentDescription.setText(componentModel.getComponentDescription());
         viewHolder.createdTime.setText(componentModel.getCreatedTime());
+        viewHolder.itemView.setTag(componentModel.getId());
+
     }
 
     @Override
