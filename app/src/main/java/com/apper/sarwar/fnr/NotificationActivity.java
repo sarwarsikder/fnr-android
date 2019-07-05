@@ -2,10 +2,10 @@ package com.apper.sarwar.fnr;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,20 +17,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apper.sarwar.fnr.adapter.notification.NotificationListAdapter;
-import com.apper.sarwar.fnr.adapter.project_adapter.ProjectListAdapter;
 import com.apper.sarwar.fnr.model.notification_model.NotificationListModel;
-import com.apper.sarwar.fnr.model.project_model.ProjectListModel;
+import com.apper.sarwar.fnr.service.api_service.NotificationApiService;
+import com.apper.sarwar.fnr.service.iservice.NotificationIService;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationActivity extends AppCompatActivity {
+public class NotificationActivity extends AppCompatActivity implements NotificationIService {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private NotificationListAdapter adapter;
     Intent intent;
     private List<NotificationListModel> lists;
+    private NotificationApiService notificationApiService;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -93,25 +96,58 @@ public class NotificationActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-
-        recyclerView = (RecyclerView) findViewById(R.id.notification_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        lists = new ArrayList<>();
-
-        for (int i = 1; i <= 10; i++) {
-            NotificationListModel myList = new NotificationListModel(
-                    i,
-                    "Test User",
-                    "",
-                    "Michel Sergio comments on your post",
-                    "39 minutes ago"
-            );
-            lists.add(myList);
+        try {
+            notificationApiService = new NotificationApiService(this);
+            notificationApiService.get_notification(1);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        adapter = new NotificationListAdapter(lists, this);
-        recyclerView.setAdapter(adapter);
+
+    }
+
+    @Override
+    public void onNotificationSuccess(JSONObject notificationListModel) {
+
+
+        try {
+
+            lists = new ArrayList<>();
+
+            for (int i = 1; i <= 10; i++) {
+                NotificationListModel myList = new NotificationListModel(
+                        i,
+                        "",
+                        "Test User",
+                        "",
+                        "Michel Sergio comments on your post",
+                        "39 minutes ago"
+                );
+                lists.add(myList);
+            }
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    recyclerView = (RecyclerView) findViewById(R.id.notification_recycler_view);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                    adapter = new NotificationListAdapter(lists, getApplicationContext());
+                    recyclerView.setAdapter(adapter);
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @Override
+    public void onNotificationFailed(JSONObject jsonObject) {
+
     }
 }

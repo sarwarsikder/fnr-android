@@ -1,18 +1,29 @@
 package com.apper.sarwar.fnr.model.notification_model;
 
-public class NotificationListModel {
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class NotificationListModel implements Serializable {
     private int Id;
+    private String status;
     private String userName;
     private String userPic;
     private String notificationText;
     private String notificationCreatedTime;
 
-    public NotificationListModel(int id, String userName, String userPic, String notificationText, String notificationCreatedTime) {
+    public NotificationListModel(int id, String status, String userName, String userPic, String notificationText, String notificationCreatedTime) {
         Id = id;
+        this.status = status;
         this.userName = userName;
         this.userPic = userPic;
         this.notificationText = notificationText;
         this.notificationCreatedTime = notificationCreatedTime;
+    }
+
+    public NotificationListModel() {
     }
 
     public int getId() {
@@ -21,6 +32,14 @@ public class NotificationListModel {
 
     public void setId(int id) {
         Id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getUserName() {

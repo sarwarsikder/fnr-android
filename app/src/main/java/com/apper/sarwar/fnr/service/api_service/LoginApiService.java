@@ -2,10 +2,9 @@ package com.apper.sarwar.fnr.service.api_service;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.apper.sarwar.fnr.config.AppConfigRemote;
-import com.apper.sarwar.fnr.model.LoginModel;
+import com.apper.sarwar.fnr.model.user_model.LoginModel;
 import com.apper.sarwar.fnr.service.iservice.LoginIServiceListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

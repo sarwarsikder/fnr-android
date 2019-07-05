@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 public interface ProfileIService {
 
-    void onProjectSuccess(JSONObject projectListModel);
+    void onProfileSuccess(JSONObject profileListModel);
 
-    void onProjectFailed(JSONObject jsonObject);
+    void onProfileFailed(JSONObject jsonObject);
 }

@@ -37,7 +37,8 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         viewHolder.textUserPic.setImageResource(R.drawable.ic_man_user);
         viewHolder.textNotificationText.setText(listModel.getNotificationText());
         viewHolder.textNotificationCreatedTime.setText(listModel.getNotificationCreatedTime());
-        viewHolder.itemView.setTag(listModel.getId());
+        viewHolder.itemView.setTag(1, listModel.getId());
+        viewHolder.itemView.setTag(2, listModel.getId());
     }
 
     @Override

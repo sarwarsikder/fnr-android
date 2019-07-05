@@ -1,6 +1,6 @@
 package com.apper.sarwar.fnr.service.iservice;
 
-import com.apper.sarwar.fnr.model.LoginModel;
+import com.apper.sarwar.fnr.model.user_model.LoginModel;
 
 import org.json.JSONObject;
 

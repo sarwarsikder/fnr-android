@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.apper.sarwar.fnr.model.LoginModel;
+import com.apper.sarwar.fnr.model.user_model.LoginModel;
 import com.apper.sarwar.fnr.service.api_service.LoginApiService;
 import com.apper.sarwar.fnr.service.iservice.LoginIServiceListener;
 import com.apper.sarwar.fnr.utils.Loader;
@@ -36,7 +36,7 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
         loginApiService = new LoginApiService(this);
 
         sign_in = (Button) findViewById(R.id.sign_in);
-        user_name = (EditText) findViewById(R.id.user_name);
+        user_name = (EditText) findViewById(R.id.user_full_name);
         password = (EditText) findViewById(R.id.password);
 
 

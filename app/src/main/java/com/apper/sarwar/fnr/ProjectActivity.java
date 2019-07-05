@@ -161,11 +161,11 @@ public class ProjectActivity extends AppCompatActivity implements ProjectIServic
 
                     adapter = new ProjectListAdapter(lists, getApplicationContext());
                     recyclerView.setAdapter(adapter);
+                    loader.stopLoading();
                 }
             });
 
 
-            loader.stopLoading();
         } catch (Exception e) {
             e.printStackTrace();
         }

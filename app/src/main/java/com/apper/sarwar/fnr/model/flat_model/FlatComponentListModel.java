@@ -1,6 +1,11 @@
 package com.apper.sarwar.fnr.model.flat_model;
 
-public class FlatComponentListModel {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class FlatComponentListModel implements Serializable {
 
     private int Id;
     private String componentName;

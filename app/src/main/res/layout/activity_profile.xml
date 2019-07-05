@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <ImageView
-            android:id="@+id/imageView9"
+            android:id="@+id/user_image"
             android:layout_width="106dp"
             android:layout_height="106dp"
             android:layout_marginStart="8dp"
@@ -51,7 +51,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.425"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView9"
+            app:layout_constraintTop_toBottomOf="@+id/user_image"
             app:layout_constraintVertical_bias="1.0" />
     </android.support.constraint.ConstraintLayout>
 
@@ -93,8 +93,8 @@
             tools:layout_editor_absoluteY="380dp" />
 
         <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
+            android:id="@+id/user_full_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="4dp"
@@ -129,7 +129,7 @@
             android:theme="@style/MyProfileLabel" />
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -168,7 +168,7 @@
             android:theme="@style/MyProfileLabel" />
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/user_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
