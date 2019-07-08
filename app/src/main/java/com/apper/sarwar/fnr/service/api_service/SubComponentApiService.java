@@ -89,4 +89,59 @@ public class SubComponentApiService {
         });
 
     }
+
+    public void get_sub_component_flat(int flatId, int componentId) {
+        String requestUrl = appConfigRemote.getBASE_URL() + "/api/flat/" + flatId + "/component/" + componentId + "/tasks/";
+
+
+        String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);
+        Request httpRequest = new Request.Builder()
+                .header("Authorization", authorization)
+                .url(requestUrl)
+                .build();
+
+        final OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.newCall(httpRequest).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("onFailure()");
+                call.cancel();
+                JSONObject failResponse = new JSONObject();
+                try {
+                    failResponse.put("response_body", "");
+                    failResponse.put("response_code", 404);
+                    failResponse.put("response_message", "login failed");
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+                buildingPlansIService.onSubComponentFailed(failResponse);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    System.out.println("onResponse()");
+
+                    String responseBody = response.body().string();
+                    JSONObject responseObject = new JSONObject(responseBody);
+
+                    if (response.code() == 200) {
+                        /*SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.urlAuthorization, authorization, this);*/
+                        buildingPlansIService.onSubComponentSuccess(responseObject);
+
+                    } else {
+                        buildingPlansIService.onSubComponentFailed(responseObject);
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "onResponse: " + e.getMessage());
+                }
+
+
+            }
+        });
+
+    }
 }

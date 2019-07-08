@@ -14,6 +14,7 @@ import com.apper.sarwar.fnr.model.building_model.BuildingFlatListModel;
 import com.apper.sarwar.fnr.service.api_service.BuildingFlatAPIService;
 import com.apper.sarwar.fnr.service.iservice.BuildingFlatIServiceListener;
 import com.apper.sarwar.fnr.utils.Loader;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,7 +38,6 @@ public class BuildingFlatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         try {
             view = inflater.from(viewGroup.getContext()).inflate(R.layout.fragment_building_flat, viewGroup, false);
-
 
 
             buildingFlatAPIService = new BuildingFlatAPIService(getActivity(), new BuildingFlatIServiceListener() {
@@ -95,9 +95,6 @@ public class BuildingFlatFragment extends Fragment {
                         });
 
 
-
-
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -110,7 +107,8 @@ public class BuildingFlatFragment extends Fragment {
 
                 }
             });
-            buildingFlatAPIService.get_building_flat(6);
+            int BuildingId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentBuildingId, getContext());
+            buildingFlatAPIService.get_building_flat(BuildingId);
             loader.stopLoading();
 
 

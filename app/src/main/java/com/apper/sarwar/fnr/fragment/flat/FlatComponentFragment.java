@@ -15,6 +15,7 @@ import com.apper.sarwar.fnr.model.flat_model.FlatComponentListModel;
 import com.apper.sarwar.fnr.service.api_service.FlatComponentApiService;
 import com.apper.sarwar.fnr.service.iservice.FlatComponentIService;
 import com.apper.sarwar.fnr.utils.Loader;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -104,7 +105,8 @@ public class FlatComponentFragment extends Fragment {
                 }
             });
 
-            flatComponentApiService.get_flat_component(7);
+            int flatId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentFlatId, getContext());
+            flatComponentApiService.get_flat_component(flatId);
             loader.stopLoading();
 
 

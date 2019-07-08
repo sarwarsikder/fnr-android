@@ -9,7 +9,7 @@ import com.leo.simplearcloader.SimpleArcLoader;
 
 public class Loader {
 
-   public static SimpleArcDialog mDialog;
+    public static SimpleArcDialog mDialog;
 
     public static void startLoading(Context context) {
 
@@ -25,7 +25,15 @@ public class Loader {
     }
 
     public static void stopLoading() {
+
         mDialog.cancel();
+    }
+
+    public static void startLoadingWithMessage(Context context, String messageTxt) {
+        mDialog = new SimpleArcDialog(context);
+        ArcConfiguration configuration = new ArcConfiguration(context);
+        configuration.setText(messageTxt);
+        mDialog.show();
     }
 
 

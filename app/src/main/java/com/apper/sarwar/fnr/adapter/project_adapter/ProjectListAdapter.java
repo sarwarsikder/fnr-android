@@ -10,11 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.apper.sarwar.fnr.BuildingListActivity;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.model.project_model.ProjectListModel;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
+
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     public List<ProjectListModel> projectAdapterList;
     private Context context;
+    private SharedPreferenceUtil sharedPreferenceUtil;
 
     public ProjectListAdapter(List<ProjectListModel> adpterList, Context context) {
         this.projectAdapterList = adpterList;
@@ -73,6 +75,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                     Bundle bundle = new Bundle();
                     bundle.putInt("EXTRA_PRODUCT_ID", itemProductId);
                     intent.putExtra("PROJECT_DATA", bundle);
+                    SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentProjectId, itemProductId, view.getContext());
                     view.getContext().startActivity(intent);
                 }
             });

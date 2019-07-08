@@ -24,10 +24,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apper.sarwar.fnr.fragment.tabs_adapter.FlatTabsAdapter;
+import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
+import com.apper.sarwar.fnr.service.iservice.ProfileIService;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class FlatComponentActivity extends AppCompatActivity {
+public class FlatComponentActivity extends AppCompatActivity implements ProfileIService {
 
     TabLayout flat_tab_layout;
     ViewPager pager;
@@ -35,6 +39,8 @@ public class FlatComponentActivity extends AppCompatActivity {
 
     private PopupWindow mPopupWindow;
     private ImageView btnClosePopup;
+
+    private ProfileApiService profileApiService;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -157,8 +163,11 @@ public class FlatComponentActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.menu_screen_info:
+/*
                 initiatePopupWindow();
-                Toast.makeText(this, "You clicked menu info", Toast.LENGTH_SHORT).show();
+*/
+                profileApiService = new ProfileApiService(this);
+                profileApiService.get_profile();
                 break;
 
         }
@@ -204,6 +213,84 @@ public class FlatComponentActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onProfileSuccess(JSONObject profileListModel) {
+        try {
+
+            String current_activity = (String) profileListModel.get("current_activity");
+            JSONObject currentActivityObject = new JSONObject(current_activity);
+
+            int project_id = (int) currentActivityObject.get("project_id");
+            final String projectName = (String) currentActivityObject.get("project_name");
+            int building_id = (int) currentActivityObject.get("building_id");
+            final String building_number = (String) currentActivityObject.get("building_number");
+            int flat_id = (int) currentActivityObject.get("flat_id");
+            final String flat_number = (String) currentActivityObject.get("flat_number");
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    try {
+
+
+                        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                        // create the popup window
+
+                        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+                        /* width = size.x - 50;*/
+                        System.out.println(width);
+                        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        View layout = inflater.from(FlatComponentActivity.this).inflate(R.layout.popup_menu_screen_info, null);
+                        TextView project_name = layout.findViewById(R.id.project_name);
+                        TextView building_name = layout.findViewById(R.id.building_name);
+                        TextView flat_name = layout.findViewById(R.id.flat_name);
+                        project_name.setText(projectName);
+                        building_name.setText(building_number);
+                        flat_name.setText(flat_number);
+/*
+                        View layout = inflater.inflate(R.layout.popup_menu_screen_info, null);
+*/
+                        layout.setPadding(10, 10, 10, 10);
+                        mPopupWindow = new PopupWindow(layout, width,
+                                height, true);
+                        mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        mPopupWindow.setOutsideTouchable(true);
+                        mPopupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
+
+                        layout.findViewById(R.id.popup_menu_screen_info).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mPopupWindow.dismiss();
+                            }
+                        });
+                        btnClosePopup = (ImageView) layout.findViewById(R.id.dismiss);
+                        btnClosePopup.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                mPopupWindow.dismiss();
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onProfileFailed(JSONObject jsonObject) {
+
+    }
 }
 
 

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.SubComponentActivity;
 import com.apper.sarwar.fnr.model.building_model.BuildingComponentListModel;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import java.util.List;
 
@@ -66,7 +67,9 @@ public class BuildingComponentAdapter extends RecyclerView.Adapter<BuildingCompo
                 @Override
                 public void onClick(View view) {
 
-                    Toast.makeText(view.getContext(), "Will Be Added Loader", Toast.LENGTH_SHORT).show();
+                    int componentId = (int) view.getTag();
+                    SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentComponentId, componentId, view.getContext());
+                    SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.currentState, "building", view.getContext());
                     Intent intent = new Intent(view.getContext(), SubComponentActivity.class);
                     view.getContext().startActivity(intent);
                 }

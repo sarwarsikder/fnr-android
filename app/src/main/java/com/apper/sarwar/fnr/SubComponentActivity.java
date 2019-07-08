@@ -29,9 +29,12 @@ import com.apper.sarwar.fnr.adapter.project_adapter.ProjectListAdapter;
 import com.apper.sarwar.fnr.adapter.sub_component.SubComponentAdapter;
 import com.apper.sarwar.fnr.model.project_model.ProjectListModel;
 import com.apper.sarwar.fnr.model.sub_component.SubComponentModel;
+import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
 import com.apper.sarwar.fnr.service.api_service.SubComponentApiService;
+import com.apper.sarwar.fnr.service.iservice.ProfileIService;
 import com.apper.sarwar.fnr.service.iservice.SubComponentIService;
 import com.apper.sarwar.fnr.utils.Loader;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,7 +42,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubComponentActivity extends AppCompatActivity implements SubComponentIService {
+public class SubComponentActivity extends AppCompatActivity implements SubComponentIService, ProfileIService {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -53,6 +56,13 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
     Loader loader;
 
     private SubComponentApiService subComponentApiService;
+    private ProfileApiService profileApiService;
+
+    private String flat_number = "";
+    private JSONObject currentActivityObject;
+
+    private int building_id;
+    private String building_number;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -124,8 +134,20 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
         BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        int componentId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentComponentId, this);
+
+        String currentState = SharedPreferenceUtil.getDefaults(SharedPreferenceUtil.currentState, this);
+
+
         subComponentApiService = new SubComponentApiService(this);
-        subComponentApiService.get_sub_component(6, 1);
+
+        if (currentState == "building") {
+            int buildingId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentBuildingId, this);
+            subComponentApiService.get_sub_component(buildingId, componentId);
+        } else {
+            int flatId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentFlatId, this);
+            subComponentApiService.get_sub_component_flat(flatId, componentId);
+        }
 
     }
 
@@ -141,8 +163,10 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
 
         switch (item.getItemId()) {
             case R.id.menu_screen_info:
-                initiatePopupWindow();
-                Toast.makeText(this, "You clicked menu info", Toast.LENGTH_SHORT).show();
+                /*initiatePopupWindow();*/
+                profileApiService = new ProfileApiService(this);
+                profileApiService.get_profile();
+
                 break;
 
         }
@@ -198,13 +222,10 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                 JSONObject row = subComponentList.getJSONObject(i);
 
                 int id = (int) row.get("id");
-                String name = "Sub component";
+                String name = (String) row.get("name");
                 String description = (String) row.get("description");
-                list = new ArrayList<>();
-
-
                 SubComponentModel myList = new SubComponentModel(
-                        i,
+                        id,
                         name,
                         description,
                         "2d ago"
@@ -223,11 +244,12 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
 
                     subComponentAdapter = new SubComponentAdapter(list, getApplicationContext());
                     recyclerView.setAdapter(subComponentAdapter);
+
+                    loader.stopLoading();
+
                 }
             });
 
-
-            loader.stopLoading();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -235,6 +257,104 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
 
     @Override
     public void onSubComponentFailed(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onProfileSuccess(JSONObject profileListModel) {
+        try {
+
+            String current_activity = (String) profileListModel.get("current_activity");
+            currentActivityObject = new JSONObject(current_activity);
+
+            int project_id = (int) currentActivityObject.get("project_id");
+            final String projectName = (String) currentActivityObject.get("project_name");
+
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    try {
+
+
+                        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                        // create the popup window
+
+                        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+                        /* width = size.x - 50;*/
+                        System.out.println(width);
+                        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        View layout = inflater.from(SubComponentActivity.this).inflate(R.layout.popup_menu_screen_info, null);
+                        TextView project_name = layout.findViewById(R.id.project_name);
+
+                        TextView building_name = layout.findViewById(R.id.building_name);
+                        TextView building_name_txt = layout.findViewById(R.id.building_name_txt);
+
+                        TextView flat_name = layout.findViewById(R.id.flat_name);
+                        TextView flat_name_txt = layout.findViewById(R.id.flat_name_txt);
+                        project_name.setText(projectName);
+
+
+                        if (currentActivityObject.has("building_id")) {
+                            building_number = (String) currentActivityObject.get("building_number");
+                            building_name.setText(building_number);
+
+                        } else {
+                            building_name.setVisibility(View.GONE);
+                            building_name_txt.setVisibility(View.GONE);
+
+                        }
+
+                        if (currentActivityObject.has("flat_id")) {
+                            flat_number = (String) currentActivityObject.get("flat_number");
+                            flat_name.setText(flat_number);
+                        } else {
+                            flat_number = "";
+                            flat_name.setVisibility(View.GONE);
+                            flat_name_txt.setVisibility(View.GONE);
+                        }
+/*
+                        View layout = inflater.inflate(R.layout.popup_menu_screen_info, null);
+*/
+                        layout.setPadding(10, 10, 10, 10);
+                        mPopupWindow = new PopupWindow(layout, width,
+                                height, true);
+                        mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        mPopupWindow.setOutsideTouchable(true);
+                        mPopupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
+
+                        layout.findViewById(R.id.popup_menu_screen_info).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mPopupWindow.dismiss();
+                            }
+                        });
+                        btnClosePopup = (ImageView) layout.findViewById(R.id.dismiss);
+                        btnClosePopup.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                mPopupWindow.dismiss();
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onProfileFailed(JSONObject jsonObject) {
 
     }
 }

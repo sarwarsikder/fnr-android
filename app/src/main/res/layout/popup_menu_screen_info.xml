@@ -72,7 +72,7 @@
                     android:theme="@style/PopupInfo.Label" />
 
                 <TextView
-                    android:id="@+id/textView29"
+                    android:id="@+id/project_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Projekt Munster"
@@ -87,7 +87,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView31"
+                    android:id="@+id/building_name_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="BUILDING NAME"
@@ -95,7 +95,7 @@
                     android:theme="@style/PopupInfo.Label" />
 
                 <TextView
-                    android:id="@+id/textView32"
+                    android:id="@+id/building_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
@@ -116,7 +116,7 @@
 
 
                 <TextView
-                    android:id="@+id/textView334"
+                    android:id="@+id/flat_name_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="FLAT NAME"
@@ -124,7 +124,7 @@
                     android:theme="@style/PopupInfo.Label" />
 
                 <TextView
-                    android:id="@+id/textView33"
+                    android:id="@+id/flat_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"

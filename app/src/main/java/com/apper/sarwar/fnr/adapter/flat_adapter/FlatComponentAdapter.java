@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.SubComponentActivity;
 import com.apper.sarwar.fnr.model.flat_model.FlatComponentListModel;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 import com.google.zxing.client.result.VINParsedResult;
 
 import java.util.List;
@@ -68,6 +69,9 @@ public class FlatComponentAdapter extends RecyclerView.Adapter<FlatComponentAdap
                 public void onClick(View view) {
 
                     Toast.makeText(view.getContext(), "Will Be Added Loader", Toast.LENGTH_SHORT).show();
+                    int componentId = (int) view.getTag();
+                    SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentComponentId, componentId, view.getContext());
+                    SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.currentState, "flat", view.getContext());
                     Intent intent = new Intent(view.getContext(), SubComponentActivity.class);
                     view.getContext().startActivity(intent);
                 }

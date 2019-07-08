@@ -15,6 +15,7 @@ import com.apper.sarwar.fnr.service.api_service.BuildingComponentApiService;
 import com.apper.sarwar.fnr.service.iservice.BuildingComponentIServiceListener;
 import com.apper.sarwar.fnr.service.iservice.BuildingFlatIServiceListener;
 import com.apper.sarwar.fnr.utils.Loader;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -101,7 +102,8 @@ public class BuildingComponentFragment extends Fragment {
                 }
             });
 
-            buildingComponentApiService.get_building_component(6);
+            int BuildingId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentBuildingId, getContext());
+            buildingComponentApiService.get_building_component(BuildingId);
             loader.stopLoading();
 
         } catch (

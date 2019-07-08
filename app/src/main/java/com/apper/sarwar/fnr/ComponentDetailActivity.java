@@ -21,9 +21,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apper.sarwar.fnr.service.iservice.SubComponentDetailIService;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
-public class ComponentDetailActivity extends AppCompatActivity {
+public class ComponentDetailActivity extends AppCompatActivity implements SubComponentDetailIService {
 
     Intent intent;
 
@@ -161,4 +165,13 @@ public class ComponentDetailActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onSubComponentDetailSuccess(JSONObject subComponentDetailsListModel) {
+
+    }
+
+    @Override
+    public void onSubComponentDetailFailed(JSONObject jsonObject) {
+
+    }
 }

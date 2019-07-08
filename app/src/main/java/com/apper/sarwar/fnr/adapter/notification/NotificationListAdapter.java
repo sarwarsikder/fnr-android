@@ -19,6 +19,9 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     public List<NotificationListModel> notificationListModels;
     private Context context;
 
+    public static final int NOTIFICATION_ID = 1;
+    public static final int KEY_2 = 2;
+
     public NotificationListAdapter(List<NotificationListModel> notificationListModels, Context context) {
         this.notificationListModels = notificationListModels;
         this.context = context;
@@ -33,12 +36,19 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        NotificationListModel listModel = notificationListModels.get(position);
+
+        try {
+            NotificationListModel listModel = notificationListModels.get(position);
+/*
         viewHolder.textUserPic.setImageResource(R.drawable.ic_man_user);
-        viewHolder.textNotificationText.setText(listModel.getNotificationText());
-        viewHolder.textNotificationCreatedTime.setText(listModel.getNotificationCreatedTime());
-        viewHolder.itemView.setTag(1, listModel.getId());
-        viewHolder.itemView.setTag(2, listModel.getId());
+*/
+            viewHolder.textNotificationText.setText(listModel.getNotificationText());
+            viewHolder.textNotificationCreatedTime.setText(listModel.getNotificationCreatedTime());
+            viewHolder.itemView.setTag(NOTIFICATION_ID, listModel.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

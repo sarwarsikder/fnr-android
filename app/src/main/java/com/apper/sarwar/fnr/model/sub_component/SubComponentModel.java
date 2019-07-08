@@ -1,6 +1,12 @@
 package com.apper.sarwar.fnr.model.sub_component;
 
-public class SubComponentModel {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+
+public class SubComponentModel implements Serializable {
     private int Id;
     private String componentName;
     private String componentDescription;

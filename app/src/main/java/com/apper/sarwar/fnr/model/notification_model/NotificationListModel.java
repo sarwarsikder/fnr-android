@@ -31,7 +31,7 @@ public class NotificationListModel implements Serializable {
     }
 
     public void setId(int id) {
-        Id = id;
+        this.Id = id;
     }
 
     public String getStatus() {

@@ -2,12 +2,14 @@ package com.apper.sarwar.fnr;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apper.sarwar.fnr.model.user_model.LoginModel;
 import com.apper.sarwar.fnr.service.api_service.LoginApiService;
@@ -23,7 +25,8 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
     TextView go_sign_up_button, sign_in;
     Loader loader;
     LoginApiService loginApiService;
-    EditText user_name, password;
+    EditText user_name;
+    EditText password;
     String text_user_name, text_password;
 
 
@@ -48,8 +51,10 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
                     text_user_name = user_name.getText().toString().trim();
                     text_password = password.getText().toString().trim();
 
-                    loader.startLoading(view.getContext());
-                    loginApiService.login(text_user_name, text_password);
+                    if (isValidForm(text_user_name, text_password)) {
+                        loader.startLoading(view.getContext());
+                        loginApiService.login(text_user_name, text_password);
+                    }
                 }
             });
 
@@ -57,6 +62,20 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
             e.printStackTrace();
         }
 
+    }
+
+    public boolean isValidForm(String nameTxt, String passwordTxt) {
+        boolean validName = !nameTxt.isEmpty();
+
+        if (!validName) {
+            user_name.setError("Enter valid user name");
+        }
+
+        boolean validPass = !passwordTxt.isEmpty();
+        if (!validPass) {
+            password.setError("Enter valid password");
+        }
+        return validName && validPass;
     }
 
     @Override
@@ -73,6 +92,12 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
 
     @Override
     public void onLoginFailed(JSONObject jsonObject) {
-        loader.stopLoading();
+        runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              Toast.makeText(getApplicationContext(), "Incorrect credentials!", Toast.LENGTH_SHORT).show();
+                          }
+                      }
+        );
     }
 }

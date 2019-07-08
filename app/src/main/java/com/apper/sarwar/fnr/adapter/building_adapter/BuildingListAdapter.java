@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.apper.sarwar.fnr.BuildingComponentActivity;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.model.building_model.BuildingListModel;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import java.util.List;
 
@@ -70,6 +71,7 @@ public class BuildingListAdapter extends RecyclerView.Adapter<BuildingListAdapte
                     Bundle bundle = new Bundle();
                     bundle.putInt("EXTRA_BUILDING_ID", itemBuildingId);
                     intent.putExtra("BUILDING_DATA", bundle);
+                    SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentBuildingId, itemBuildingId, view.getContext());
                     view.getContext().startActivity(intent);
 
                 }

@@ -14,6 +14,7 @@ import com.apper.sarwar.fnr.model.building_model.BuildingPlanModel;
 import com.apper.sarwar.fnr.service.api_service.BuildingPlanApiService;
 import com.apper.sarwar.fnr.service.iservice.BuildingPlansIService;
 import com.apper.sarwar.fnr.utils.Loader;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -97,8 +98,8 @@ public class BuildingPlanFragment extends Fragment {
                 }
             });
 
-
-            buildingPlanApiService.get_building_plan(6);
+            int BuildingId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentBuildingId, getContext());
+            buildingPlanApiService.get_building_plan(BuildingId);
             loader.stopLoading();
 
         } catch (Exception e) {

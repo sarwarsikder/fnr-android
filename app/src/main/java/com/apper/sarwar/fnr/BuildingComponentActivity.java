@@ -27,12 +27,16 @@ import android.widget.Toast;
 import com.apper.sarwar.fnr.adapter.building_adapter.BuildingFlatAdapter;
 import com.apper.sarwar.fnr.fragment.tabs_adapter.BuildingTabsAdapter;
 import com.apper.sarwar.fnr.model.building_model.BuildingFlatListModel;
+import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
+import com.apper.sarwar.fnr.service.iservice.ProfileIService;
 import com.apper.sarwar.fnr.utils.Loader;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuildingComponentActivity extends AppCompatActivity {
+public class BuildingComponentActivity extends AppCompatActivity implements ProfileIService {
 
     TabLayout building_tab_layout;
     ViewPager pager;
@@ -46,6 +50,16 @@ public class BuildingComponentActivity extends AppCompatActivity {
     private ImageView btnClosePopup;
     private BuildingFlatAdapter buildingFlatAdapter;
     private BuildingTabsAdapter buildingTabsAdapter;
+
+    private ProfileApiService profileApiService;
+
+
+    private String flat_number = "";
+    private JSONObject currentActivityObject;
+
+    private int building_id;
+    private String building_number;
+
 
     private List<BuildingFlatListModel> lists;
 
@@ -166,8 +180,9 @@ public class BuildingComponentActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.menu_screen_info:
-                initiatePopupWindow();
-                Toast.makeText(this, "You clicked menu info", Toast.LENGTH_SHORT).show();
+                /*initiatePopupWindow();*/
+                profileApiService = new ProfileApiService(this);
+                profileApiService.get_profile();
                 break;
 
         }
@@ -213,4 +228,105 @@ public class BuildingComponentActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onProfileSuccess(JSONObject profileListModel) {
+
+        try {
+
+            String current_activity = (String) profileListModel.get("current_activity");
+            currentActivityObject = new JSONObject(current_activity);
+
+            int project_id = (int) currentActivityObject.get("project_id");
+            final String projectName = (String) currentActivityObject.get("project_name");
+            /*int building_id = (int) currentActivityObject.get("building_id");
+            final String building_number = (String) currentActivityObject.get("building_number");
+            int flat_id = (int) currentActivityObject.get("flat_id");
+            String flat_number = (String) currentActivityObject.get("flat_number");*/
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    try {
+
+
+                        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                        // create the popup window
+
+                        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+                        /* width = size.x - 50;*/
+                        System.out.println(width);
+                        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        View layout = inflater.from(BuildingComponentActivity.this).inflate(R.layout.popup_menu_screen_info, null);
+                        TextView project_name = layout.findViewById(R.id.project_name);
+
+                        TextView building_name = layout.findViewById(R.id.building_name);
+                        TextView building_name_txt = layout.findViewById(R.id.building_name_txt);
+
+                        TextView flat_name = layout.findViewById(R.id.flat_name);
+                        TextView flat_name_txt = layout.findViewById(R.id.flat_name_txt);
+                        project_name.setText(projectName);
+
+
+                        if (currentActivityObject.has("building_id")) {
+                            building_number = (String) currentActivityObject.get("building_number");
+                            building_name.setText(building_number);
+
+                        } else {
+                            building_name.setVisibility(View.GONE);
+                            building_name_txt.setVisibility(View.GONE);
+
+                        }
+
+                        if (currentActivityObject.has("flat_id")) {
+                            flat_number = (String) currentActivityObject.get("flat_number");
+                            flat_name.setText(flat_number);
+                        } else {
+                            flat_number = "";
+                            flat_name.setVisibility(View.GONE);
+                            flat_name_txt.setVisibility(View.GONE);
+                        }
+/*
+                        View layout = inflater.inflate(R.layout.popup_menu_screen_info, null);
+*/
+                        layout.setPadding(10, 10, 10, 10);
+                        mPopupWindow = new PopupWindow(layout, width,
+                                height, true);
+                        mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        mPopupWindow.setOutsideTouchable(true);
+                        mPopupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
+
+                        layout.findViewById(R.id.popup_menu_screen_info).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mPopupWindow.dismiss();
+                            }
+                        });
+                        btnClosePopup = (ImageView) layout.findViewById(R.id.dismiss);
+                        btnClosePopup.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                mPopupWindow.dismiss();
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onProfileFailed(JSONObject jsonObject) {
+
+    }
 }

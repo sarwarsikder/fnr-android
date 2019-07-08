@@ -68,37 +68,39 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        // Title and subtitle
-        toolbar.setTitle(R.string.title_notifications);
-        toolbar.setBackgroundColor(Color.WHITE);
-        toolbar.setTitleTextColor(Color.BLACK);
-
-
-        final CharSequence title = toolbar.getTitle();
-        final ArrayList<View> outViews = new ArrayList<>(1);
-
-        toolbar.findViewsWithText(outViews, title, View.FIND_VIEWS_WITH_TEXT);
-        if (!outViews.isEmpty()) {
-            final TextView titleView = (TextView) outViews.get(0);
-            titleView.setGravity(Gravity.CENTER_HORIZONTAL);
-            final Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) titleView.getLayoutParams();
-            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            layoutParams.setMargins(0, 0, 60, 0);
-            toolbar.requestLayout();
-        }
-
-        setSupportActionBar(toolbar);
-
-        BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
         try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_notification);
+
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            // Title and subtitle
+            toolbar.setTitle(R.string.title_notifications);
+            toolbar.setBackgroundColor(Color.WHITE);
+            toolbar.setTitleTextColor(Color.BLACK);
+
+
+            final CharSequence title = toolbar.getTitle();
+            final ArrayList<View> outViews = new ArrayList<>(1);
+
+            toolbar.findViewsWithText(outViews, title, View.FIND_VIEWS_WITH_TEXT);
+            if (!outViews.isEmpty()) {
+                final TextView titleView = (TextView) outViews.get(0);
+                titleView.setGravity(Gravity.CENTER_HORIZONTAL);
+                final Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) titleView.getLayoutParams();
+                layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                layoutParams.setMargins(0, 0, 60, 0);
+                toolbar.requestLayout();
+            }
+
+            setSupportActionBar(toolbar);
+
+            BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
+            navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+
             notificationApiService = new NotificationApiService(this);
             notificationApiService.get_notification(1);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -112,30 +114,46 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
 
         try {
 
-            lists = new ArrayList<>();
+            try {
 
-            for (int i = 1; i <= 10; i++) {
-                NotificationListModel myList = new NotificationListModel(
-                        i,
-                        "",
-                        "Test User",
-                        "",
-                        "Michel Sergio comments on your post",
-                        "39 minutes ago"
-                );
-                lists.add(myList);
+                lists = new ArrayList<>();
+
+                for (int i = 1; i <= 10; i++) {
+                    NotificationListModel myList = new NotificationListModel(
+                            i,
+                            "",
+                            "Test User",
+                            "",
+                            "Michel Sergio comments on your post",
+                            "39 minutes ago"
+                    );
+                    lists.add(myList);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
+
             runOnUiThread(new Runnable() {
+
                 @Override
                 public void run() {
 
-                    recyclerView = (RecyclerView) findViewById(R.id.notification_recycler_view);
-                    recyclerView.setHasFixedSize(true);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    try {
 
-                    adapter = new NotificationListAdapter(lists, getApplicationContext());
-                    recyclerView.setAdapter(adapter);
+                        recyclerView = (RecyclerView) findViewById(R.id.notification_recycler_view);
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                        adapter = new NotificationListAdapter(lists, getApplicationContext());
+                        recyclerView.setAdapter(adapter);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
                 }
             });
 

@@ -8,11 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.apper.sarwar.fnr.ComponentDetailActivity;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.model.sub_component.SubComponentModel;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import java.util.List;
 
@@ -62,8 +62,8 @@ public class SubComponentAdapter extends RecyclerView.Adapter<SubComponentAdapte
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    Toast.makeText(view.getContext(), "Will Be Added Loader", Toast.LENGTH_SHORT).show();
+                    int componentId = (int) view.getTag();
+                    SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentComponentId, componentId, view.getContext());
                     Intent intent = new Intent(view.getContext(), ComponentDetailActivity.class);
                     view.getContext().startActivity(intent);
                 }

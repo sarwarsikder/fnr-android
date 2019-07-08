@@ -30,7 +30,7 @@ public class NotificationApiService {
     }
 
     public void get_notification(int pageId) {
-        String requestUrl = appConfigRemote.getBASE_URL() + "/api/notifications/?page=" + pageId;
+        String requestUrl = appConfigRemote.getBASE_URL() + "/api/notifications/";
 
 
         String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);

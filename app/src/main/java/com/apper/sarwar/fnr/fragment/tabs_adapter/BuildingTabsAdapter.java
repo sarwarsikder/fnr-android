@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.apper.sarwar.fnr.fragment.building.BuildingComponentFragment;
 import com.apper.sarwar.fnr.fragment.building.BuildingFlatFragment;
 import com.apper.sarwar.fnr.fragment.building.BuildingPlanFragment;
-import com.apper.sarwar.fnr.service.iservice.BuildingFlatIServiceListener;
 import com.apper.sarwar.fnr.utils.Loader;
 
 public class BuildingTabsAdapter extends FragmentStatePagerAdapter {

@@ -2,6 +2,7 @@ package com.apper.sarwar.fnr.adapter.building_adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.apper.sarwar.fnr.FlatComponentActivity;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.model.building_model.BuildingFlatListModel;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import java.util.List;
 
@@ -60,9 +62,12 @@ public class BuildingFlatAdapter extends RecyclerView.Adapter<BuildingFlatAdapte
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    Toast.makeText(view.getContext(), "Will Be Added Loader", Toast.LENGTH_SHORT).show();
+                    int itemFlatId = (int) view.getTag();
                     Intent intent = new Intent(view.getContext(), FlatComponentActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("EXTRA_FLAT_ID", itemFlatId);
+                    intent.putExtra("FLAT_DATA", bundle);
+                    SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentFlatId, itemFlatId, view.getContext());
                     view.getContext().startActivity(intent);
                 }
             });
