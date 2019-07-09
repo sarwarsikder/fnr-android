@@ -57,14 +57,14 @@ public class ProjectActivity extends AppCompatActivity implements ProjectIServic
                 case R.id.navigation_current_activity:
                     return true;
                 case R.id.navigation_scan:
+                    intent = new Intent(getApplicationContext(), ScanCaptureActivity.class);
+                    startActivity(intent);
                     return true;
                 case R.id.navigation_notifications:
-                    Toast.makeText(getApplicationContext(), "Hello Notification!", Toast.LENGTH_SHORT).show();
                     intent = new Intent(getApplicationContext(), NotificationActivity.class);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_profile:
-                    Toast.makeText(getApplicationContext(), "Hello Profile!", Toast.LENGTH_SHORT).show();
                     intent = new Intent(getApplicationContext(), ProfileActivity.class);
                     startActivity(intent);
                     return true;

@@ -1,0 +1,64 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="8dp"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/comment_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="4dp"
+            android:text="We are storytellers. We have the freedom to develop in a direction that is true to us, but also be there for others when they need us; sharing our skills."
+            android:theme="@style/SubComponentDetails.ComponentText" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_comeneted_image_componenet_details"
+                app:srcCompat="@drawable/ic_man_user" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_comeneted_image_componenet_details"
+                app:srcCompat="@drawable/ic_man_user" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_comeneted_image_componenet_details"
+                app:srcCompat="@drawable/ic_man_user" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_comeneted_image_componenet_details"
+                app:srcCompat="@drawable/ic_man_user" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/comment_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        app:srcCompat="@drawable/ic_man_user" />
+
+</LinearLayout>

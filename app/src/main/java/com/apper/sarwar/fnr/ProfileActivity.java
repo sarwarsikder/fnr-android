@@ -53,6 +53,8 @@ public class ProfileActivity extends AppCompatActivity implements ProfileIServic
                 case R.id.navigation_current_activity:
                     return true;
                 case R.id.navigation_scan:
+                    intent = new Intent(getApplicationContext(), ScanCaptureActivity.class);
+                    startActivity(intent);
                     return true;
                 case R.id.navigation_notifications:
                     Toast.makeText(getApplicationContext(), "Hello Notification!", Toast.LENGTH_SHORT).show();
