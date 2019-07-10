@@ -75,6 +75,8 @@ public class BuildingComponentActivity extends AppCompatActivity implements Prof
                     startActivity(intent);
                     return true;
                 case R.id.navigation_current_activity:
+                    intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
+                    startActivity(intent);
                     return true;
                 case R.id.navigation_scan:
                     return true;

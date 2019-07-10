@@ -76,6 +76,8 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                     startActivity(intent);
                     return true;
                 case R.id.navigation_current_activity:
+                    intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
+                    startActivity(intent);
                     return true;
                 case R.id.navigation_scan:
                     intent = new Intent(getApplicationContext(), ScanCaptureActivity.class);

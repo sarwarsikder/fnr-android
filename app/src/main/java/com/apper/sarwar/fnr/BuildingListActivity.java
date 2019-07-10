@@ -80,6 +80,8 @@ public class BuildingListActivity extends AppCompatActivity implements BuildingI
                     startActivity(intent);
                     return true;
                 case R.id.navigation_current_activity:
+                    intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
+                    startActivity(intent);
                     return true;
                 case R.id.navigation_scan:
                     intent = new Intent(getApplicationContext(), ScanCaptureActivity.class);
