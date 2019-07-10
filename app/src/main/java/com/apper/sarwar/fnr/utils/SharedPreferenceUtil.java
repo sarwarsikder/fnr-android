@@ -15,6 +15,7 @@ public class SharedPreferenceUtil {
     public static final String currentBuildingId = "currentBuilding";
     public static final String currentFlatId = "currentFlat";
     public static final String currentComponentId = "currentComponent";
+    public static final String currentSubComponentId = "currentSubComponent";
     public static final String currentState = "currentState";
 
 

@@ -63,7 +63,7 @@ public class SubComponentAdapter extends RecyclerView.Adapter<SubComponentAdapte
                 @Override
                 public void onClick(View view) {
                     int componentId = (int) view.getTag();
-                    SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentComponentId, componentId, view.getContext());
+                    SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentSubComponentId, componentId, view.getContext());
                     Intent intent = new Intent(view.getContext(), ComponentDetailActivity.class);
                     view.getContext().startActivity(intent);
                 }

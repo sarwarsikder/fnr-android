@@ -7,8 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,9 +23,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.apper.sarwar.fnr.adapter.project_adapter.ProjectListAdapter;
 import com.apper.sarwar.fnr.adapter.sub_component.SubComponentAdapter;
-import com.apper.sarwar.fnr.model.project_model.ProjectListModel;
 import com.apper.sarwar.fnr.model.sub_component.SubComponentModel;
 import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
 import com.apper.sarwar.fnr.service.api_service.SubComponentApiService;
@@ -145,7 +141,7 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
 
         subComponentApiService = new SubComponentApiService(this);
 
-        if (currentState == "building") {
+        if (currentState.equals("building")) {
             int buildingId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentBuildingId, this);
             subComponentApiService.get_sub_component(buildingId, componentId);
         } else {
@@ -249,7 +245,9 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                     subComponentAdapter = new SubComponentAdapter(list, getApplicationContext());
                     recyclerView.setAdapter(subComponentAdapter);
 
+/*
                     loader.stopLoading();
+*/
 
                 }
             });

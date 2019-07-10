@@ -13,7 +13,7 @@
 
 
     <!--ToolBar Text-->
-    <string name="title_activity_project">PROJECT LIST</string>
+    <string name="title_activity_project">PROJEKTLISTE</string>
     <string name="title_activity_bottom_nav">BottomNavActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -36,13 +36,13 @@
 
 
     <!--Sub Component Related String-->
-    <string name="title_activity_sub_component">Sub Component List</string>
+    <string name="title_activity_sub_component">Unterkomponenten</string>
 
     <!--Component Details-->
-    <string name="title_activity_component_detail">ComponentDetail</string>
+    <string name="title_activity_component_detail">Komponentendetail</string>
 
     <!--Component Details-->
-    <string name="title_activity_profile">My Profile</string>
+    <string name="title_activity_profile">Mein Profil</string>
 
 
     <!--Notification Title and others-->

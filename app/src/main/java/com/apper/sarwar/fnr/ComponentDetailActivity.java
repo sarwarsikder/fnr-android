@@ -38,6 +38,7 @@ import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
 import com.apper.sarwar.fnr.service.api_service.SubComponentDetailApiService;
 import com.apper.sarwar.fnr.service.iservice.ProfileIService;
 import com.apper.sarwar.fnr.service.iservice.SubComponentDetailIService;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -70,7 +71,9 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
     private String name, description, due_date_value, assign_to, strDate, user_image;
     private int comment_count;
 
-    private JSONObject assign_to_data;
+
+    private JSONObject assign_to_data = new JSONObject();
+    private JSONArray comments_data=new JSONArray();
     ImageView assignee_image;
     private AppConfigRemote appConfigRemote;
 
@@ -157,8 +160,15 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
 
             appConfigRemote = new AppConfigRemote();
 
+            int subComponentId = (int) SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentSubComponentId, this);
+
             subComponentDetailApiService = new SubComponentDetailApiService(this);
-            subComponentDetailApiService.get_sub_component_details(267);
+
+            subComponentDetailApiService.get_sub_component_details(subComponentId);
+
+/*
+            subComponentDetailApiService.get_sub_component_details(268);
+*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -233,27 +243,48 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
 
             name = (String) subComponentDetailsListModel.get("name");
             description = (String) subComponentDetailsListModel.get("description");
-            due_date_value = (String) subComponentDetailsListModel.get("due_date");
+
+            if (!subComponentDetailsListModel.get("due_date").equals(null)) {
+                due_date_value = (String) subComponentDetailsListModel.get("due_date");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = format.parse(due_date_value);
+
+                SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
+                strDate = formatter.format(date);
+
+
+                System.out.println("Date Format with dd MMMM yyyy : " + date);
+            }
 
             comment_count = (int) subComponentDetailsListModel.get("total_comments");
 
             assign_to = "";
 
 
-            final JSONObject assign_to_data = (JSONObject) subComponentDetailsListModel.get("assign_to");
-            final JSONArray comments_data = (JSONArray) subComponentDetailsListModel.get("comments");
 
-            if (assign_to_data.length() > 0) {
-                assign_to = (String) assign_to_data.get("company_name");
+
+
+            if(!subComponentDetailsListModel.get("assign_to").equals(null)){
+                final JSONObject assign_to_data = (JSONObject) subComponentDetailsListModel.get("assign_to");
+
+                if (assign_to_data.length() > 0) {
+                    assign_to = (String) assign_to_data.get("company_name");
+                }
+
+                if (assign_to_data.has("avatar") && assign_to_data.get("avatar") != "") {
+                    user_image = (String) assign_to_data.get("avatar");
+                }
+
+
             }
 
-            if (assign_to_data.has("avatar") && assign_to_data.get("avatar") != "") {
-                user_image = (String) assign_to_data.get("avatar");
-            }
+
+            comments_data = (JSONArray) subComponentDetailsListModel.get("comments");
+
+            commentModels = new ArrayList<>();
 
 
             if (comments_data.length() > 0) {
-                commentModels = new ArrayList<>();
 
 
                 for (int i = 0; i < comments_data.length(); i++) {
@@ -294,15 +325,6 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
 
             }
 
-
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = format.parse(due_date_value);
-
-            SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
-            strDate = formatter.format(date);
-
-
-            System.out.println("Date Format with dd MMMM yyyy : " + date);
 
             runOnUiThread(new Runnable() {
                 @Override
@@ -351,8 +373,10 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
                     recyclerViewComment.setHasFixedSize(true);
                     recyclerViewComment.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-                    adapterComment = new CommentAdapter(commentModels, getApplicationContext());
-                    recyclerViewComment.setAdapter(adapterComment);
+                    if (!commentModels.equals(null)) {
+                        adapterComment = new CommentAdapter(commentModels, getApplicationContext());
+                        recyclerViewComment.setAdapter(adapterComment);
+                    }
 
                 }
             });
