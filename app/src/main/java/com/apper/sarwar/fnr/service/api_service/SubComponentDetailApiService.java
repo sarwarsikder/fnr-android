@@ -13,8 +13,10 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class SubComponentDetailApiService {
@@ -88,4 +90,60 @@ public class SubComponentDetailApiService {
         });
 
     }
+
+
+    public void create_comment(int componentId, String commentTxt, String fileText) {
+        try {
+
+            String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);
+
+            String requestUrl = appConfigRemote.getBASE_URL() + "/api/task/" + componentId + "/comments/";
+
+
+            RequestBody requestBody = new FormBody.Builder()
+                    .add("text", commentTxt)
+                    .build();
+
+            Request httpRequest = new Request.Builder()
+                    .header("Authorization", authorization)
+                    .url(requestUrl)
+                    .post(requestBody)
+                    .build();
+
+
+            final OkHttpClient okHttpClient = new OkHttpClient();
+            okHttpClient.newCall(httpRequest).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    System.out.println("onFailure()");
+                    call.cancel();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    try {
+                        System.out.println("onResponse()");
+                        String responseBody = response.body().string();
+                        JSONObject responseObject = new JSONObject(responseBody);
+                        if (response.code() == 200) {
+
+                            subComponentDetailIService.OnCommentCreateSuccess(responseObject);
+
+                        } else {
+                            subComponentDetailIService.OnCommentCreateFailed(responseObject);
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "onResponse: " + e.getMessage());
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "signUp: " + e.getMessage());
+        }
+    }
+
+
 }

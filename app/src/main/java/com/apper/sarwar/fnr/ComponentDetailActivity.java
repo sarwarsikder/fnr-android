@@ -1,20 +1,26 @@
 package com.apper.sarwar.fnr;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,22 +28,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.apper.sarwar.fnr.adapter.project_adapter.ProjectListAdapter;
 import com.apper.sarwar.fnr.adapter.sub_component.CommentAdapter;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
-import com.apper.sarwar.fnr.model.project_model.ProjectListModel;
 import com.apper.sarwar.fnr.model.sub_component.CommentModel;
 import com.apper.sarwar.fnr.model.sub_component.CommentUser;
 import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
 import com.apper.sarwar.fnr.service.api_service.SubComponentDetailApiService;
 import com.apper.sarwar.fnr.service.iservice.ProfileIService;
 import com.apper.sarwar.fnr.service.iservice.SubComponentDetailIService;
+import com.apper.sarwar.fnr.utils.Image;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -59,13 +65,15 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
     private SubComponentDetailApiService subComponentDetailApiService;
 
     TextView assignee_name, task_name, task_detail, due_date, comment_counter;
+    ImageView create_button, create_image_button;
+    EditText comment_text;
 
     private ProfileApiService profileApiService;
 
     private String flat_number = "";
     private JSONObject currentActivityObject;
 
-    private int building_id;
+    int subComponentId;
     private String building_number;
 
     private String name, description, due_date_value, assign_to, strDate, user_image;
@@ -73,7 +81,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
 
 
     private JSONObject assign_to_data = new JSONObject();
-    private JSONArray comments_data=new JSONArray();
+    private JSONArray comments_data = new JSONArray();
     ImageView assignee_image;
     private AppConfigRemote appConfigRemote;
 
@@ -125,6 +133,10 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
             setContentView(R.layout.activity_component_detail);
 
 
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+
             Toolbar toolbar = findViewById(R.id.toolbar);
             // Title and subtitle
             toolbar.setTitle(R.string.title_activity_component_detail);
@@ -160,11 +172,39 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
 
             appConfigRemote = new AppConfigRemote();
 
-            int subComponentId = (int) SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentSubComponentId, this);
+            subComponentId = (int) SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentSubComponentId, this);
 
             subComponentDetailApiService = new SubComponentDetailApiService(this);
 
             subComponentDetailApiService.get_sub_component_details(subComponentId);
+
+
+            create_button = (ImageView) findViewById(R.id.create_button);
+            comment_text = (EditText) findViewById(R.id.comment_text);
+
+            create_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String commentTxt = (String) comment_text.getText().toString();
+                    subComponentDetailApiService.create_comment(subComponentId, commentTxt, "");
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            });
+
+            create_image_button = (ImageView) findViewById(R.id.create_image_button);
+            create_image_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    startActivityForResult(Intent.createChooser(intent, "select multiple images"), 1);
+                }
+            });
+
 
 /*
             subComponentDetailApiService.get_sub_component_details(268);
@@ -174,6 +214,23 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
         }
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int reqCode, int resCode, Intent data) {
+        if (resCode == Activity.RESULT_OK && data != null) {
+            if (data.getClipData() != null) {
+                ClipData clipData = data.getClipData();
+                for (int c = 0; c < clipData.getItemCount(); c++) {
+                    String imagePath = Image.getAndroidImagePath(ComponentDetailActivity.this, clipData.getItemAt(c).getUri());
+                    Log.i("Imager", imagePath);
+
+                }
+            } else if (data.getData() != null) {
+                String imagePath = Image.getAndroidImagePath(ComponentDetailActivity.this, data.getData());
+                Log.i("Imager", imagePath);
+            }
+        }
     }
 
     @Override
@@ -236,6 +293,23 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
         }
     }
 
+    /*public void createComment(View view) {
+        try {
+            create_button = (ImageView) findViewById(R.id.create_button);
+            create_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    comment_text = (EditText) findViewById(R.id.comment_text);
+                    String commentTxt = comment_text.getText().toString();
+                    subComponentDetailApiService = new SubComponentDetailApiService(getApplicationContext());
+                    subComponentDetailApiService.create_comment(subComponentId, commentTxt, "");
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
+
     @Override
     public void onSubComponentDetailSuccess(final JSONObject subComponentDetailsListModel) {
 
@@ -261,10 +335,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
             assign_to = "";
 
 
-
-
-
-            if(!subComponentDetailsListModel.get("assign_to").equals(null)){
+            if (!subComponentDetailsListModel.get("assign_to").equals(null)) {
                 final JSONObject assign_to_data = (JSONObject) subComponentDetailsListModel.get("assign_to");
 
                 if (assign_to_data.length() > 0) {
@@ -389,6 +460,92 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
 
     @Override
     public void onSubComponentDetailFailed(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void OnCommentCreateSuccess(JSONObject subComponentModel) {
+
+        try {
+
+
+            commentModels = new ArrayList<>();
+
+            comments_data = (JSONArray) subComponentModel.get("results");
+            comment_count = (int) subComponentModel.get("count");
+
+
+            if (comments_data.length() > 0) {
+
+                for (int i = 0; i < comments_data.length(); i++) {
+                    JSONObject row = comments_data.getJSONObject(i);
+
+
+                    String text = (String) row.get("text");
+                    String type = (String) row.get("type");
+/*
+                    String file_type = (String) row.get("file_type");
+*/
+                    String file_type = "";
+                    JSONObject commentUserJsonArray = (JSONObject) row.get("user");
+
+                    String cUserName = "";
+                    String avatar = "";
+
+                    if (commentUserJsonArray.length() > 0) {
+                        cUserName = (String) commentUserJsonArray.get("name");
+                        avatar = (String) commentUserJsonArray.get("avatar");
+                    }
+
+                    CommentUser commentUser = new CommentUser(
+                            cUserName,
+                            avatar
+                    );
+
+                    CommentModel commentModel = new CommentModel(
+                            text,
+                            type,
+                            file_type,
+                            commentUser
+
+                    );
+
+                    commentModels.add(commentModel);
+
+
+                }
+            }
+
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    comment_counter = (TextView) findViewById(R.id.comment_counter);
+                    comment_counter.setText("Nachrichten(" + comment_count + ")");
+
+
+                    comment_text.setText("");
+                    recyclerViewComment = (RecyclerView) findViewById(R.id.comment_recycler_view);
+                    recyclerViewComment.setHasFixedSize(true);
+                    recyclerViewComment.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                    if (!commentModels.equals(null)) {
+                        adapterComment = new CommentAdapter(commentModels, getApplicationContext());
+                        recyclerViewComment.setAdapter(adapterComment);
+                    }
+
+                }
+            });
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void OnCommentCreateFailed(JSONObject jsonObject) {
 
     }
 

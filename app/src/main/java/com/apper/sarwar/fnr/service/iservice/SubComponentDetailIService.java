@@ -6,4 +6,8 @@ public interface SubComponentDetailIService {
     void onSubComponentDetailSuccess(JSONObject subComponentDetailsListModel);
 
     void onSubComponentDetailFailed(JSONObject jsonObject);
+
+    void OnCommentCreateSuccess(JSONObject subComponentModel);
+
+    void OnCommentCreateFailed(JSONObject jsonObject);
 }

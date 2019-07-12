@@ -23,6 +23,7 @@ import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.user_model.ProfileModel;
 import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
 import com.apper.sarwar.fnr.service.iservice.ProfileIService;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -35,7 +36,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileIServic
     Intent intent;
     private ProfileApiService profileApiService;
     private List<ProfileModel> profileData;
-    TextView profile_full_name, profile_user_name, profile_email;
+    TextView profile_full_name, profile_user_name, profile_email, log_out;
     ImageView profile_image;
     private AppConfigRemote appConfigRemote;
 
@@ -59,12 +60,10 @@ public class ProfileActivity extends AppCompatActivity implements ProfileIServic
                     startActivity(intent);
                     return true;
                 case R.id.navigation_notifications:
-                    Toast.makeText(getApplicationContext(), "Hello Notification!", Toast.LENGTH_SHORT).show();
                     intent = new Intent(getApplicationContext(), NotificationActivity.class);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_profile:
-                    Toast.makeText(getApplicationContext(), "Hello Profile!", Toast.LENGTH_SHORT).show();
                     intent = new Intent(getApplicationContext(), ProfileActivity.class);
                     startActivity(intent);
                     return true;
@@ -125,6 +124,17 @@ public class ProfileActivity extends AppCompatActivity implements ProfileIServic
             profile_email = (TextView) findViewById(R.id.user_email);
             profile_image = (ImageView) findViewById(R.id.user_image);
 
+            log_out = (TextView) findViewById(R.id.log_out);
+
+            log_out.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferenceUtil.logOut(getApplicationContext());
+                    Intent intent = new Intent(getApplication(), SplashActivity.class);
+                    startActivity(intent);
+                }
+            });
+
 /*
             Picasso.with(context).load(android_versions.get(i).getAndroid_image_url()).resize(120, 60).into(viewHolder.img_android);
 */
@@ -137,20 +147,20 @@ public class ProfileActivity extends AppCompatActivity implements ProfileIServic
                             .placeholder(R.drawable.fnr_logo)
                             .resize(106, 106)
                             .into(profile_image, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            Bitmap imageBitmap = ((BitmapDrawable) profile_image.getDrawable()).getBitmap();
-                            RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getResources(), imageBitmap);
-                            imageDrawable.setCircular(true);
-                            imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
-                            profile_image.setImageDrawable(imageDrawable);
-                        }
+                                @Override
+                                public void onSuccess() {
+                                    Bitmap imageBitmap = ((BitmapDrawable) profile_image.getDrawable()).getBitmap();
+                                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getResources(), imageBitmap);
+                                    imageDrawable.setCircular(true);
+                                    imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
+                                    profile_image.setImageDrawable(imageDrawable);
+                                }
 
-                        @Override
-                        public void onError() {
-                            profile_image.setImageResource(R.drawable.fnr_logo);
-                        }
-                    });
+                                @Override
+                                public void onError() {
+                                    profile_image.setImageResource(R.drawable.fnr_logo);
+                                }
+                            });
                 }
             });
 

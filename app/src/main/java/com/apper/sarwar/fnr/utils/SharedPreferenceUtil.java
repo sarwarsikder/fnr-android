@@ -48,8 +48,8 @@ public class SharedPreferenceUtil {
     }
 
     public static boolean isLoggedIn(Context context) {
-        String userId = SharedPreferenceUtil.getDefaults(SharedPreferenceUtil.userId, context);
-        if (userId != null && !userId.isEmpty()) {
+        String access_token = SharedPreferenceUtil.getDefaults(SharedPreferenceUtil.access_token, context);
+        if (access_token != null && !access_token.isEmpty()) {
             return true;
         }
         return false;

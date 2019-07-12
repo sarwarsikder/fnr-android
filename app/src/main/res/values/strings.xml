@@ -55,4 +55,20 @@
     <string name="title_activity_scan_capture">FNR Scan</string>
 
 
+    <string name="lbl_justnow">Just Now</string>
+    <string name="lbl_seconds_ago">seconds ago</string>
+    <string name="lbl_min_ago">min ago</string>
+    <string name="lbl_mins_ago">mins ago</string>
+    <string name="lbl_hr_ago">hr ago</string>
+    <string name="lbl_hrs_ago">hrs ago</string>
+    <string name="lbl_day_ago">day ago</string>
+    <string name="lbl_days_ago">days ago</string>
+    <string name="lbl_lstweek_ago">last week</string>
+    <string name="lbl_week_ago">weeks ago</string>
+    <string name="lbl_onemonth_ago">1 month ago</string>
+    <string name="lbl_month_ago">months ago</string>
+    <string name="lbl_oneyear_ago">last year</string>
+    <string name="lbl_year_ago">years ago</string>
+
+
 </resources>

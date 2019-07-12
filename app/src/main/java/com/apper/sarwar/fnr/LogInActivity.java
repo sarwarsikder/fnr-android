@@ -2,7 +2,6 @@ package com.apper.sarwar.fnr;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -63,6 +62,17 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
         }
 
     }
+
+
+   /* @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (SharedPreferenceUtil.isLoggedIn(this)) {
+            Intent intent = new Intent(this, LogInActivity.class);
+            startActivity(intent);
+        }
+    }*/
 
     public boolean isValidForm(String nameTxt, String passwordTxt) {
         boolean validName = !nameTxt.isEmpty();

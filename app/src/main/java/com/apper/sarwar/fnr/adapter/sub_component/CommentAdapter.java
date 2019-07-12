@@ -3,10 +3,12 @@ package com.apper.sarwar.fnr.adapter.sub_component;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.apper.sarwar.fnr.R;
@@ -49,6 +51,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         CommentModel commentModel = commentModelList.get(position);
         viewHolder.comment_text.setText(commentModel.getText());
+
+        if (commentModel.getFile_type().equals("") || commentModel.getFile_type().equals(null)) {
+            viewHolder.comment_image_layout.setVisibility(LinearLayout.GONE);
+        }
     }
 
     @Override
@@ -71,12 +77,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView comment_text;
         public ImageView comment_user;
+        public LinearLayout comment_image_layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             comment_text = (TextView) itemView.findViewById(R.id.comment_text);
             comment_user = (ImageView) itemView.findViewById(R.id.comment_user);
-
+            comment_image_layout = (LinearLayout) itemView.findViewById(R.id.comment_image_layout);
         }
 
 

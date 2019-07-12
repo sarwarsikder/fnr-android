@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,9 +22,14 @@ import com.apper.sarwar.fnr.model.notification_model.NotificationListModel;
 import com.apper.sarwar.fnr.service.api_service.NotificationApiService;
 import com.apper.sarwar.fnr.service.iservice.NotificationIService;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class NotificationActivity extends AppCompatActivity implements NotificationIService {
@@ -55,12 +61,10 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
                     startActivity(intent);
                     return true;
                 case R.id.navigation_notifications:
-                    Toast.makeText(getApplicationContext(), "Hello Notification!", Toast.LENGTH_SHORT).show();
                     intent = new Intent(getApplicationContext(), NotificationActivity.class);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_profile:
-                    Toast.makeText(getApplicationContext(), "Hello Profile!", Toast.LENGTH_SHORT).show();
                     intent = new Intent(getApplicationContext(), ProfileActivity.class);
                     startActivity(intent);
                     return true;
@@ -111,6 +115,82 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
 
 
     }
+    static String getTimeAgo(long time_ago) {
+        time_ago=time_ago/1000;
+        long cur_time = (Calendar.getInstance().getTimeInMillis())/1000 ;
+        long time_elapsed = cur_time - time_ago;
+        long seconds = time_elapsed;
+        // Seconds
+        if (seconds <= 60) {
+            return "Just now";
+        }
+        //Minutes
+        else{
+            int minutes = Math.round(time_elapsed / 60);
+
+            if (minutes <= 60) {
+                if (minutes == 1) {
+                    return "a minute ago";
+                } else {
+                    return minutes + " minutes ago";
+                }
+            }
+            //Hours
+            else {
+                int hours = Math.round(time_elapsed / 3600);
+                if (hours <= 24) {
+                    if (hours == 1) {
+                        return "An hour ago";
+                    } else {
+                        return hours + " hrs ago";
+                    }
+                }
+                //Days
+                else {
+                    int days = Math.round(time_elapsed / 86400);
+                    if (days <= 7) {
+                        if (days == 1) {
+                            return "Yesterday";
+                        } else {
+                            return days + " days ago";
+                        }
+                    }
+                    //Weeks
+                    else {
+                        int weeks = Math.round(time_elapsed / 604800);
+                        if (weeks <= 4.3) {
+                            if (weeks == 1) {
+                                return "A week ago";
+                            } else {
+                                return weeks + " weeks ago";
+                            }
+                        }
+                        //Months
+                        else {
+                            int months = Math.round(time_elapsed / 2600640);
+                            if (months <= 12) {
+                                if (months == 1) {
+                                    return "A month ago";
+                                } else {
+                                    return months + " months ago";
+                                }
+                            }
+                            //Years
+                            else {
+                                int years = Math.round(time_elapsed / 31207680);
+                                if (years == 1) {
+                                    return "One year ago";
+                                } else {
+                                    return years + " years ago";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
 
     @Override
     public void onNotificationSuccess(JSONObject notificationListModel) {
@@ -118,18 +198,33 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
 
         try {
 
+
             try {
 
                 lists = new ArrayList<>();
+                JSONArray notificationList = (JSONArray) notificationListModel.get("results");
 
-                for (int i = 1; i <= 10; i++) {
+
+                lists = new ArrayList<>();
+
+                for (int i = 0; i < notificationList.length(); i++) {
+                    JSONObject row = notificationList.getJSONObject(i);
+
+                    String text = (String) row.get("text");
+                    int task_id = (int) row.get("task_id");
+                    String avatar = (String) row.get("avatar");
+
+                    String due_date_value = (String) row.get("sending_at");
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = format.parse(due_date_value);
+                    String strDate=getTimeAgo(date.getTime());
                     NotificationListModel myList = new NotificationListModel(
-                            i,
+                            task_id,
                             "",
                             "Test User",
-                            "",
-                            "Michel Sergio comments on your post",
-                            "39 minutes ago"
+                            avatar,
+                            text,
+                            strDate
                     );
                     lists.add(myList);
                 }
