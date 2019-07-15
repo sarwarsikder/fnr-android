@@ -5,17 +5,12 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,21 +34,19 @@ import com.apper.sarwar.fnr.adapter.sub_component.CommentAdapter;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.sub_component.CommentModel;
 import com.apper.sarwar.fnr.model.sub_component.CommentUser;
+import com.apper.sarwar.fnr.model.sub_component.TaskDetailsModel;
 import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
 import com.apper.sarwar.fnr.service.api_service.SubComponentDetailApiService;
 import com.apper.sarwar.fnr.service.iservice.ProfileIService;
 import com.apper.sarwar.fnr.service.iservice.SubComponentDetailIService;
 import com.apper.sarwar.fnr.utils.Image;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ComponentDetailActivity extends AppCompatActivity implements SubComponentDetailIService, ProfileIService {
@@ -176,7 +169,8 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
 
             subComponentDetailApiService = new SubComponentDetailApiService(this);
 
-            subComponentDetailApiService.get_sub_component_details(subComponentId);
+            /*subComponentDetailApiService.get_sub_component_details(subComponentId);*/
+            subComponentDetailApiService.get_sub_component_details(285);
 
 
             create_button = (ImageView) findViewById(R.id.create_button);
@@ -313,149 +307,167 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
     @Override
     public void onSubComponentDetailSuccess(final JSONObject subComponentDetailsListModel) {
 
+
         try {
+            String str=subComponentDetailsListModel.toString();
 
-            name = (String) subComponentDetailsListModel.get("name");
-            description = (String) subComponentDetailsListModel.get("description");
-
-            if (!subComponentDetailsListModel.get("due_date").equals(null)) {
-                due_date_value = (String) subComponentDetailsListModel.get("due_date");
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                Date date = format.parse(due_date_value);
-
-                SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
-                strDate = formatter.format(date);
-
-
-                System.out.println("Date Format with dd MMMM yyyy : " + date);
-            }
-
-            comment_count = (int) subComponentDetailsListModel.get("total_comments");
-
-            assign_to = "";
-
-
-            if (!subComponentDetailsListModel.get("assign_to").equals(null)) {
-                final JSONObject assign_to_data = (JSONObject) subComponentDetailsListModel.get("assign_to");
-
-                if (assign_to_data.length() > 0) {
-                    assign_to = (String) assign_to_data.get("company_name");
-                }
-
-                if (assign_to_data.has("avatar") && assign_to_data.get("avatar") != "") {
-                    user_image = (String) assign_to_data.get("avatar");
-                }
-
-
-            }
-
-
-            comments_data = (JSONArray) subComponentDetailsListModel.get("comments");
-
-            commentModels = new ArrayList<>();
-
-
-            if (comments_data.length() > 0) {
-
-
-                for (int i = 0; i < comments_data.length(); i++) {
-                    JSONObject row = comments_data.getJSONObject(i);
-
-                    String text = (String) row.get("text");
-                    String type = (String) row.get("type");
-/*
-                    String file_type = (String) row.get("file_type");
-*/
-                    String file_type = "";
-                    JSONObject commentUserJsonArray = (JSONObject) row.get("user");
-
-                    String cUserName = "";
-                    String avatar = "";
-
-                    if (commentUserJsonArray.length() > 0) {
-                        cUserName = (String) commentUserJsonArray.get("name");
-                        avatar = (String) commentUserJsonArray.get("avatar");
-                    }
-
-                    CommentUser commentUser = new CommentUser(
-                            cUserName,
-                            avatar
-                    );
-
-                    CommentModel commentModel = new CommentModel(
-                            text,
-                            type,
-                            file_type,
-                            commentUser
-
-                    );
-
-                    commentModels.add(commentModel);
-
-                }
-
-            }
-
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-
-                    assignee_name = (TextView) findViewById(R.id.assignee_name);
-                    task_name = (TextView) findViewById(R.id.task_name);
-                    task_detail = (TextView) findViewById(R.id.task_detail);
-                    task_detail = (TextView) findViewById(R.id.task_detail);
-                    due_date = (TextView) findViewById(R.id.due_date);
-                    assignee_image = (ImageView) findViewById(R.id.assignee_image);
-
-
-                    comment_counter = (TextView) findViewById(R.id.comment_counter);
-
-
-                    assignee_name.setText(assign_to);
-                    task_name.setText(name);
-                    task_detail.setText(description);
-                    due_date.setText(strDate);
-                    comment_counter.setText("Nachrichten(" + comment_count + ")");
-
-
-                    Picasso.with(getApplicationContext())
-                            .load(appConfigRemote.getBASE_URL() + "" + user_image)
-                            .placeholder(R.drawable.fnr_logo)
-                            .resize(106, 106)
-                            .into(assignee_image, new Callback() {
-                                @Override
-                                public void onSuccess() {
-                                    Bitmap imageBitmap = ((BitmapDrawable) assignee_image.getDrawable()).getBitmap();
-                                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getResources(), imageBitmap);
-                                    imageDrawable.setCircular(true);
-                                    imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
-                                    assignee_image.setImageDrawable(imageDrawable);
-                                }
-
-                                @Override
-                                public void onError() {
-                                    assignee_image.setImageResource(R.drawable.ic_man_user);
-                                }
-                            });
-
-                    recyclerViewComment = (RecyclerView) findViewById(R.id.comment_recycler_view);
-                    recyclerViewComment.setHasFixedSize(true);
-                    recyclerViewComment.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-                    if (!commentModels.equals(null)) {
-                        adapterComment = new CommentAdapter(commentModels, getApplicationContext());
-                        recyclerViewComment.setAdapter(adapterComment);
-                    }
-
-                }
-            });
-
-
-        } catch (Exception e) {
+            TaskDetailsModel taskDetailesModel=new ObjectMapper().readValue(str, TaskDetailsModel.class);
+            int xx=0;
+        }catch (Exception e){
             e.printStackTrace();
         }
+
+//        try {
+//
+//            name = (String) subComponentDetailsListModel.get("name");
+//            description = (String) subComponentDetailsListModel.get("description");
+//
+//            if (!subComponentDetailsListModel.get("due_date").equals(null)) {
+//                due_date_value = (String) subComponentDetailsListModel.get("due_date");
+//                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//                Date date = format.parse(due_date_value);
+//
+//                SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
+//                strDate = formatter.format(date);
+//
+//
+//                System.out.println("Date Format with dd MMMM yyyy : " + date);
+//            }
+//
+//            comment_count = (int) subComponentDetailsListModel.get("total_comments");
+//
+//            assign_to = "";
+//
+//
+//            if (!subComponentDetailsListModel.get("assign_to").equals(null)) {
+//                final JSONObject assign_to_data = (JSONObject) subComponentDetailsListModel.get("assign_to");
+//
+//                if (assign_to_data.length() > 0) {
+//                    assign_to = (String) assign_to_data.get("company_name");
+//                }
+//
+//                if (assign_to_data.has("avatar") && assign_to_data.get("avatar") != "") {
+//                    user_image = (String) assign_to_data.get("avatar");
+//                }
+//
+//
+//            }
+//
+//
+//            comments_data = (JSONArray) subComponentDetailsListModel.get("comments");
+//
+//            commentModels = new ArrayList<>();
+//
+//
+//
+//            if (comments_data.length() > 0) {
+//
+//
+//                for (int i = 0; i < comments_data.length(); i++) {
+//                    JSONObject row = comments_data.getJSONObject(i);
+//
+//                    String text = (String) row.get("text");
+//                    String type = (String) row.get("type");
+//
+///*
+//                    String file_type = (String) row.get("file_type");
+//*/
+//
+//                    String file_type = "";
+//
+//                    JSONObject commentUserJsonArray = (JSONObject) row.get("user");
+//
+//                    String cUserName = "";
+//                    String avatar = "";
+//
+//                    if (!row.get("file_type").equals(null)){
+//
+//                    }
+//
+//                    if (commentUserJsonArray.length() > 0) {
+//                        cUserName = (String) commentUserJsonArray.get("name");
+//                        avatar = (String) commentUserJsonArray.get("avatar");
+//                    }
+//
+//                    CommentUser commentUser = new CommentUser(
+//                            cUserName,
+//                            avatar
+//                    );
+//
+//                    CommentModel commentModel = new CommentModel(
+//                            text,
+//                            type,
+//                            file_type,
+//                            commentUser
+//
+//                    );
+//
+//                    commentModels.add(commentModel);
+//
+//                }
+//
+//            }
+//
+//
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//
+//                    assignee_name = (TextView) findViewById(R.id.assignee_name);
+//                    task_name = (TextView) findViewById(R.id.task_name);
+//                    task_detail = (TextView) findViewById(R.id.task_detail);
+//                    task_detail = (TextView) findViewById(R.id.task_detail);
+//                    due_date = (TextView) findViewById(R.id.due_date);
+//                    assignee_image = (ImageView) findViewById(R.id.assignee_image);
+//
+//
+//                    comment_counter = (TextView) findViewById(R.id.comment_counter);
+//
+//
+//                    assignee_name.setText(assign_to);
+//                    task_name.setText(name);
+//                    task_detail.setText(description);
+//                    due_date.setText(strDate);
+//                    comment_counter.setText("Nachrichten(" + comment_count + ")");
+//
+//
+//                    Picasso.with(getApplicationContext())
+//                            .load(appConfigRemote.getBASE_URL() + "" + user_image)
+//                            .placeholder(R.drawable.fnr_logo)
+//                            .resize(106, 106)
+//                            .into(assignee_image, new Callback() {
+//                                @Override
+//                                public void onSuccess() {
+//                                    Bitmap imageBitmap = ((BitmapDrawable) assignee_image.getDrawable()).getBitmap();
+//                                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getResources(), imageBitmap);
+//                                    imageDrawable.setCircular(true);
+//                                    imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
+//                                    assignee_image.setImageDrawable(imageDrawable);
+//                                }
+//
+//                                @Override
+//                                public void onError() {
+//                                    assignee_image.setImageResource(R.drawable.ic_man_user);
+//                                }
+//                            });
+//
+//                    recyclerViewComment = (RecyclerView) findViewById(R.id.comment_recycler_view);
+//                    recyclerViewComment.setHasFixedSize(true);
+//                    recyclerViewComment.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+//
+//                    if (!commentModels.equals(null)) {
+//                        adapterComment = new CommentAdapter(commentModels, getApplicationContext());
+//                        recyclerViewComment.setAdapter(adapterComment);
+//                    }
+//
+//                }
+//            });
+//
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

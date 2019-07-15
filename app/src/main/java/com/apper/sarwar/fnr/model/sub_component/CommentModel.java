@@ -10,10 +10,10 @@ public class CommentModel implements Serializable {
 
     private String text;
     private String type;
-    private String file_type;
+    private Object file_type;
     private CommentUser commentUser;
 
-    public CommentModel(String text, String type, String file_type, CommentUser commentUser) {
+    public CommentModel(String text, String type, Object file_type, CommentUser commentUser) {
         this.text = text;
         this.type = type;
         this.file_type = file_type;
@@ -39,11 +39,11 @@ public class CommentModel implements Serializable {
         this.type = type;
     }
 
-    public String getFile_type() {
+    public Object getFile_type() {
         return file_type;
     }
 
-    public void setFile_type(String file_type) {
+    public void setFile_type(Object file_type) {
         this.file_type = file_type;
     }
 
