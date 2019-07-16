@@ -25,6 +25,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:id="@+id/iv_one"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_weight="1"
@@ -32,6 +33,7 @@
                 app:srcCompat="@drawable/ic_man_user" />
 
             <ImageView
+                android:id="@+id/iv_two"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_weight="1"
@@ -39,6 +41,7 @@
                 app:srcCompat="@drawable/ic_man_user" />
 
             <ImageView
+                android:id="@+id/iv_three"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_weight="1"
@@ -46,6 +49,7 @@
                 app:srcCompat="@drawable/ic_man_user" />
 
             <ImageView
+                android:id="@+id/iv_four"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_weight="1"

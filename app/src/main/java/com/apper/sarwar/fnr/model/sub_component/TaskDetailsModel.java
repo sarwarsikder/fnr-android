@@ -2,6 +2,7 @@ package com.apper.sarwar.fnr.model.sub_component;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.sql.Array;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -11,34 +12,20 @@ public class TaskDetailsModel {
     private String name;
     private String status;
     private String description;
-    private String due_date = null;
+    private String due_date;
     private float created_by_id;
     private float updated_by_id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp created_at;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp updated_at;
-    private String assign_to = null;
+    private TaskAssignToModel assign_to;
     ArrayList<TaskStatusModel> status_list = new ArrayList<TaskStatusModel>();
     ArrayList<TaskDetailsCommentsModel> comments = new ArrayList<TaskDetailsCommentsModel>();
     private boolean more_comments;
     private int total_comments;
 
-
-    public TaskDetailsModel(int id,
-                            String name,
-                            String status,
-                            String description,
-                            String due_date,
-                            float created_by_id,
-                            float updated_by_id,
-                            Timestamp created_at,
-                            Timestamp updated_at,
-                            String assign_to,
-                            ArrayList<TaskStatusModel> status_list,
-                            ArrayList<TaskDetailsCommentsModel> comments,
-                            boolean more_comments,
-                            int total_comments) {
+    public TaskDetailsModel(int id, String name, String status, String description, String due_date, float created_by_id, float updated_by_id, Timestamp created_at, Timestamp updated_at, TaskAssignToModel assign_to, ArrayList<TaskStatusModel> status_list, ArrayList<TaskDetailsCommentsModel> comments, boolean more_comments, int total_comments) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -130,11 +117,11 @@ public class TaskDetailsModel {
         this.updated_at = updated_at;
     }
 
-    public String getAssign_to() {
+    public TaskAssignToModel getAssign_to() {
         return assign_to;
     }
 
-    public void setAssign_to(String assign_to) {
+    public void setAssign_to(TaskAssignToModel assign_to) {
         this.assign_to = assign_to;
     }
 
