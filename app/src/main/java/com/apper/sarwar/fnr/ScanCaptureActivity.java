@@ -1,8 +1,11 @@
 package com.apper.sarwar.fnr;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -15,12 +18,10 @@ import com.apper.sarwar.fnr.service.api_service.ScanApiService;
 import com.apper.sarwar.fnr.service.iservice.ScanIService;
 import com.apper.sarwar.fnr.utils.Loader;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.google.zxing.Result;
 
 import org.json.JSONObject;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -29,12 +30,18 @@ public class ScanCaptureActivity extends AppCompatActivity implements ZXingScann
     private ZXingScannerView mScannerView;
     Loader loader;
     private ScanApiService scanApiService;
+    JSONObject project;
+    JSONObject building;
+    JSONObject flat;
+    Context context;
 
 
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_scan_capture);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         // Title and subtitle
         toolbar.setTitle(R.string.title_activity_scan_capture);
@@ -71,6 +78,8 @@ public class ScanCaptureActivity extends AppCompatActivity implements ZXingScann
         ViewGroup contentFrame = (ViewGroup) findViewById(R.id.content_frame);
         mScannerView = new ZXingScannerView(this);
         contentFrame.addView(mScannerView);
+
+        context = this;
 
     }
 
@@ -123,52 +132,62 @@ public class ScanCaptureActivity extends AppCompatActivity implements ZXingScann
 
         try {
 
-            JSONObject project = (JSONObject) subScanListModel.get("project");
+            project = (JSONObject) subScanListModel.get("project");
 
-            JSONObject building = new JSONObject();
+            building = new JSONObject();
             if (!subScanListModel.get("building").equals(null)) {
                 building = (JSONObject) subScanListModel.get("building");
             }
 
-            JSONObject flat = new JSONObject();
+            flat = new JSONObject();
             if (!subScanListModel.get("flat").equals(null)) {
                 flat = (JSONObject) subScanListModel.get("flat");
 
             }
 
 
-            if (project.length() > 0) {
-                int projectId = (int) project.get("id");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
 
-                System.out.println("Hello Project ID " + projectId);
-                SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentProjectId, projectId, this);
-                if (flat.length() > 0) {
-                    int flatId = (int) flat.get("id");
-                    SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentFlatId, flatId, this);
-                    loader.startLoading(this);
-                    Intent intent = new Intent(this
-                            , FlatComponentActivity.class);
-                    startActivity(intent);
-                    finish();
+                    try {
 
-                } else {
-                    int buildingId = (int) building.get("id");
-                    SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentBuildingId, buildingId, this);
-                    loader.startLoading(this);
-                    Intent intent = new Intent(this
-                            , BuildingComponentActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+                        if (project.length() > 0) {
+                            int projectId = (int) project.get("id");
 
-            } else {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(ScanCaptureActivity.this, "Authentication Failed!", Toast.LENGTH_SHORT).show();
+                            System.out.println("Hello Project ID " + projectId);
+                            SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentProjectId, projectId, context);
+                            if (flat.length() > 0) {
+                                int flatId = (int) flat.get("id");
+                                SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentFlatId, flatId, context);
+                                loader.startLoading(context);
+                                Intent intent = new Intent(context
+                                        , FlatComponentActivity.class);
+                                startActivity(intent);
+                                finish();
+
+                            } else {
+                                int buildingId = (int) building.get("id");
+                                SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentBuildingId, buildingId, context);
+                                loader.startLoading(context);
+                                Intent intent = new Intent(context
+                                        , BuildingComponentActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                        } else {
+                            Toast.makeText(ScanCaptureActivity.this, "Authentication Failed!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
-            }
+
+
+                }
+            });
+
         } catch (Exception e) {
             e.printStackTrace();
         }

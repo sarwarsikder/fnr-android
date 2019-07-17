@@ -15,21 +15,25 @@ public class CurrentStateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        String currentState = SharedPreferenceUtil.getDefaults(SharedPreferenceUtil.currentState, this).toString();
 
-        if (currentState.equals(null) || currentState == "") {
-            Toast.makeText(this, "You don't have any activity yet.", Toast.LENGTH_SHORT).show();
-        }
+        try {
+
+            String currentState = SharedPreferenceUtil.getDefaults(SharedPreferenceUtil.currentState, this);
+
+            currentState = currentState.toString();
+            if (currentState.equals("building")) {
+                intent = new Intent(this, BuildingComponentActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                intent = new Intent(this, FlatComponentActivity.class);
+                startActivity(intent);
+                finish();
+            }
 
 
-        if (currentState.equals("building")) {
-            intent = new Intent(this, BuildingComponentActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            intent = new Intent(this, FlatComponentActivity.class);
-            startActivity(intent);
-            finish();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 

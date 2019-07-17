@@ -147,7 +147,6 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_component_detail);
 
-            SharedPreferenceUtil.setDefaults("access_token", "mSX1lwNzO258PFCIJXeH4BJj9EkTN6", this);
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 1);
@@ -192,9 +191,9 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
 
             subComponentDetailApiService = new SubComponentDetailApiService(this);
 
-            /*subComponentDetailApiService.get_sub_component_details(subComponentId);*/
+            subComponentDetailApiService.get_sub_component_details(subComponentId);
             /*subComponentDetailApiService.get_sub_component_details(350);*/
-            subComponentDetailApiService.get_sub_component_details(267);
+            /*subComponentDetailApiService.get_sub_component_details(267);*/
 
 
             create_button = (ImageView) findViewById(R.id.create_button);
@@ -204,7 +203,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
                 @Override
                 public void onClick(View view) {
                     String commentTxt = (String) comment_text.getText().toString();
-                    subComponentDetailApiService.create_comment(267, commentTxt, "");
+                    subComponentDetailApiService.create_comment(subComponentId, commentTxt, "");
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
@@ -264,7 +263,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
             builder.setMessage("Are you want to upload images?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    subComponentDetailApiService.uploadImageFile(267, paths, commentText);
+                    subComponentDetailApiService.uploadImageFile(subComponentId, paths, commentText);
                     paths = new ArrayList<>();
                 }
             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
