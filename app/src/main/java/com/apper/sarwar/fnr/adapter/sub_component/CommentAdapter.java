@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
+import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentFileTypeModel;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentsModel;
-import com.bumptech.glide.Glide;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -85,180 +85,39 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         }
 
         if (commentModel.getFile_type() != null) {
-
             if (position % 2 == 0) {
-
-
-                if (commentModel.getFile_type().size() == 1) {
-                    if (commentModel.getFile_type().get(0).getExt().equals("jpg")) {
-                        final ImageView imageView = viewHolder.comment_image_layout.findViewById(R.id.iv_one);
-                        Picasso.with(context)
-                                .load(commentModel.getFile_type().get(0).getPath())
-                                .placeholder(R.drawable.fnr_logo)
-                                .resize(106, 106)
-                                .into(imageView, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                        Bitmap imageBitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                                        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), imageBitmap);
-                                        imageDrawable.setCircular(true);
-                                        imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
-                                        imageView.setImageDrawable(imageDrawable);
-                                    }
-
-                                    @Override
-                                    public void onError() {
-                                        imageView.setImageResource(R.drawable.ic_man_user);
-                                    }
-                                });
-
-                        //(imageView).setImageResource(R.drawable.ic_profile);
-                    }
-                    viewHolder.comment_image_layout.findViewById(R.id.iv_four).setVisibility(ImageView.INVISIBLE);
-                    viewHolder.comment_image_layout.findViewById(R.id.iv_two).setVisibility(ImageView.INVISIBLE);
-                    viewHolder.comment_image_layout.findViewById(R.id.iv_three).setVisibility(ImageView.INVISIBLE);
-                } else if (commentModel.getFile_type().size() == 2) {
-                    if (commentModel.getFile_type().get(0).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_one)).setImageResource(R.drawable.ic_profile);
-                    }
-
-                    if (commentModel.getFile_type().get(1).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_two)).setImageResource(R.drawable.ic_profile);
-                    }
-                    viewHolder.comment_image_layout.findViewById(R.id.iv_three).setVisibility(ImageView.INVISIBLE);
-                    viewHolder.comment_image_layout.findViewById(R.id.iv_four).setVisibility(ImageView.INVISIBLE);
-                } else if (commentModel.getFile_type().size() == 3) {
-                    if (commentModel.getFile_type().get(0).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_one)).setImageResource(R.drawable.ic_profile);
-                    }
-
-                    if (commentModel.getFile_type().get(1).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_three)).setImageResource(R.drawable.ic_profile);
-                    }
-                    if (commentModel.getFile_type().get(2).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_two)).setImageResource(R.drawable.ic_profile);
-                    }
-                    viewHolder.comment_image_layout.findViewById(R.id.iv_four).setVisibility(ImageView.INVISIBLE);
-                } else if (commentModel.getFile_type().size() == 4) {
-                    if (commentModel.getFile_type().get(0).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_four)).setImageResource(R.drawable.ic_profile);
-                    }
-
-                    if (commentModel.getFile_type().get(1).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_three)).setImageResource(R.drawable.ic_profile);
-                    }
-                    if (commentModel.getFile_type().get(2).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_two)).setImageResource(R.drawable.ic_profile);
-                    }
-                    if (commentModel.getFile_type().get(3).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_two)).setImageResource(R.drawable.ic_profile);
-                    }
-                } else if (commentModel.getFile_type().size() > 4) {
-                    if (commentModel.getFile_type().get(0).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_one)).setImageResource(R.drawable.ic_profile);
-                    }
-
-                    if (commentModel.getFile_type().get(1).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_three)).setImageResource(R.drawable.ic_profile);
-                    }
-                    if (commentModel.getFile_type().get(2).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_two)).setImageResource(R.drawable.ic_profile);
-                    }
-                    ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_four)).setImageResource(R.drawable.ic_more);
-                }
+                setImageInList(commentModel.getFile_type(), (ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_one), 1);
+                setImageInList(commentModel.getFile_type(), (ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_two), 2);
+                setImageInList(commentModel.getFile_type(), (ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_three), 3);
+                setImageInList(commentModel.getFile_type(), (ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_four), 4);
 
             } else {
-
-
-                if (commentModel.getFile_type().size() == 1) {
-                    if (commentModel.getFile_type().get(0).getExt().equals("jpg")) {
-                        final ImageView imageView = viewHolder.comment_image_layout.findViewById(R.id.iv_four);
-                        /*Picasso.with(context)
-                                .load(commentModel.getFile_type().get(0).getPath())
-                                .placeholder(R.drawable.fnr_logo)
-                                .resize(106, 106)
-                                .into(imageView, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                        Bitmap imageBitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                                        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), imageBitmap);
-                                        imageDrawable.setCircular(true);
-                                        imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
-                                        imageView.setImageDrawable(imageDrawable);
-                                    }
-
-                                    @Override
-                                    public void onError() {
-                                        imageView.setImageResource(R.drawable.ic_man_user);
-                                    }
-                                });*/
-                        Glide.with(imageView)  //2
-                                .load(commentModel.getFile_type().get(0).getPath()) //3
-                                .centerCrop() //4
-                                .placeholder(R.drawable.ic_man_user) //5
-                                .error(R.drawable.ic_scan_splash) //6
-                                .fallback(R.drawable.ic_man_user) //7
-                                .into(imageView);
-                    }
-                    viewHolder.comment_image_layout.findViewById(R.id.iv_one).setVisibility(ImageView.INVISIBLE);
-                    viewHolder.comment_image_layout.findViewById(R.id.iv_two).setVisibility(ImageView.INVISIBLE);
-                    viewHolder.comment_image_layout.findViewById(R.id.iv_three).setVisibility(ImageView.INVISIBLE);
-                } else if (commentModel.getFile_type().size() == 2) {
-                    if (commentModel.getFile_type().get(0).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_four)).setImageResource(R.drawable.ic_profile);
-                    }
-
-                    if (commentModel.getFile_type().get(1).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_three)).setImageResource(R.drawable.ic_profile);
-                    }
-                    viewHolder.comment_image_layout.findViewById(R.id.iv_one).setVisibility(ImageView.INVISIBLE);
-                    viewHolder.comment_image_layout.findViewById(R.id.iv_two).setVisibility(ImageView.INVISIBLE);
-                } else if (commentModel.getFile_type().size() == 3) {
-                    if (commentModel.getFile_type().get(0).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_four)).setImageResource(R.drawable.ic_profile);
-                    }
-
-                    if (commentModel.getFile_type().get(1).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_three)).setImageResource(R.drawable.ic_profile);
-                    }
-                    if (commentModel.getFile_type().get(2).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_two)).setImageResource(R.drawable.ic_profile);
-                    }
-                    viewHolder.comment_image_layout.findViewById(R.id.iv_one).setVisibility(ImageView.INVISIBLE);
-                } else if (commentModel.getFile_type().size() == 4) {
-                    if (commentModel.getFile_type().get(0).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_four)).setImageResource(R.drawable.ic_profile);
-                    }
-
-                    if (commentModel.getFile_type().get(1).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_three)).setImageResource(R.drawable.ic_profile);
-                    }
-                    if (commentModel.getFile_type().get(2).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_two)).setImageResource(R.drawable.ic_profile);
-                    }
-                    if (commentModel.getFile_type().get(3).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_two)).setImageResource(R.drawable.ic_profile);
-                    }
-                } else if (commentModel.getFile_type().size() > 4) {
-                    if (commentModel.getFile_type().get(0).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_four)).setImageResource(R.drawable.ic_profile);
-                    }
-
-                    if (commentModel.getFile_type().get(1).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_three)).setImageResource(R.drawable.ic_profile);
-                    }
-                    if (commentModel.getFile_type().get(2).getExt().equals("jpg")) {
-                        ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_two)).setImageResource(R.drawable.ic_profile);
-                    }
-                    ((ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_one)).setImageResource(R.drawable.ic_more);
-                }
-
+                setImageInList(commentModel.getFile_type(), (ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_four), 1);
+                setImageInList(commentModel.getFile_type(), (ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_three), 2);
+                setImageInList(commentModel.getFile_type(), (ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_two), 3);
+                setImageInList(commentModel.getFile_type(), (ImageView) viewHolder.comment_image_layout.findViewById(R.id.iv_one), 4);
             }
 
         } else {
             viewHolder.comment_image_layout.setVisibility(LinearLayout.GONE);
         }
 
+    }
+
+    private void setImageInList(List<TaskDetailsCommentFileTypeModel> fileTypeModels, ImageView iv, int index) {
+        try {
+            if (fileTypeModels.size() > 4 && index == 4) {
+                iv.setImageResource(R.drawable.ic_more);
+            } else if (fileTypeModels.size() >= index) {
+                Picasso.with(context).load(fileTypeModels.get(index - 1).getPath()).placeholder(R.raw.loading).error(R.drawable.error).into(iv);
+                //Glide.with(iv).load(fileTypeModels.get(index - 1).getPath()).placeholder(R.raw.loading).error(R.drawable.error).into(iv);
+            } else {
+                iv.setVisibility(View.INVISIBLE);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            iv.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -276,7 +135,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             return 0;
         }
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView comment_text;

@@ -2,9 +2,11 @@ package com.apper.sarwar.fnr;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -30,7 +32,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -59,7 +60,6 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -74,6 +74,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
     TextView assignee_name, task_name, task_detail, due_date, comment_counter;
     ImageView create_button, create_image_button;
     EditText comment_text;
+    private String commentText = "";
 
     private ProfileApiService profileApiService;
 
@@ -146,7 +147,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_component_detail);
 
-
+            SharedPreferenceUtil.setDefaults("access_token", "mSX1lwNzO258PFCIJXeH4BJj9EkTN6", this);
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 1);
@@ -213,7 +214,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
             create_image_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    commentText = (String) comment_text.getText().toString();
                     Intent intent = new Intent();
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -238,20 +239,41 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
+    private List<String> paths = new ArrayList<>();
+
     @Override
     protected void onActivityResult(int reqCode, int resCode, Intent data) {
+        paths = new ArrayList<>();
         if (resCode == Activity.RESULT_OK && data != null) {
             if (data.getClipData() != null) {
                 ClipData clipData = data.getClipData();
                 for (int c = 0; c < clipData.getItemCount(); c++) {
                     String imagePath = Image.getAndroidImagePath(ComponentDetailActivity.this, clipData.getItemAt(c).getUri());
+                    paths.add(imagePath);
                     Log.i("Imager", imagePath);
 
                 }
             } else if (data.getData() != null) {
                 String imagePath = Image.getAndroidImagePath(ComponentDetailActivity.this, data.getData());
+                paths.add(imagePath);
                 Log.i("Imager", imagePath);
             }
+        }
+        if (paths.size() > 0) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Are you want to upload images?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    subComponentDetailApiService.uploadImageFile(267, paths, commentText);
+                    paths = new ArrayList<>();
+                }
+            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    paths = new ArrayList<>();
+                }
+            }).show();
         }
     }
 

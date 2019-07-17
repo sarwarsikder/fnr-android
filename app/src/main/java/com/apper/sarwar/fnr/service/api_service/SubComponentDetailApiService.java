@@ -1,7 +1,11 @@
 package com.apper.sarwar.fnr.service.api_service;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.service.iservice.SubComponentDetailIService;
@@ -9,11 +13,15 @@ import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -72,7 +80,7 @@ public class SubComponentDetailApiService {
                     JSONObject responseObject = new JSONObject(responseBody);
 
                     if (response.code() == 200) {
-                        /*SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.urlAuthorization, authorization, this);*/
+                        //SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.urlAuthorization, authorization, this);
                         subComponentDetailIService.onSubComponentDetailSuccess(responseObject);
 
                     } else {
@@ -145,5 +153,75 @@ public class SubComponentDetailApiService {
         }
     }
 
+    public void uploadImageFile(int componentId, List<String> paths, String text) {
+        try {
+            final ProgressDialog pd = new ProgressDialog(context);
+            pd.setMessage("Uploading");
+            pd.show();
+            String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);
+            String requestUrl = appConfigRemote.getBASE_URL() + "/api/task/" + componentId + "/comments/";
+            MultipartBody.Builder builder = new MultipartBody.Builder();
+            builder.setType(MultipartBody.FORM);
+            for (String path : paths) {
+                builder.addFormDataPart("files", new File(path).getName(), RequestBody.create(MediaType.parse("File/*"), new File(path)));
+            }
+            if (text != null && text.trim().length() > 0) {
+                builder.addFormDataPart("text", text);
+            }
+            RequestBody requestBody = builder.build();
+            Request httpRequest = new Request.Builder()
+                    .header("Authorization", authorization)
+                    .url(requestUrl)
+                    .post(requestBody)
+                    .build();
+            final OkHttpClient okHttpClient = new OkHttpClient();
+            okHttpClient.newCall(httpRequest).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, final IOException e) {
+                    pd.cancel();
+                    try {
+                        ((Activity) context).runOnUiThread(new Runnable() {
+                            public void run() {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                builder.show();
+                                if (e.getMessage().contains("timeout")) {
+                                    builder.setMessage("Server Timeout! try again");
+                                } else {
+                                    builder.setMessage(e.getMessage());
+                                }
+                            }
+                        });
+                    } catch (Exception ex) {
+                        ((Activity) context).runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(context, "Server Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    e.printStackTrace();
+                    call.cancel();
+                }
 
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    pd.cancel();
+                    try {
+                        JSONObject responseObject = new JSONObject(response.body().string());
+                        if (response.code() >= 200 && response.code() < 300) {
+                            subComponentDetailIService.OnCommentCreateSuccess(responseObject);
+                        } else {
+                            new AlertDialog.Builder(context).setMessage("Try Again").show();
+                            subComponentDetailIService.OnCommentCreateFailed(responseObject);
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "signUp: " + e.getMessage());
+        }
+    }
 }
