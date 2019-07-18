@@ -10,4 +10,9 @@ public interface SubComponentDetailIService {
     void OnCommentCreateSuccess(JSONObject subComponentModel);
 
     void OnCommentCreateFailed(JSONObject jsonObject);
+
+
+    void OnDateChangedSuccess(String dateStr);
+
+    void OnDateChangedFailed();
 }

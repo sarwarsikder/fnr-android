@@ -1,14 +1,19 @@
 package com.apper.sarwar.fnr;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +21,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apper.sarwar.fnr.adapter.PaginationScrollListener;
 import com.apper.sarwar.fnr.adapter.project_adapter.ProjectListAdapter;
+import com.apper.sarwar.fnr.adapter.project_adapter.ProjectPostListAdapter;
 import com.apper.sarwar.fnr.model.project_model.ProjectListModel;
 import com.apper.sarwar.fnr.project_swipe.SwipeController;
 import com.apper.sarwar.fnr.service.api_service.ProjectApiService;
@@ -30,14 +37,28 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectActivity extends AppCompatActivity implements ProjectIServiceListener {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private ProjectListAdapter adapter;
+public class ProjectActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, ProjectIServiceListener {
+    private static final String TAG = "ProjectActivity";
+    @BindView(R.id.main_recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout swipeRefresh;
+    private LinearLayoutManager layoutManager;
+    private ProjectPostListAdapter adapter;
     Intent intent;
     Loader loader;
+    Context context;
     ProjectApiService projectApiService;
+
+    public static final int PAGE_START = 1;
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private int totalPage = 10;
+    private boolean isLoading = false;
+    int itemCount = 0;
 
     /*Projects Models objects from repository*/
 
@@ -84,6 +105,8 @@ public class ProjectActivity extends AppCompatActivity implements ProjectIServic
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_project);
+            ButterKnife.bind(this);
+
             Toolbar toolbar = findViewById(R.id.toolbar);
             // Title and subtitle
             toolbar.setTitle(R.string.title_activity_project);
@@ -108,9 +131,38 @@ public class ProjectActivity extends AppCompatActivity implements ProjectIServic
 
             BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
             navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-            loader.startLoading(this);
+
+            context = this;
+            swipeRefresh.setOnRefreshListener(this);
+            /*recyclerView.setHasFixedSize(true);*/
+            layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+            adapter = new ProjectPostListAdapter(new ArrayList<ProjectListModel>(), this);
+            recyclerView.setAdapter(adapter);
+
             projectApiService = new ProjectApiService(this);
             projectApiService.get_projects(1);
+
+            recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
+                @Override
+                protected void loadMoreItems() {
+                    isLoading = true;
+                    currentPage++;
+                    projectApiService = new ProjectApiService(context);
+                    projectApiService.get_projects(currentPage);
+                }
+
+                @Override
+                public boolean isLastPage() {
+                    return isLastPage;
+
+                }
+
+                @Override
+                public boolean isLoading() {
+                    return isLoading;
+                }
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,49 +191,56 @@ public class ProjectActivity extends AppCompatActivity implements ProjectIServic
         try {
 
             lists = new ArrayList<>();
-            JSONArray projectList = (JSONArray) projectListJson.get("results");
-            for (int i = 0; i < projectList.length(); i++) {
-                JSONObject row = projectList.getJSONObject(i);
+            final JSONArray projectList = (JSONArray) projectListJson.get("results");
 
-                int id = (int) row.get("id");
-                String project_name = (String) row.get("name");
-                String address = (String) row.get("address");
-                String description = (String) row.get("description");
-                String city = (String) row.get("city");
-                String type = (String) row.get("type");
-                String energetic_standard = (String) row.get("energetic_standard");
-                int total_tasks = (int) row.get("total_tasks");
-                int tasks_done = (int) row.get("tasks_done");
-
-                ProjectListModel myList = new ProjectListModel(
-                        id,
-                        project_name,
-                        address,
-                        description,
-                        city,
-                        type,
-                        energetic_standard,
-                        total_tasks,
-                        tasks_done
-
-
-                );
-                lists.add(myList);
-            }
-
-            runOnUiThread(new Runnable() {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 
                 @Override
                 public void run() {
-                    recyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
-                    recyclerView.setHasFixedSize(true);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-                    adapter = new ProjectListAdapter(lists, getApplicationContext());
-                    recyclerView.setAdapter(adapter);
-                    loader.stopLoading();
+                    try {
+                        for (int i = 0; i < projectList.length(); i++) {
+                            JSONObject row = projectList.getJSONObject(i);
+
+                            int id = (int) row.get("id");
+                            String project_name = (String) row.get("name");
+                            String address = (String) row.get("address");
+                            String description = (String) row.get("description");
+                            String city = (String) row.get("city");
+                            String type = (String) row.get("type");
+                            String energetic_standard = (String) row.get("energetic_standard");
+                            int total_tasks = (int) row.get("total_tasks");
+                            int tasks_done = (int) row.get("tasks_done");
+
+                            ProjectListModel myList = new ProjectListModel(
+                                    id,
+                                    project_name,
+                                    address,
+                                    description,
+                                    city,
+                                    type,
+                                    energetic_standard,
+                                    total_tasks,
+                                    tasks_done
+
+
+                            );
+                            lists.add(myList);
+                        }
+
+                        if (currentPage != PAGE_START) adapter.removeLoading();
+                        adapter.addAll(lists);
+                        swipeRefresh.setRefreshing(false);
+                        if (currentPage < totalPage) adapter.addLoading();
+                        else isLastPage = true;
+                        isLoading = false;
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
-            });
+            }, 1500);
 
 
         } catch (Exception e) {
@@ -192,6 +251,27 @@ public class ProjectActivity extends AppCompatActivity implements ProjectIServic
 
     @Override
     public void onProjectFailed(JSONObject jsonObject) {
+        try {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.removeLoading();
+                }
+            }, 1500);
 
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        itemCount = 0;
+        currentPage = PAGE_START;
+        isLastPage = false;
+        adapter.clear();
+        projectApiService = new ProjectApiService(this);
+        projectApiService.get_projects(1);
     }
 }

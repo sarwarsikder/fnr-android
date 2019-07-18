@@ -16,6 +16,7 @@ public class DateTimePickerFragment extends DialogFragment implements DatePicker
     private int _day;
     private int _month;
     private int _birthYear;
+    DatePickerIService datePickerIService;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -24,6 +25,7 @@ public class DateTimePickerFragment extends DialogFragment implements DatePicker
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
+        datePickerIService = (DatePickerIService) getActivity();
 
         // Create a new instance of TimePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
@@ -46,6 +48,9 @@ public class DateTimePickerFragment extends DialogFragment implements DatePicker
     }
 
     private void updateDisplay() {
+        String dateStr = new StringBuilder()
+                .append(_day).append("-").append(_month + 1).append("-").append(_birthYear).append(" ").toString();
+        datePickerIService.getDate(dateStr);
        /* _editText.setText(new StringBuilder()
                 .append(_birthYear).append("-").append(_month + 1).append("-").append(_day).append(" "));*/
     }

@@ -224,4 +224,55 @@ public class SubComponentDetailApiService {
             Log.d(TAG, "signUp: " + e.getMessage());
         }
     }
+
+    public void sub_component_date_change(int componentId, String text) {
+
+        try {
+            String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);
+
+            String requestUrl = appConfigRemote.getBASE_URL() + "/api/task/" + componentId + "/change-due-date/";
+
+
+            RequestBody requestBody = new FormBody.Builder()
+                    .add("due_date", text)
+                    .build();
+
+            Request httpRequest = new Request.Builder()
+                    .header("Authorization", authorization)
+                    .url(requestUrl)
+                    .post(requestBody)
+                    .build();
+
+
+            final OkHttpClient okHttpClient = new OkHttpClient();
+            okHttpClient.newCall(httpRequest).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    System.out.println("onFailure()");
+                    call.cancel();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    try {
+                        System.out.println("onResponse()");
+                        String responseBody = response.body().string();
+                        JSONObject responseObject = new JSONObject(responseBody);
+                        if (response.code() == 200) {
+                            subComponentDetailIService.OnDateChangedSuccess(responseBody);
+                        } else {
+                            subComponentDetailIService.OnDateChangedFailed();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "onResponse: " + e.getMessage());
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "signUp: " + e.getMessage());
+        }
+    }
 }

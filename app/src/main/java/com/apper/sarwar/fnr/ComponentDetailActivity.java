@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.apper.sarwar.fnr.adapter.sub_component.CommentAdapter;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
+import com.apper.sarwar.fnr.datetimepicker.DatePickerIService;
 import com.apper.sarwar.fnr.datetimepicker.DateTimePickerFragment;
 import com.apper.sarwar.fnr.model.sub_component.CommentModel;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentsModel;
@@ -63,7 +64,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ComponentDetailActivity extends AppCompatActivity implements SubComponentDetailIService, ProfileIService {
+public class ComponentDetailActivity extends AppCompatActivity implements SubComponentDetailIService, ProfileIService, DatePickerIService {
 
     Intent intent;
 
@@ -507,6 +508,17 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
     }
 
     @Override
+    public void OnDateChangedSuccess(String dateStr) {
+        System.out.println(dateStr);
+        int x = 0;
+    }
+
+    @Override
+    public void OnDateChangedFailed() {
+        System.out.println("Failed");
+    }
+
+    @Override
     public void onProfileSuccess(JSONObject profileListModel) {
 
         try {
@@ -606,5 +618,12 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
     @Override
     public void onProfileFailed(JSONObject jsonObject) {
 
+    }
+
+    @Override
+    public void getDate(String dateStr) {
+        System.out.println(dateStr);
+        subComponentDetailApiService.sub_component_date_change(subComponentId, dateStr);
+        int x = 0;
     }
 }

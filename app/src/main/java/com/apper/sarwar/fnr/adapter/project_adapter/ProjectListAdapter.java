@@ -19,6 +19,9 @@ import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ViewHolder> {
 
     public List<ProjectListModel> projectAdapterList;
@@ -39,12 +42,22 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final ProjectListAdapter.ViewHolder viewHolder, int position) {
-        ProjectListModel myList = projectAdapterList.get(position);
-        viewHolder.textProjectTitle.setText(myList.getProject_name());
-        viewHolder.textProjectLocation.setText(myList.getAddress());
-        viewHolder.textProjectProgressCount.setText(myList.getTasks_done() + "/" + myList.getTotal_tasks());
-        viewHolder.textProjectProgress.setProgress(80);
-        viewHolder.itemView.setTag(myList.getId());
+
+        try {
+            ProjectListModel myList = projectAdapterList.get(position);
+            viewHolder.textProjectTitle.setText(myList.getProject_name());
+            viewHolder.textProjectLocation.setText(myList.getAddress());
+            viewHolder.textProjectProgressCount.setText(myList.getTasks_done() + "/" + myList.getTotal_tasks());
+            int progress = 0;
+            if (myList.getTotal_tasks() > 0) {
+                progress = (myList.getTasks_done() * 100) / myList.getTotal_tasks();
+            }
+            viewHolder.textProjectProgress.setProgress(progress);
+            viewHolder.itemView.setTag(myList.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -82,4 +95,5 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         }
     }
+
 }
