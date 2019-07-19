@@ -15,7 +15,7 @@ public class DateTimePickerFragment extends DialogFragment implements DatePicker
     private static final String TAG = "Sign Up";
     private int _day;
     private int _month;
-    private int _birthYear;
+    private int _year;
     DatePickerIService datePickerIService;
 
     @Override
@@ -28,7 +28,10 @@ public class DateTimePickerFragment extends DialogFragment implements DatePicker
         datePickerIService = (DatePickerIService) getActivity();
 
         // Create a new instance of TimePickerDialog and return it
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        DatePickerDialog date = new DatePickerDialog(getActivity(), this, year, month, day);
+        DatePicker dp = date.getDatePicker();
+        dp.setMinDate(c.getTimeInMillis());
+        return date;
     }
 
 
@@ -36,7 +39,7 @@ public class DateTimePickerFragment extends DialogFragment implements DatePicker
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
         try {
-            _birthYear = year;
+            _year = year;
             _month = month;
             _day = dayOfMonth;
             updateDisplay();
@@ -49,7 +52,7 @@ public class DateTimePickerFragment extends DialogFragment implements DatePicker
 
     private void updateDisplay() {
         String dateStr = new StringBuilder()
-                .append(_day).append("-").append(_month + 1).append("-").append(_birthYear).append(" ").toString();
+                .append(_year).append("-").append(_month + 1).append("-").append(_day).append("").toString().trim();
         datePickerIService.getDate(dateStr);
        /* _editText.setText(new StringBuilder()
                 .append(_birthYear).append("-").append(_month + 1).append("-").append(_day).append(" "));*/

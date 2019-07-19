@@ -109,7 +109,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             if (fileTypeModels.size() > 4 && index == 4) {
                 iv.setImageResource(R.drawable.ic_more);
             } else if (fileTypeModels.size() >= index) {
-                Picasso.with(context).load(fileTypeModels.get(index - 1).getPath()).placeholder(R.raw.loading).error(R.drawable.error).into(iv);
+                Picasso.with(context).load(appConfigRemote.getBASE_URL()  + fileTypeModels.get(index - 1).getPath()).placeholder(R.raw.loading).error(R.drawable.error).into(iv);
                 //Glide.with(iv).load(fileTypeModels.get(index - 1).getPath()).placeholder(R.raw.loading).error(R.drawable.error).into(iv);
             } else {
                 iv.setVisibility(View.INVISIBLE);

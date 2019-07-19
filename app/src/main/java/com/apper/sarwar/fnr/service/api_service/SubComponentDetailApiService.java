@@ -11,6 +11,7 @@ import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.service.iservice.SubComponentDetailIService;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -225,20 +226,30 @@ public class SubComponentDetailApiService {
         }
     }
 
-    public void sub_component_date_change(int componentId, String text) {
+    public void sub_component_date_change(int componentId, final String taskDate) {
 
         try {
+
+
             String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);
-
             String requestUrl = appConfigRemote.getBASE_URL() + "/api/task/" + componentId + "/change-due-date/";
-
-
+            MediaType JSON = MediaType.parse("application/json");
+            JSONObject postData = new JSONObject();
+/*
             RequestBody requestBody = new FormBody.Builder()
                     .add("due_date", text)
-                    .build();
+                    .build();*/
+            try {
+                postData.put("due_date", taskDate);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
+            RequestBody requestBody = RequestBody.create(JSON, postData.toString());
             Request httpRequest = new Request.Builder()
                     .header("Authorization", authorization)
+                    .header("Accept", "application/json")
+                    .header("Content-Type", "application/json")
                     .url(requestUrl)
                     .post(requestBody)
                     .build();
@@ -259,9 +270,68 @@ public class SubComponentDetailApiService {
                         String responseBody = response.body().string();
                         JSONObject responseObject = new JSONObject(responseBody);
                         if (response.code() == 200) {
-                            subComponentDetailIService.OnDateChangedSuccess(responseBody);
+                            subComponentDetailIService.OnDateChangedSuccess(taskDate);
                         } else {
                             subComponentDetailIService.OnDateChangedFailed();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "onResponse: " + e.getMessage());
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "signUp: " + e.getMessage());
+        }
+    }
+
+    public void sub_component_status_change(int componentId, final String taskStatus) {
+
+        try {
+
+
+            String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);
+            String requestUrl = appConfigRemote.getBASE_URL() + "/api/task/" + componentId + "/change-status/";
+            MediaType JSON = MediaType.parse("application/json");
+            JSONObject postData = new JSONObject();
+
+            try {
+                postData.put("status", taskStatus);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            RequestBody requestBody = RequestBody.create(JSON, postData.toString());
+            Request httpRequest = new Request.Builder()
+                    .header("Authorization", authorization)
+                    .header("Accept", "application/json")
+                    .header("Content-Type", "application/json")
+                    .url(requestUrl)
+                    .post(requestBody)
+                    .build();
+
+
+            final OkHttpClient okHttpClient = new OkHttpClient();
+            okHttpClient.newCall(httpRequest).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    System.out.println("onFailure()");
+                    call.cancel();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    try {
+                        System.out.println("onResponse()");
+                        String responseBody = response.body().string();
+                        JSONObject responseObject = new JSONObject(responseBody);
+
+                        if (response.code() == 200) {
+                            subComponentDetailIService.OnStatusChangedSuccess(responseObject);
+                        } else {
+                            subComponentDetailIService.OnStatusChangedFailed();
                         }
 
                     } catch (Exception e) {

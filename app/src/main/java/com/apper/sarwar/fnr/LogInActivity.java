@@ -106,6 +106,7 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
                           @Override
                           public void run() {
                               Toast.makeText(getApplicationContext(), "Incorrect credentials!", Toast.LENGTH_SHORT).show();
+                              loader.stopLoading();
                           }
                       }
         );

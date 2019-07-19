@@ -15,4 +15,10 @@ public interface SubComponentDetailIService {
     void OnDateChangedSuccess(String dateStr);
 
     void OnDateChangedFailed();
+
+    void OnStatusChangedSuccess(JSONObject jsonObject);
+
+    void OnStatusChangedFailed();
+
+
 }

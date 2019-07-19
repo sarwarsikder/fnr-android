@@ -86,7 +86,6 @@ public class LoginApiService {
                             /*SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.urlAuthorization, authorization, this);*/
                             loginIServiceListener.onLoginSuccess(loginModel);
                         } else {
-                            loader.stopLoading();
                             loginIServiceListener.onLoginFailed(responseObject);
                         }
 

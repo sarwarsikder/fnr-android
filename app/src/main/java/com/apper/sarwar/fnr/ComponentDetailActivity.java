@@ -32,9 +32,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,7 @@ import com.apper.sarwar.fnr.datetimepicker.DateTimePickerFragment;
 import com.apper.sarwar.fnr.model.sub_component.CommentModel;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentsModel;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsModel;
+import com.apper.sarwar.fnr.model.sub_component.TaskStatusModel;
 import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
 import com.apper.sarwar.fnr.service.api_service.SubComponentDetailApiService;
 import com.apper.sarwar.fnr.service.iservice.ProfileIService;
@@ -73,6 +77,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
     private SubComponentDetailApiService subComponentDetailApiService;
 
     TextView assignee_name, task_name, task_detail, due_date, comment_counter;
+    Spinner task_status;
     ImageView create_button, create_image_button;
     EditText comment_text;
     private String commentText = "";
@@ -91,6 +96,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
 
     private JSONObject assign_to_data = new JSONObject();
     private JSONArray comments_data = new JSONArray();
+
     ImageView assignee_image;
     private AppConfigRemote appConfigRemote;
 
@@ -105,6 +111,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
     EditText hiddenDate;
     ImageView due_date_image;
     DatePickerDialog datePickerDialog;
+    List<String> varSpinnerData;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -402,6 +409,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
                     task_detail = (TextView) findViewById(R.id.task_detail);
                     due_date = (TextView) findViewById(R.id.due_date);
                     assignee_image = (ImageView) findViewById(R.id.assignee_image);
+                    task_status = (Spinner) findViewById(R.id.task_status);
 
 
                     comment_counter = (TextView) findViewById(R.id.comment_counter);
@@ -414,11 +422,47 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
                     comment_counter.setText("Nachrichten(" + comment_count + ")");
 
 
+                    List<String> myArraySpinnerValue = new ArrayList<String>();
+                    final List<String> myArraySpinnerOption = new ArrayList<String>();
+
+                    if (taskDetailsModel.getStatus_list().size() > 0) {
+                        ArrayList<TaskStatusModel> taskStatusModel = taskDetailsModel.getStatus_list();
+
+                        for (int i = 0; i < taskStatusModel.size(); i++) {
+                            myArraySpinnerOption.add(taskStatusModel.get(i).getOption().toString());
+                            myArraySpinnerValue.add(taskStatusModel.get(i).getValue().toString());
+
+                        }
+
+                    }
+
+
+                    varSpinnerData = myArraySpinnerValue;
+
+
+                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, myArraySpinnerValue);
+                    spinnerArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+                    task_status.setAdapter(spinnerArrayAdapter);
+
+                    task_status.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                            String option = myArraySpinnerOption.get(i).toString();
+                            subComponentDetailApiService.sub_component_status_change(subComponentId, option);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+
                     Picasso.with(getApplicationContext())
                             .load(appConfigRemote.getBASE_URL() + "" + user_image)
                             .placeholder(R.drawable.fnr_logo)
                             .resize(106, 106)
-                            .into(assignee_image, new Callback() {
+                             .into(assignee_image, new Callback() {
                                 @Override
                                 public void onSuccess() {
                                     Bitmap imageBitmap = ((BitmapDrawable) assignee_image.getDrawable()).getBitmap();
@@ -508,14 +552,47 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
     }
 
     @Override
-    public void OnDateChangedSuccess(String dateStr) {
-        System.out.println(dateStr);
-        int x = 0;
+    public void OnDateChangedSuccess(final String dateStr) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    if (!dateStr.equals(null)) {
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                        Date date = format.parse(dateStr);
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
+                        strDate = formatter.format(date);
+                        due_date.setText(strDate);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
     }
 
     @Override
     public void OnDateChangedFailed() {
-        System.out.println("Failed");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(ComponentDetailActivity.this, "Something went wrong please choose again.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void OnStatusChangedSuccess(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void OnStatusChangedFailed() {
+
     }
 
     @Override

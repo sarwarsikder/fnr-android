@@ -2,11 +2,19 @@ package com.apper.sarwar.fnr.config;
 
 public class AppConfigRemote {
 
-    public  String ACCESS_TOKEN = "";
-    public  String CLIENT_ID = "JDdenON79lYrDpy7CK1FBGGDUfw8MdvDimWENIsO";
-    public  String CLIENT_SECRET = "CYF7gNXf89x1mEL1nRPG6Nmj2t7RvBhqfOn3IRdlU9wxH5QNnM1BKzGjxjSIZRDwzZTVwnDzZN3rBVUuKJfBhRiE9wXzqXALEGfPMPbXa7IS7mQSWXGPKwPvTMyffdYQ";
-    public  String BASE_URL = "http://58.84.34.65:8006";
-    public  String GRANT_TYPE="password";
+    public String ACCESS_TOKEN = "";
+
+    public String CLIENT_ID = "JDdenON79lYrDpy7CK1FBGGDUfw8MdvDimWENIsO";
+    public String CLIENT_SECRET = "CYF7gNXf89x1mEL1nRPG6Nmj2t7RvBhqfOn3IRdlU9wxH5QNnM1BKzGjxjSIZRDwzZTVwnDzZN3rBVUuKJfBhRiE9wXzqXALEGfPMPbXa7IS7mQSWXGPKwPvTMyffdYQ";
+    public String BASE_URL = "http://58.84.34.65:8006";
+
+
+   /* public  String CLIENT_ID = "60KmdE9mgSDDlr71ubNGP6LWSFyyr9jmTXcIzwFr";
+    public  String CLIENT_SECRET = "FB4yBoNsvUcotuuzmTe3opPgoxVIpeuXO5F85DOizU0rOsYgqwn2EbIW9xN3r3mJtpy2fxhCTVwmhN1H8pQ3UnzQNbpB7mKDcu1OAQTltHwywWCnmCqpzXR8n1KtQslf";
+    public  String BASE_URL = "http://www.frprojektman.de";*/
+
+
+    public String GRANT_TYPE = "password";
 
     public AppConfigRemote(String ACCESS_TOKEN, String CLIENT_ID, String CLIENT_SECRET, String BASE_URL, String GRANT_TYPE) {
         this.ACCESS_TOKEN = ACCESS_TOKEN;
