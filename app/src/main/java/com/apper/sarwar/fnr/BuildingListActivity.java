@@ -5,13 +5,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,7 +26,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.apper.sarwar.fnr.adapter.building_adapter.BuildingListAdapter;
+import com.apper.sarwar.fnr.adapter.PaginationScrollListener;
+import com.apper.sarwar.fnr.adapter.building_adapter.BuildingPostListAdapter;
 import com.apper.sarwar.fnr.model.building_model.BuildingListModel;
 import com.apper.sarwar.fnr.service.api_service.BuildingApiService;
 import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
@@ -39,14 +42,22 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuildingListActivity extends AppCompatActivity implements BuildingIServiceListener, ProfileIService {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+
+public class BuildingListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, BuildingIServiceListener, ProfileIService {
 
     private static final String TAG = "BuildingListActivity";
     private String productId;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private BuildingListAdapter adapter;
+    @BindView(R.id.building_recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.buildingSwipeRefresh)
+    SwipeRefreshLayout swipeRefresh;
+
+    private LinearLayoutManager layoutManager;
+    private BuildingPostListAdapter adapter;
     private BuildingApiService buildingApiService;
 
     private List<BuildingListModel> lists;
@@ -67,6 +78,15 @@ public class BuildingListActivity extends AppCompatActivity implements BuildingI
     Intent intent;
     Loader loader;
     int project_id;
+    Context context;
+
+
+    public static final int PAGE_START = 1;
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private int totalPage = 10;
+    private boolean isLoading = false;
+    int itemCount = 0;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -107,6 +127,7 @@ public class BuildingListActivity extends AppCompatActivity implements BuildingI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_building_list);
+        ButterKnife.bind(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         // Title and subtitle
@@ -146,34 +167,8 @@ public class BuildingListActivity extends AppCompatActivity implements BuildingI
         BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+
         try {
-
-            /*recyclerView = (RecyclerView) findViewById(R.id.building_recycler_view);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-            lists = new ArrayList<>();
-
-            for (int i = 1; i <= 10; i++) {
-
-                System.out.println("Testing" + i);
-
-                BuildingListModel myList = new BuildingListModel(
-                        i,
-                        "Haus-" + i,
-                        "House 56",
-                        "19",
-                        "27",
-                        "10"
-
-                );
-                lists.add(myList);
-            }
-
-*//*
-            Intent intent = getIntent();
-            Bundle extras = intent.getExtras();
-            int productId = extras.getInt("EXTRA_PRODUCT_ID");*/
 
             Intent intent = getIntent();
             Bundle bundle = intent.getBundleExtra("PROJECT_DATA");
@@ -188,10 +183,46 @@ public class BuildingListActivity extends AppCompatActivity implements BuildingI
 
             System.out.println("project_id" + project_id);
 
+/*
             loader.startLoading(this);
+*/
 
-            buildingApiService = new BuildingApiService(this);
-            buildingApiService.get_building(project_id, pageId);
+            context = this;
+            swipeRefresh.setOnRefreshListener(this);
+            /*recyclerView.setHasFixedSize(true);*/
+            layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+            adapter = new BuildingPostListAdapter(new ArrayList<BuildingListModel>(), this);
+            recyclerView.setAdapter(adapter);
+
+            buildingApiService = new BuildingApiService(context);
+            buildingApiService.get_building(project_id, currentPage);
+
+
+            recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
+                @Override
+                protected void loadMoreItems() {
+                    isLoading = true;
+                    currentPage++;
+                    buildingApiService = new BuildingApiService(context);
+                    buildingApiService.get_building(project_id, currentPage);
+                }
+
+                @Override
+                public boolean isLastPage() {
+                    return isLastPage;
+
+                }
+
+                @Override
+                public boolean isLoading() {
+                    return isLoading;
+                }
+            });
+
+
+          /*  buildingApiService = new BuildingApiService(this);
+            buildingApiService.get_building(project_id, pageId);*/
 
            /* adapter = new BuildingListAdapter(lists, this);
             recyclerView.setAdapter(adapter);*/
@@ -271,45 +302,50 @@ public class BuildingListActivity extends AppCompatActivity implements BuildingI
         try {
 
             lists = new ArrayList<>();
-            JSONArray buildingList = (JSONArray) buildingListJson.get("results");
-            for (int i = 0; i < buildingList.length(); i++) {
-                JSONObject row = buildingList.getJSONObject(i);
+            final JSONArray buildingList = (JSONArray) buildingListJson.get("results");
 
-                int id = (int) row.get("id");
-                String hause_number = (String) row.get("hause_number");
-                String description = (String) row.get("description");
-                String display_number = (String) row.get("display_number");
-                int total_tasks = (int) row.get("total_tasks");
-                int tasks_done = (int) row.get("tasks_done");
-                int total_flats = (int) row.get("total_flats");
-
-                BuildingListModel myList = new BuildingListModel(
-                        id,
-                        hause_number,
-                        display_number,
-                        total_tasks,
-                        tasks_done,
-                        total_flats
-                );
-                lists.add(myList);
-            }
-
-            runOnUiThread(new Runnable() {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 
                 @Override
                 public void run() {
-                    recyclerView = (RecyclerView) findViewById(R.id.building_recycler_view);
-                    recyclerView.setHasFixedSize(true);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
+                    try {
+                        for (int i = 0; i < buildingList.length(); i++) {
+                            JSONObject row = buildingList.getJSONObject(i);
 
-                    adapter = new BuildingListAdapter(lists, getApplicationContext());
-                    recyclerView.setAdapter(adapter);
+                            int id = (int) row.get("id");
+                            String hause_number = (String) row.get("hause_number");
+                            String description = (String) row.get("description");
+                            String display_number = (String) row.get("display_number");
+                            int total_tasks = (int) row.get("total_tasks");
+                            int tasks_done = (int) row.get("tasks_done");
+                            int total_flats = (int) row.get("total_flats");
+
+                            BuildingListModel myList = new BuildingListModel(
+                                    id,
+                                    hause_number,
+                                    display_number,
+                                    total_tasks,
+                                    tasks_done,
+                                    total_flats
+                            );
+                            lists.add(myList);
+                        }
+
+                        if (currentPage != PAGE_START) adapter.removeLoading();
+                        adapter.addAll(lists);
+                        swipeRefresh.setRefreshing(false);
+                        if (currentPage < totalPage) adapter.addLoading();
+                        else isLastPage = true;
+                        isLoading = false;
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
-            });
+            }, 1500);
 
-
-            loader.stopLoading();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -317,7 +353,18 @@ public class BuildingListActivity extends AppCompatActivity implements BuildingI
 
     @Override
     public void onBuildingFailed(JSONObject jsonObject) {
+        try {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.removeLoading();
+                }
+            }, 1500);
 
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -420,5 +467,15 @@ public class BuildingListActivity extends AppCompatActivity implements BuildingI
     @Override
     public void onProfileFailed(JSONObject jsonObject) {
 
+    }
+
+    @Override
+    public void onRefresh() {
+        itemCount = 0;
+        currentPage = PAGE_START;
+        isLastPage = false;
+        adapter.clear();
+        buildingApiService = new BuildingApiService(this);
+        buildingApiService.get_building(project_id, currentPage);
     }
 }

@@ -40,7 +40,7 @@ public class BuildingListAdapter extends RecyclerView.Adapter<BuildingListAdapte
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         BuildingListModel myList = buildingListModels.get(position);
         viewHolder.textBuildingName.setText(myList.getDisplayNumber());
-        viewHolder.buildingTask.setText(String.valueOf(myList.getTotalTasks()));
+        viewHolder.buildingTask.setText(String.valueOf(myList.getTotalTasks()) + " Task");
         viewHolder.buildingFlat.setText(String.valueOf(myList.getTotalFlats()));
         viewHolder.itemView.setTag(myList.getId());
     }

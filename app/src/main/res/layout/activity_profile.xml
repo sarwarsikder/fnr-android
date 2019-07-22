@@ -189,12 +189,6 @@
         app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
-        <TextView
-            android:id="@+id/log_out"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Log Out" />
     </LinearLayout>
 
 

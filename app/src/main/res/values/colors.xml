@@ -4,5 +4,5 @@
     <color name="colorPrimaryDark">#FF1A54CD</color>
     <color name="colorAccent">#00C171</color>
     <color name="actionbar_opacity">#33000000</color>
-
+    <color name="colorProgressBar">#C0E9D4</color>
 </resources>

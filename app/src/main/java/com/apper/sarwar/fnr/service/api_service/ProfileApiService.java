@@ -84,4 +84,8 @@ public class ProfileApiService {
         });
 
     }
+
+    public void log_out() {
+
+    }
 }

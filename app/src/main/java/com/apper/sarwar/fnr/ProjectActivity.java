@@ -42,10 +42,12 @@ import butterknife.ButterKnife;
 
 public class ProjectActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, ProjectIServiceListener {
     private static final String TAG = "ProjectActivity";
+
     @BindView(R.id.main_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout swipeRefresh;
+
     private LinearLayoutManager layoutManager;
     private ProjectPostListAdapter adapter;
     Intent intent;
@@ -141,7 +143,7 @@ public class ProjectActivity extends AppCompatActivity implements SwipeRefreshLa
             recyclerView.setAdapter(adapter);
 
             projectApiService = new ProjectApiService(this);
-            projectApiService.get_projects(1);
+            projectApiService.get_projects(currentPage);
 
             recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
                 @Override
@@ -272,6 +274,6 @@ public class ProjectActivity extends AppCompatActivity implements SwipeRefreshLa
         isLastPage = false;
         adapter.clear();
         projectApiService = new ProjectApiService(this);
-        projectApiService.get_projects(1);
+        projectApiService.get_projects(currentPage);
     }
 }

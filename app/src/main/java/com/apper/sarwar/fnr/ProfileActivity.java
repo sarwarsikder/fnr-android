@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +76,19 @@ public class ProfileActivity extends AppCompatActivity implements ProfileIServic
 
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.log_out:
+                Toast.makeText(this, "Test log out!", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return false;
+        }
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
@@ -96,6 +111,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileIServic
             layoutParams.setMargins(0, 0, 60, 0);
             toolbar.requestLayout();
         }
+
         setSupportActionBar(toolbar);
 
         BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
@@ -103,6 +119,13 @@ public class ProfileActivity extends AppCompatActivity implements ProfileIServic
         profileApiService = new ProfileApiService(this);
         profileApiService.get_profile();
         appConfigRemote = new AppConfigRemote();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.profile_menu, menu);
+        return true;
     }
 
     @Override
@@ -124,16 +147,6 @@ public class ProfileActivity extends AppCompatActivity implements ProfileIServic
             profile_email = (TextView) findViewById(R.id.user_email);
             profile_image = (ImageView) findViewById(R.id.user_image);
 
-            log_out = (TextView) findViewById(R.id.log_out);
-
-            log_out.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SharedPreferenceUtil.logOut(getApplicationContext());
-                    Intent intent = new Intent(getApplication(), SplashActivity.class);
-                    startActivity(intent);
-                }
-            });
 
 /*
             Picasso.with(context).load(android_versions.get(i).getAndroid_image_url()).resize(120, 60).into(viewHolder.img_android);
