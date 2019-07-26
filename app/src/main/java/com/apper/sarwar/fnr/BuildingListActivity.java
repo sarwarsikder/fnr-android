@@ -206,6 +206,7 @@ public class BuildingListActivity extends AppCompatActivity implements SwipeRefr
                     currentPage++;
                     buildingApiService = new BuildingApiService(context);
                     buildingApiService.get_building(project_id, currentPage);
+                    adapter.addLoading();
                 }
 
                 @Override
@@ -317,9 +318,27 @@ public class BuildingListActivity extends AppCompatActivity implements SwipeRefr
                             String hause_number = (String) row.get("hause_number");
                             String description = (String) row.get("description");
                             String display_number = (String) row.get("display_number");
-                            int total_tasks = (int) row.get("total_tasks");
-                            int tasks_done = (int) row.get("tasks_done");
-                            int total_flats = (int) row.get("total_flats");
+
+
+                            int total_tasks = 0;
+                            if (!row.get("total_tasks").equals(null)) {
+                                total_tasks = (int) row.get("total_tasks");
+
+                            }
+
+                            int tasks_done = 0;
+
+                            if (!row.get("tasks_done").equals(null)) {
+                                tasks_done = (int) row.get("tasks_done");
+                            }
+
+
+                            int total_flats = 0;
+
+                            if (!row.get("total_flats").equals(null)) {
+                                total_flats = (int) row.get("total_flats");
+                            }
+
 
                             BuildingListModel myList = new BuildingListModel(
                                     id,
@@ -338,6 +357,9 @@ public class BuildingListActivity extends AppCompatActivity implements SwipeRefr
                         if (currentPage < totalPage) adapter.addLoading();
                         else isLastPage = true;
                         isLoading = false;
+
+
+                        adapter.removeLoading();
 
                     } catch (Exception e) {
                         e.printStackTrace();

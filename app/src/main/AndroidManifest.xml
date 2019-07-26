@@ -26,8 +26,7 @@
             android:name=".ComponentDetailActivity"
             android:label="@string/title_activity_component_detail"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".SubComponentActivity"
             android:label="@string/title_activity_sub_component"
@@ -47,7 +46,9 @@
         <activity
             android:name=".ProjectActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <activity
             android:name=".ScanActivity"
             android:screenOrientation="portrait" />
@@ -62,10 +63,13 @@
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".MainActivity"

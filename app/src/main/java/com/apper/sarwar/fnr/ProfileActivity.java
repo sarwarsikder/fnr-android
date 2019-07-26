@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
@@ -22,8 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apper.sarwar.fnr.config.AppConfigRemote;
+import com.apper.sarwar.fnr.model.user_model.LoginModel;
 import com.apper.sarwar.fnr.model.user_model.ProfileModel;
 import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
+import com.apper.sarwar.fnr.service.iservice.LoginIServiceListener;
 import com.apper.sarwar.fnr.service.iservice.ProfileIService;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 import com.squareup.picasso.Callback;
@@ -34,7 +36,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileActivity extends AppCompatActivity implements ProfileIService {
+public class ProfileActivity extends AppCompatActivity implements ProfileIService, LoginIServiceListener {
     Intent intent;
     private ProfileApiService profileApiService;
     private List<ProfileModel> profileData;
@@ -80,7 +82,8 @@ public class ProfileActivity extends AppCompatActivity implements ProfileIServic
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.log_out:
-                Toast.makeText(this, "Test log out!", Toast.LENGTH_SHORT).show();
+                profileApiService = new ProfileApiService(this);
+                profileApiService.log_out();
                 return true;
             default:
                 return false;
@@ -192,5 +195,37 @@ public class ProfileActivity extends AppCompatActivity implements ProfileIServic
     @Override
     public void onProfileFailed(JSONObject jsonObject) {
 
+    }
+
+    @Override
+    public void onLoginSuccess(LoginModel loginModel) {
+
+    }
+
+    @Override
+    public void onLoginFailed(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onLogOutSuccess() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.access_token, "", getApplicationContext());
+                Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onLogOutFailed() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(ProfileActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

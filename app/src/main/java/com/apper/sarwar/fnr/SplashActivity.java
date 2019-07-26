@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
+
 public class SplashActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
@@ -18,9 +20,8 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
 
-
-
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
 
         new Thread(new Runnable() {
             public void run() {
@@ -40,9 +41,20 @@ public class SplashActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                 startActivity(intent);
                 finish();
+
+                /*if (SharedPreferenceUtil.isLoggedIn(getApplicationContext())) {
+                    Intent intent = new Intent(getApplicationContext(), ScanActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+*/
             }
         }).start();
 
 
     }
+
 }

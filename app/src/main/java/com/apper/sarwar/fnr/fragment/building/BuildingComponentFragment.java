@@ -103,7 +103,7 @@ public class BuildingComponentFragment extends Fragment {
             });
 
             int BuildingId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentBuildingId, getContext());
-            buildingComponentApiService.get_building_component(BuildingId);
+            buildingComponentApiService.get_building_component(BuildingId, 0);
             loader.stopLoading();
 
         } catch (

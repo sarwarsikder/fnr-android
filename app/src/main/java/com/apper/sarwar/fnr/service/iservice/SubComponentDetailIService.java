@@ -20,5 +20,9 @@ public interface SubComponentDetailIService {
 
     void OnStatusChangedFailed();
 
+    void OnGetCommentSuccess(JSONObject subCommentModel);
+
+    void OnGetCommentFailed(JSONObject jsonObject);
+
 
 }

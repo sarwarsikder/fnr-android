@@ -2,10 +2,8 @@ package com.apper.sarwar.fnr.model.sub_component;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class TaskDetailsCommentsModel {
 

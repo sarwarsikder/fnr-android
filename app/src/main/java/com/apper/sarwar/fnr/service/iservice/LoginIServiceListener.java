@@ -7,4 +7,6 @@ import org.json.JSONObject;
 public interface LoginIServiceListener {
     void onLoginSuccess(LoginModel loginModel);
     void onLoginFailed(JSONObject jsonObject);
+    void onLogOutSuccess();
+    void onLogOutFailed();
 }

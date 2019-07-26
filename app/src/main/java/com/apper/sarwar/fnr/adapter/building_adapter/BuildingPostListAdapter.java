@@ -137,6 +137,9 @@ public class BuildingPostListAdapter extends RecyclerView.Adapter<BaseViewHolder
         public TextView buildingTask;
         @BindView(R.id.building_flat)
         public TextView buildingFlat;
+        @BindView(R.id.flat_lavel)
+        public TextView flat_lavel;
+
 
         public ViewHolder(@NonNull View itemView) {
 
@@ -150,9 +153,17 @@ public class BuildingPostListAdapter extends RecyclerView.Adapter<BaseViewHolder
             try {
                 BuildingListModel myList = buildingListModels.get(position);
                 textBuildingName.setText(myList.getDisplayNumber());
+
+                if (!SharedPreferenceUtil.getDefaultsBool(SharedPreferenceUtil.isStaff, context)) {
+                    buildingTask.setVisibility(View.GONE);
+                    buildingFlat.setVisibility(View.GONE);
+                    flat_lavel.setVisibility(View.GONE);
+
+                }
+
                 buildingTask.setText(String.valueOf(myList.getTotalTasks()) + " Task");
                 buildingFlat.setText(String.valueOf(myList.getTotalFlats()));
-                itemView.setTag(myList.getId());
+
                 itemView.setTag(myList.getId());
 
 

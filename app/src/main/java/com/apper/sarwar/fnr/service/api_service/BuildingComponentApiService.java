@@ -32,8 +32,8 @@ public class BuildingComponentApiService {
         appConfigRemote = new AppConfigRemote();
     }
 
-    public void get_building_component(int buildingId) {
-        String requestUrl = appConfigRemote.getBASE_URL() + "/api/building/" + buildingId + "/components/";
+    public void get_building_component(int buildingId, int currentPage) {
+        String requestUrl = appConfigRemote.getBASE_URL() + "/api/building/" + buildingId + "/components/?page=" + currentPage;
 
 
         String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);

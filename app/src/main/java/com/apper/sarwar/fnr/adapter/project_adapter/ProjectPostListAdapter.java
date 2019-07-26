@@ -162,11 +162,6 @@ public class ProjectPostListAdapter extends RecyclerView.Adapter<BaseViewHolder>
                 if (myList.getTotal_tasks() > 0) {
                     progress = (myList.getTasks_done() * 100) / myList.getTotal_tasks();
                 }
-
-                else{
-                    progress = (20 * 100) / 150;
-
-                }
                 textProjectProgress.setProgress(progress);
                 itemView.setTag(myList.getId());
 

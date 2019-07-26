@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".fragment.building.BuildingFlatFragment">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/flatListSwipeRefresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_alignParentStart="true"
@@ -42,5 +42,5 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_editor_absoluteX="0dp" />
         </RelativeLayout>
-    </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </android.support.constraint.ConstraintLayout>

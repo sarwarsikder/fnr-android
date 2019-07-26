@@ -12,18 +12,21 @@ import android.widget.Toast;
 
 import com.apper.sarwar.fnr.model.user_model.LoginModel;
 import com.apper.sarwar.fnr.service.api_service.LoginApiService;
+import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
 import com.apper.sarwar.fnr.service.iservice.LoginIServiceListener;
+import com.apper.sarwar.fnr.service.iservice.ProfileIService;
 import com.apper.sarwar.fnr.utils.Loader;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import org.json.JSONObject;
 
-public class LogInActivity extends AppCompatActivity implements LoginIServiceListener {
+public class LogInActivity extends AppCompatActivity implements LoginIServiceListener, ProfileIService {
 
     private static final String TAG = "LogInActivity";
     TextView go_sign_up_button, sign_in;
     Loader loader;
     LoginApiService loginApiService;
+    ProfileApiService profileApiService;
     EditText user_name;
     EditText password;
     String text_user_name, text_password;
@@ -36,6 +39,7 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
         setContentView(R.layout.activity_log_in);
 
         loginApiService = new LoginApiService(this);
+        profileApiService = new ProfileApiService(this);
 
         sign_in = (Button) findViewById(R.id.sign_in);
         user_name = (EditText) findViewById(R.id.user_full_name);
@@ -64,16 +68,6 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
     }
 
 
-   /* @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (SharedPreferenceUtil.isLoggedIn(this)) {
-            Intent intent = new Intent(this, LogInActivity.class);
-            startActivity(intent);
-        }
-    }*/
-
     public boolean isValidForm(String nameTxt, String passwordTxt) {
         boolean validName = !nameTxt.isEmpty();
 
@@ -89,14 +83,25 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
     }
 
     @Override
-    public void onLoginSuccess(LoginModel loginModel) {
-        loader.stopLoading();
-        Log.d(TAG, "onLoginSuccess: " + loginModel.getAccess_token());
-        SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.access_token, loginModel.getAccess_token(), this);
+    public void onLoginSuccess(final LoginModel loginModel) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    loader.stopLoading();
+                    Log.d(TAG, "onLoginSuccess: " + loginModel.getAccess_token());
+                    SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.access_token, loginModel.getAccess_token(), getApplicationContext());
+                    profileApiService.get_profile();
+                    Intent intent = new Intent(getApplicationContext(), ScanActivity.class);
+                    startActivity(intent);
+                    finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-        Intent intent = new Intent(this, ScanActivity.class);
-        startActivity(intent);
-        finish();
+            }
+        });
+
 
     }
 
@@ -110,5 +115,38 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
                           }
                       }
         );
+    }
+
+    @Override
+    public void onLogOutSuccess() {
+
+    }
+
+    @Override
+    public void onLogOutFailed() {
+
+    }
+
+    @Override
+    public void onProfileSuccess(final JSONObject profileListModel) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    boolean is_staff = (boolean) profileListModel.get("is_staff");
+                    SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.isStaff, is_staff, getApplicationContext());
+                    int x = 0;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onProfileFailed(JSONObject jsonObject) {
+
     }
 }

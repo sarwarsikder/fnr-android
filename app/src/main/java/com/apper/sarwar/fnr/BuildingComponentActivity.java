@@ -36,6 +36,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 public class BuildingComponentActivity extends AppCompatActivity implements ProfileIService {
 
     TabLayout building_tab_layout;
@@ -136,8 +138,6 @@ public class BuildingComponentActivity extends AppCompatActivity implements Prof
                 finish();
             }
         });
-
-        loader.startLoading(this);
 
 
         building_tab_layout = (TabLayout) findViewById(R.id.building_tabs);

@@ -345,4 +345,56 @@ public class SubComponentDetailApiService {
             Log.d(TAG, "signUp: " + e.getMessage());
         }
     }
+
+    public void get_sub_component_comment(int componentId, int pageNum) {
+        String requestUrl = appConfigRemote.getBASE_URL() + "/api/task/" + componentId + "/comments/?page=" + pageNum;
+
+
+        String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);
+        Request httpRequest = new Request.Builder()
+                .header("Authorization", authorization)
+                .url(requestUrl)
+                .build();
+
+        final OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.newCall(httpRequest).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("onFailure()");
+                call.cancel();
+                JSONObject failResponse = new JSONObject();
+                try {
+                    failResponse.put("response_body", "");
+                    failResponse.put("response_code", 404);
+                    failResponse.put("response_message", "login failed");
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+                subComponentDetailIService.OnGetCommentFailed(failResponse);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    System.out.println("onResponse()");
+
+                    String responseBody = response.body().string();
+                    JSONObject responseObject = new JSONObject(responseBody);
+
+                    if (response.code() == 200) {
+                        subComponentDetailIService.OnGetCommentSuccess(responseObject);
+                    } else {
+                        subComponentDetailIService.OnGetCommentFailed(responseObject);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "onResponse: " + e.getMessage());
+                }
+
+
+            }
+        });
+
+    }
 }

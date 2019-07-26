@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 public interface BuildingIServiceListener {
 
-    void onBuildingSuccess(JSONObject projectListModel);
+    void onBuildingSuccess(JSONObject BuildingFlatListModel);
 
     void onBuildingFailed(JSONObject jsonObject);
 }

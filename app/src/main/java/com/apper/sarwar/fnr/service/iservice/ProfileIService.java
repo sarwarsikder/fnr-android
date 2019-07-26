@@ -7,4 +7,5 @@ public interface ProfileIService {
     void onProfileSuccess(JSONObject profileListModel);
 
     void onProfileFailed(JSONObject jsonObject);
+
 }

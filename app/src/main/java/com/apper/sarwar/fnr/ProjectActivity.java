@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apper.sarwar.fnr.adapter.PaginationScrollListener;
-import com.apper.sarwar.fnr.adapter.project_adapter.ProjectListAdapter;
 import com.apper.sarwar.fnr.adapter.project_adapter.ProjectPostListAdapter;
 import com.apper.sarwar.fnr.model.project_model.ProjectListModel;
 import com.apper.sarwar.fnr.project_swipe.SwipeController;
@@ -148,6 +146,8 @@ public class ProjectActivity extends AppCompatActivity implements SwipeRefreshLa
             recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
                 @Override
                 protected void loadMoreItems() {
+
+                    adapter.addLoading();
                     isLoading = true;
                     currentPage++;
                     projectApiService = new ProjectApiService(context);
@@ -211,8 +211,19 @@ public class ProjectActivity extends AppCompatActivity implements SwipeRefreshLa
                             String city = (String) row.get("city");
                             String type = (String) row.get("type");
                             String energetic_standard = (String) row.get("energetic_standard");
-                            int total_tasks = (int) row.get("total_tasks");
-                            int tasks_done = (int) row.get("tasks_done");
+
+                            int total_tasks = 0;
+                            if (!row.get("total_tasks").equals(null)) {
+                                total_tasks = (int) row.get("total_tasks");
+
+                            }
+
+                            int tasks_done = 0;
+
+                            if (!row.get("tasks_done").equals(null)) {
+                                tasks_done = (int) row.get("tasks_done");
+                            }
+
 
                             ProjectListModel myList = new ProjectListModel(
                                     id,
@@ -236,6 +247,9 @@ public class ProjectActivity extends AppCompatActivity implements SwipeRefreshLa
                         if (currentPage < totalPage) adapter.addLoading();
                         else isLastPage = true;
                         isLoading = false;
+
+
+                        adapter.removeLoading();
 
                     } catch (Exception e) {
                         e.printStackTrace();

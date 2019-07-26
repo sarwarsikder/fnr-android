@@ -13,12 +13,15 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,7 +44,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apper.sarwar.fnr.adapter.PaginationScrollListener;
 import com.apper.sarwar.fnr.adapter.sub_component.CommentAdapter;
+import com.apper.sarwar.fnr.adapter.sub_component.CommentPostAdapter;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.datetimepicker.DatePickerIService;
 import com.apper.sarwar.fnr.datetimepicker.DateTimePickerFragment;
@@ -68,7 +73,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ComponentDetailActivity extends AppCompatActivity implements SubComponentDetailIService, ProfileIService, DatePickerIService {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class ComponentDetailActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, SubComponentDetailIService, ProfileIService, DatePickerIService {
 
     Intent intent;
 
@@ -112,6 +120,24 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
     ImageView due_date_image;
     DatePickerDialog datePickerDialog;
     List<String> varSpinnerData;
+    private boolean isSpinnerInitial = true;
+
+    @BindView(R.id.comment_recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.commentSwipeRefresh)
+    SwipeRefreshLayout swipeRefresh;
+
+
+    Context context;
+    private LinearLayoutManager layoutManager;
+    private CommentPostAdapter adapter;
+
+    public static final int PAGE_START = 1;
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private int totalPage = 10;
+    private boolean isLoading = false;
+    int itemCount = 0;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -154,6 +180,8 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
 
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_component_detail);
+            ButterKnife.bind(this);
+
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -196,12 +224,52 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
             appConfigRemote = new AppConfigRemote();
 
             subComponentId = (int) SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentSubComponentId, this);
+            subComponentId = 285;
 
             subComponentDetailApiService = new SubComponentDetailApiService(this);
 
             subComponentDetailApiService.get_sub_component_details(subComponentId);
             /*subComponentDetailApiService.get_sub_component_details(350);*/
             /*subComponentDetailApiService.get_sub_component_details(267);*/
+
+
+            context = this;
+            swipeRefresh.setOnRefreshListener(this);
+            /*recyclerView.setHasFixedSize(true);*/
+            layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+            adapter = new CommentPostAdapter(new ArrayList<TaskDetailsCommentsModel>(), this);
+            recyclerView.setAdapter(adapter);
+
+            try {
+
+                subComponentDetailApiService = new SubComponentDetailApiService(this);
+                subComponentDetailApiService.get_sub_component_comment(subComponentId, currentPage);
+
+                recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
+                    @Override
+                    protected void loadMoreItems() {
+                        isLoading = true;
+                        currentPage++;
+                        subComponentDetailApiService = new SubComponentDetailApiService(context);
+                        subComponentDetailApiService.get_sub_component_comment(subComponentId, currentPage);
+                    }
+
+                    @Override
+                    public boolean isLastPage() {
+                        return isLastPage;
+
+                    }
+
+                    @Override
+                    public boolean isLoading() {
+                        return isLoading;
+                    }
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
             create_button = (ImageView) findViewById(R.id.create_button);
@@ -422,7 +490,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
                     comment_counter.setText("Nachrichten(" + comment_count + ")");
 
 
-                    List<String> myArraySpinnerValue = new ArrayList<String>();
+                    final List<String> myArraySpinnerValue = new ArrayList<String>();
                     final List<String> myArraySpinnerOption = new ArrayList<String>();
 
                     if (taskDetailsModel.getStatus_list().size() > 0) {
@@ -448,8 +516,15 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                            String option = myArraySpinnerOption.get(i).toString();
-                            subComponentDetailApiService.sub_component_status_change(subComponentId, option);
+                            if (isSpinnerInitial) {
+                                isSpinnerInitial = false;
+                                int index = (int) myArraySpinnerOption.indexOf(taskDetailsModel.getStatus());
+                                task_status.setSelection(index);
+                            } else {
+                                String option = myArraySpinnerOption.get(i).toString();
+                                subComponentDetailApiService.sub_component_status_change(subComponentId, option);
+                            }
+
                         }
 
                         @Override
@@ -462,7 +537,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
                             .load(appConfigRemote.getBASE_URL() + "" + user_image)
                             .placeholder(R.drawable.fnr_logo)
                             .resize(106, 106)
-                             .into(assignee_image, new Callback() {
+                            .into(assignee_image, new Callback() {
                                 @Override
                                 public void onSuccess() {
                                     Bitmap imageBitmap = ((BitmapDrawable) assignee_image.getDrawable()).getBitmap();
@@ -478,14 +553,14 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
                                 }
                             });
 
-                    recyclerViewComment = (RecyclerView) findViewById(R.id.comment_recycler_view);
+                   /* recyclerViewComment = (RecyclerView) findViewById(R.id.comment_recycler_view);
                     recyclerViewComment.setHasFixedSize(true);
                     recyclerViewComment.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
                     if (taskDetailsModel.getComments().size() > 0) {
                         adapterComment = new CommentAdapter(taskDetailsModel.getComments(), getApplicationContext());
                         recyclerViewComment.setAdapter(adapterComment);
-                    }
+                    }*/
 
                 }
             });
@@ -596,6 +671,66 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
     }
 
     @Override
+    public void OnGetCommentSuccess(final JSONObject subCommentModel) {
+
+        try {
+
+            commentModels = new ArrayList<>();
+
+            String comments_data = (String) subCommentModel.get("results").toString();
+            comment_count = (int) subCommentModel.get("count");
+
+
+            if (comments_data.length() > 0) {
+                taskDetailsCommentsModel = new ObjectMapper().readValue(comments_data, new TypeReference<ArrayList<TaskDetailsCommentsModel>>() {
+                });
+            }
+
+
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    try {
+
+                        if (currentPage != PAGE_START) adapter.removeLoading();
+                        adapter.addAll(taskDetailsCommentsModel);
+                        swipeRefresh.setRefreshing(false);
+                        if (currentPage < totalPage) adapter.addLoading();
+                        else isLastPage = true;
+                        isLoading = false;
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, 1500);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void OnGetCommentFailed(JSONObject jsonObject) {
+        try {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.removeLoading();
+                }
+            }, 1500);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void onProfileSuccess(JSONObject profileListModel) {
 
         try {
@@ -702,5 +837,14 @@ public class ComponentDetailActivity extends AppCompatActivity implements SubCom
         System.out.println(dateStr);
         subComponentDetailApiService.sub_component_date_change(subComponentId, dateStr);
         int x = 0;
+    }
+
+    @Override
+    public void onRefresh() {
+        itemCount = 0;
+        currentPage = PAGE_START;
+        isLastPage = false;
+        adapter.clear();
+        subComponentDetailApiService.get_sub_component_comment(subComponentId, currentPage);
     }
 }

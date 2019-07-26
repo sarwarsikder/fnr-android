@@ -35,8 +35,8 @@ public class BuildingFlatAPIService {
 
     }
 
-    public void get_building_flat(int buildingId) {
-        String requestUrl = appConfigRemote.getBASE_URL() + "/api/building/" + buildingId + "/flats/";
+    public void get_building_flat(int buildingId, int currentPage) {
+        String requestUrl = appConfigRemote.getBASE_URL() + "/api/building/" + buildingId + "/flats/?page=" + currentPage;
 
 
         String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);

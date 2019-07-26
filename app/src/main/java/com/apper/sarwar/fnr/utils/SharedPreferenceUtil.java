@@ -17,6 +17,7 @@ public class SharedPreferenceUtil {
     public static final String currentComponentId = "currentComponent";
     public static final String currentSubComponentId = "currentSubComponent";
     public static final String currentState = "currentState";
+    public static final String isStaff = "isStaff";
 
 
     public static void setDefaults(String key, String value, Context context) {
@@ -35,6 +36,14 @@ public class SharedPreferenceUtil {
         editor.commit();
     }
 
+    public static void setDefaultsId(String key, boolean value, Context context) {
+
+        SharedPreferences pref = context.getApplicationContext().getSharedPreferences(SharedPreferenceUtil.AUTH_USER_PREF, MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
     public static String getDefaults(String key, Context context) {
         SharedPreferences pref = context.getApplicationContext().getSharedPreferences(SharedPreferenceUtil.AUTH_USER_PREF, MODE_PRIVATE);
         String value = pref.getString(key, null);
@@ -44,6 +53,12 @@ public class SharedPreferenceUtil {
     public static int getDefaultsId(String key, Context context) {
         SharedPreferences pref = context.getApplicationContext().getSharedPreferences(SharedPreferenceUtil.AUTH_USER_PREF, MODE_PRIVATE);
         int value = pref.getInt(key, 0);
+        return value;
+    }
+
+    public static boolean getDefaultsBool(String key, Context context) {
+        SharedPreferences pref = context.getApplicationContext().getSharedPreferences(SharedPreferenceUtil.AUTH_USER_PREF, MODE_PRIVATE);
+        boolean value = pref.getBoolean(key, true);
         return value;
     }
 
