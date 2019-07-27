@@ -100,72 +100,77 @@ public class BuildingComponentActivity extends AppCompatActivity implements Prof
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_building_component);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        // Title and subtitle
-        toolbar.setTitle(R.string.title_activity_building_component);
-        toolbar.setBackgroundColor(Color.WHITE);
-        toolbar.setTitleTextColor(Color.BLACK);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_building_component);
+
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            // Title and subtitle
+            toolbar.setTitle(R.string.title_activity_building_component);
+            toolbar.setBackgroundColor(Color.WHITE);
+            toolbar.setTitleTextColor(Color.BLACK);
 
 
-        final CharSequence title = toolbar.getTitle();
-        final ArrayList<View> outViews = new ArrayList<>(1);
+            final CharSequence title = toolbar.getTitle();
+            final ArrayList<View> outViews = new ArrayList<>(1);
 
-        toolbar.findViewsWithText(outViews, title, View.FIND_VIEWS_WITH_TEXT);
-        if (!outViews.isEmpty()) {
-            final TextView titleView = (TextView) outViews.get(0);
-            titleView.setGravity(Gravity.CENTER_HORIZONTAL);
-            final Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) titleView.getLayoutParams();
-            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            layoutParams.setMargins(0, 0, 60, 0);
-            toolbar.requestLayout();
+            toolbar.findViewsWithText(outViews, title, View.FIND_VIEWS_WITH_TEXT);
+            if (!outViews.isEmpty()) {
+                final TextView titleView = (TextView) outViews.get(0);
+                titleView.setGravity(Gravity.CENTER_HORIZONTAL);
+                final Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) titleView.getLayoutParams();
+                layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                layoutParams.setMargins(0, 0, 60, 0);
+                toolbar.requestLayout();
+            }
+
+            setSupportActionBar(toolbar);
+
+            BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
+            navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+            toolbar.setNavigationIcon(R.drawable.ic_backwith_circle);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), BuildingListActivity.class);
+                    view.getContext().startActivity(intent);
+                    finish();
+                }
+            });
+
+
+            building_tab_layout = (TabLayout) findViewById(R.id.building_tabs);
+
+            building_tab_layout.setTabGravity(TabLayout.GRAVITY_FILL);
+            viewPager = (ViewPager) findViewById(R.id.view_pager);
+            buildingTabsAdapter = new BuildingTabsAdapter(getSupportFragmentManager(), building_tab_layout.getTabCount());
+            tabsAdapter = buildingTabsAdapter;
+
+            viewPager.setAdapter(tabsAdapter);
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(building_tab_layout));
+
+            building_tab_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    viewPager.setCurrentItem(tab.getPosition());
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        setSupportActionBar(toolbar);
-
-        BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        toolbar.setNavigationIcon(R.drawable.ic_backwith_circle);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), BuildingListActivity.class);
-                view.getContext().startActivity(intent);
-                finish();
-            }
-        });
-
-
-        building_tab_layout = (TabLayout) findViewById(R.id.building_tabs);
-
-        building_tab_layout.setTabGravity(TabLayout.GRAVITY_FILL);
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        buildingTabsAdapter = new BuildingTabsAdapter(getSupportFragmentManager(), building_tab_layout.getTabCount());
-        tabsAdapter = buildingTabsAdapter;
-
-        viewPager.setAdapter(tabsAdapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(building_tab_layout));
-
-        building_tab_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
 
 
     }

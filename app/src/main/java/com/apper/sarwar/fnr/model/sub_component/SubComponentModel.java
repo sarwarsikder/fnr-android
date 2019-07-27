@@ -20,6 +20,9 @@ public class SubComponentModel implements Serializable {
         CreatedTime = createdTime;
     }
 
+    public SubComponentModel() {
+    }
+
     public int getId() {
         return Id;
     }

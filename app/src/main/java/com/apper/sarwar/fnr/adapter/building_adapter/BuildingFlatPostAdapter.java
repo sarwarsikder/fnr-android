@@ -154,6 +154,8 @@ public class BuildingFlatPostAdapter extends RecyclerView.Adapter<BaseViewHolder
                 flatName = (TextView) itemView.findViewById(R.id.building_flat_name);
                 componentCount = (TextView) itemView.findViewById(R.id.building_flat_component);
 
+                itemView.setTag(myList.getId());
+
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

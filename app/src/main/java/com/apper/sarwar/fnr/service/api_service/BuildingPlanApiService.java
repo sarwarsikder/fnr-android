@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.apper.sarwar.fnr.config.AppConfigRemote;
-import com.apper.sarwar.fnr.service.iservice.BuildingFlatIServiceListener;
 import com.apper.sarwar.fnr.service.iservice.BuildingPlansIService;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
@@ -36,8 +35,8 @@ public class BuildingPlanApiService {
 
     }
 
-    public void get_building_plan(int buildingId) {
-        String requestUrl = appConfigRemote.getBASE_URL() + "/api/building/" + buildingId + "/plans/";
+    public void get_building_plan(int buildingId, int currentPage) {
+        String requestUrl = appConfigRemote.getBASE_URL() + "/api/building/" + buildingId + "/plans/?page=" + currentPage;
 
 
         String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);
@@ -72,7 +71,6 @@ public class BuildingPlanApiService {
                     JSONObject responseObject = new JSONObject(responseBody);
 
                     if (response.code() == 200) {
-                        /*SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.urlAuthorization, authorization, this);*/
                         buildingPlansIService.onBuildingPlanSuccess(responseObject);
 
                     } else {

@@ -75,6 +75,40 @@ public class BuildingFlatFragment extends Fragment implements SwipeRefreshLayout
                 public void onBuildingFlatSuccess(final JSONObject buildingFlatListModel) {
                     try {
 
+                        lists = new ArrayList<>();
+                        JSONArray buildingFlatList = (JSONArray) buildingFlatListModel.get("results");
+
+                        for (int i = 0; i < buildingFlatList.length(); i++) {
+                            JSONObject row = buildingFlatList.getJSONObject(i);
+
+
+                            int id = (int) row.get("id");
+                            String number = (String) row.get("number");
+                            String description = (String) row.get("description");
+                            String client_name = (String) row.get("client_name");
+                            String client_address = (String) row.get("client_address");
+                            String client_email = (String) row.get("client_email");
+                            String client_tel = (String) row.get("client_tel");
+                            int total_tasks = (int) row.get("total_tasks");
+                            int tasks_done = (int) row.get("tasks_done");
+
+                            System.out.println("Testing" + i);
+
+                            BuildingFlatListModel myList = new BuildingFlatListModel(
+                                    id,
+                                    number,
+                                    description,
+                                    client_name,
+                                    client_address,
+                                    client_email,
+                                    client_tel,
+                                    total_tasks,
+                                    tasks_done
+
+                            );
+                            lists.add(myList);
+                        }
+
 
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 
@@ -82,40 +116,7 @@ public class BuildingFlatFragment extends Fragment implements SwipeRefreshLayout
                             public void run() {
 
                                 try {
-                                    lists = new ArrayList<>();
-                                    JSONArray buildingFlatList = (JSONArray) buildingFlatListModel.get("results");
 
-
-                                    for (int i = 0; i < buildingFlatList.length(); i++) {
-                                        JSONObject row = buildingFlatList.getJSONObject(i);
-
-
-                                        int id = (int) row.get("id");
-                                        String number = (String) row.get("number");
-                                        String description = (String) row.get("description");
-                                        String client_name = (String) row.get("client_name");
-                                        String client_address = (String) row.get("client_address");
-                                        String client_email = (String) row.get("client_email");
-                                        String client_tel = (String) row.get("client_tel");
-                                        int total_tasks = (int) row.get("total_tasks");
-                                        int tasks_done = (int) row.get("tasks_done");
-
-                                        System.out.println("Testing" + i);
-
-                                        BuildingFlatListModel myList = new BuildingFlatListModel(
-                                                id,
-                                                number,
-                                                description,
-                                                client_name,
-                                                client_address,
-                                                client_email,
-                                                client_tel,
-                                                total_tasks,
-                                                tasks_done
-
-                                        );
-                                        lists.add(myList);
-                                    }
 
                                     if (currentPage != PAGE_START) adapter.removeLoading();
                                     adapter.addAll(lists);
@@ -143,8 +144,18 @@ public class BuildingFlatFragment extends Fragment implements SwipeRefreshLayout
 
                 @Override
                 public void onBuildingFlatFailed(JSONObject jsonObject) {
-                    String x = "";
+                    try {
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.removeLoading();
+                            }
+                        }, 1500);
 
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             buildingId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentBuildingId, getContext());

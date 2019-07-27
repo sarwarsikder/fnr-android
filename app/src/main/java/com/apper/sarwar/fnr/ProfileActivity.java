@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.user_model.LoginModel;
 import com.apper.sarwar.fnr.model.user_model.ProfileModel;
+import com.apper.sarwar.fnr.service.api_service.LoginApiService;
 import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
 import com.apper.sarwar.fnr.service.iservice.LoginIServiceListener;
 import com.apper.sarwar.fnr.service.iservice.ProfileIService;
@@ -39,6 +40,7 @@ import java.util.List;
 public class ProfileActivity extends AppCompatActivity implements ProfileIService, LoginIServiceListener {
     Intent intent;
     private ProfileApiService profileApiService;
+    private LoginApiService loginApiService;
     private List<ProfileModel> profileData;
     TextView profile_full_name, profile_user_name, profile_email, log_out;
     ImageView profile_image;
@@ -82,8 +84,8 @@ public class ProfileActivity extends AppCompatActivity implements ProfileIServic
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.log_out:
-                profileApiService = new ProfileApiService(this);
-                profileApiService.log_out();
+                loginApiService = new LoginApiService(this);
+                loginApiService.log_out();
                 return true;
             default:
                 return false;

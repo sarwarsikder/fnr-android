@@ -29,9 +29,11 @@ import android.widget.Toast;
 import com.apper.sarwar.fnr.adapter.PaginationScrollListener;
 import com.apper.sarwar.fnr.adapter.building_adapter.BuildingPostListAdapter;
 import com.apper.sarwar.fnr.model.building_model.BuildingListModel;
+import com.apper.sarwar.fnr.model.user_model.LoginModel;
 import com.apper.sarwar.fnr.service.api_service.BuildingApiService;
 import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
 import com.apper.sarwar.fnr.service.iservice.BuildingIServiceListener;
+import com.apper.sarwar.fnr.service.iservice.LoginIServiceListener;
 import com.apper.sarwar.fnr.service.iservice.ProfileIService;
 import com.apper.sarwar.fnr.utils.Loader;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
@@ -245,17 +247,21 @@ public class BuildingListActivity extends AppCompatActivity implements SwipeRefr
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.menu_screen_info:
-                /*initiatePopupWindow();*/
-                profileApiService = new ProfileApiService(this);
-                profileApiService.get_profile();
-/*
-                Toast.makeText(this, "You clicked menu info", Toast.LENGTH_SHORT).show();
-*/
-                break;
+        try {
 
+            switch (item.getItemId()) {
+                case R.id.menu_screen_info:
+                    /*initiatePopupWindow();*/
+                    profileApiService = new ProfileApiService(this);
+                    profileApiService.get_profile();
+                    break;
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return true;
     }
 
@@ -500,4 +506,5 @@ public class BuildingListActivity extends AppCompatActivity implements SwipeRefr
         buildingApiService = new BuildingApiService(this);
         buildingApiService.get_building(project_id, currentPage);
     }
+
 }

@@ -7,6 +7,7 @@ import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.user_model.LoginModel;
 import com.apper.sarwar.fnr.service.iservice.LoginIServiceListener;
 import com.apper.sarwar.fnr.utils.Loader;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
@@ -103,5 +104,58 @@ public class LoginApiService {
         }
 
 
+    }
+
+    public void log_out() {
+        try {
+            final MediaType JSON = MediaType.parse("application/x-www-form-urlencoded");
+            String requestUrl = appConfigRemote.getBASE_URL() + "/api/auth/revoke_token/";
+
+
+            RequestBody requestBody = new FormBody.Builder()
+                    .add("client_id", appConfigRemote.getCLIENT_ID())
+                    .add("token", SharedPreferenceUtil.getDefaults(SharedPreferenceUtil.access_token, context))
+                    .build();
+
+            final Request httpRequest = new Request.Builder()
+                    .url(requestUrl)
+                    .post(requestBody)
+                    .build();
+
+            final OkHttpClient okHttpClient = new OkHttpClient();
+            okHttpClient.newCall(httpRequest).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    System.out.println("onFailure()");
+                    call.cancel();
+                    JSONObject failResponse = new JSONObject();
+                    try {
+                        failResponse.put("response_body", "");
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                    loginIServiceListener.onLogOutFailed();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    try {
+                        System.out.println("onResponse()");
+                        if (response.code() == 200) {
+                            loginIServiceListener.onLogOutSuccess();
+                        } else {
+                            loginIServiceListener.onLogOutFailed();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "onResponse: " + e.getMessage());
+                    }
+
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

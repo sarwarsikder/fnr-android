@@ -224,7 +224,6 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
             appConfigRemote = new AppConfigRemote();
 
             subComponentId = (int) SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentSubComponentId, this);
-            subComponentId = 285;
 
             subComponentDetailApiService = new SubComponentDetailApiService(this);
 

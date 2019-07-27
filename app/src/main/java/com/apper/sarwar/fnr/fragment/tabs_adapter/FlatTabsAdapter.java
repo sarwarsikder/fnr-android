@@ -4,9 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.apper.sarwar.fnr.fragment.building.BuildingComponentFragment;
-import com.apper.sarwar.fnr.fragment.building.BuildingPlanFragment;
 import com.apper.sarwar.fnr.fragment.flat.FlatComponentFragment;
+import com.apper.sarwar.fnr.fragment.flat.FlatPlanFragment;
 
 public class FlatTabsAdapter extends FragmentStatePagerAdapter {
 
@@ -27,7 +26,7 @@ public class FlatTabsAdapter extends FragmentStatePagerAdapter {
                     FlatComponentFragment buildingComponentFragment = new FlatComponentFragment();
                     return buildingComponentFragment;
                 case 1:
-                    BuildingPlanFragment buildingPlanFragment = new BuildingPlanFragment();
+                    FlatPlanFragment buildingPlanFragment = new FlatPlanFragment();
                     return buildingPlanFragment;
                 default:
                     return null;

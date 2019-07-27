@@ -35,8 +35,8 @@ public class SubComponentApiService {
 
     }
 
-    public void get_sub_component(int buildingId, int componentId) {
-        String requestUrl = appConfigRemote.getBASE_URL() + "/api/building/" + buildingId + "/component/" + componentId + "/tasks/";
+    public void get_sub_component(int buildingId, int componentId, int currentPage) {
+        String requestUrl = appConfigRemote.getBASE_URL() + "/api/building/" + buildingId + "/component/" + componentId + "/tasks/?page=" + currentPage;
 
 
         String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);
@@ -90,8 +90,8 @@ public class SubComponentApiService {
 
     }
 
-    public void get_sub_component_flat(int flatId, int componentId) {
-        String requestUrl = appConfigRemote.getBASE_URL() + "/api/flat/" + flatId + "/component/" + componentId + "/tasks/";
+    public void get_sub_component_flat(int flatId, int componentId, int currentPage) {
+        String requestUrl = appConfigRemote.getBASE_URL() + "/api/flat/" + flatId + "/component/" + componentId + "/tasks/?page=" + currentPage;
 
 
         String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);

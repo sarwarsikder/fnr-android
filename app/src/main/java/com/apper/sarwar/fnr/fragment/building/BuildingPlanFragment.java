@@ -1,7 +1,11 @@
 package com.apper.sarwar.fnr.fragment.building;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,11 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.apper.sarwar.fnr.R;
-import com.apper.sarwar.fnr.adapter.building_adapter.BuildingPlanAdapter;
+import com.apper.sarwar.fnr.adapter.PaginationScrollListener;
+import com.apper.sarwar.fnr.adapter.building_adapter.BuildingPlanPostAdapter;
 import com.apper.sarwar.fnr.model.building_model.BuildingPlanModel;
 import com.apper.sarwar.fnr.service.api_service.BuildingPlanApiService;
 import com.apper.sarwar.fnr.service.iservice.BuildingPlansIService;
-import com.apper.sarwar.fnr.utils.Loader;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import org.json.JSONArray;
@@ -22,18 +26,35 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class BuildingPlanFragment extends Fragment {
 
-
-    RecyclerView recyclerView;
-    Loader loader;
-    private RecyclerView.LayoutManager layoutManager;
-    private BuildingPlanAdapter adapter;
+public class BuildingPlanFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    private LinearLayoutManager layoutManager;
+    private BuildingPlanPostAdapter adapter;
     private View view;
     private BuildingPlanApiService buildingPlanApiService;
 
     private List<BuildingPlanModel> buildingPlanModels;
+    private Context context;
+
+
+    @BindView(R.id.building_plan_recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.planBuildingListSwipeRefresh)
+    SwipeRefreshLayout flatListSwipeRefresh;
+
+
+    public static final int PAGE_START = 1;
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private int totalPage = 10;
+    private boolean isLoading = false;
+    int itemCount = 0;
+
+    private int buildingId;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
@@ -42,10 +63,12 @@ public class BuildingPlanFragment extends Fragment {
         try {
 
             view = inflater.from(viewGroup.getContext()).inflate(R.layout.fragment_building_plan, viewGroup, false);
+            context = inflater.getContext();
 
+            ButterKnife.bind(this, view);
             buildingPlanApiService = new BuildingPlanApiService(getActivity(), new BuildingPlansIService() {
                 @Override
-                public void onBuildingPlanSuccess(JSONObject buildingPlansListModel) {
+                public void onBuildingPlanSuccess(final JSONObject buildingPlansListModel) {
 
                     try {
 
@@ -69,21 +92,30 @@ public class BuildingPlanFragment extends Fragment {
                             buildingPlanModels.add(myList);
                         }
 
-                        getActivity().runOnUiThread(new Runnable() {
+
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 
                             @Override
                             public void run() {
 
+                                try {
+                                    if (currentPage != PAGE_START) adapter.removeLoading();
+                                    adapter.addAll(buildingPlanModels);
+                                    flatListSwipeRefresh.setRefreshing(false);
+                                    if (currentPage < totalPage) adapter.addLoading();
+                                    else isLastPage = true;
+                                    isLoading = false;
 
-                                recyclerView = (RecyclerView) view.findViewById(R.id.building_plan_recycler_view);
-                                recyclerView.setHasFixedSize(true);
-                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-                                adapter = new BuildingPlanAdapter(buildingPlanModels, getContext());
-                                recyclerView.setAdapter(adapter);
+                                    adapter.removeLoading();
+
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 
                             }
-                        });
+                        }, 1500);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -94,13 +126,52 @@ public class BuildingPlanFragment extends Fragment {
 
                 @Override
                 public void onBuildingPlanFailed(JSONObject jsonObject) {
+                    try {
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.removeLoading();
+                            }
+                        }, 1500);
 
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
-            int BuildingId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentBuildingId, getContext());
-            buildingPlanApiService.get_building_plan(BuildingId);
-            loader.stopLoading();
+            buildingId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentBuildingId, getContext());
+
+            flatListSwipeRefresh.setOnRefreshListener(this);
+            /*recyclerView.setHasFixedSize(true);*/
+            layoutManager = new LinearLayoutManager(context);
+            recyclerView.setLayoutManager(layoutManager);
+            adapter = new BuildingPlanPostAdapter(new ArrayList<BuildingPlanModel>(), context);
+            recyclerView.setAdapter(adapter);
+
+            buildingPlanApiService.get_building_plan(buildingId, currentPage);
+
+            recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
+                @Override
+                protected void loadMoreItems() {
+                    adapter.addLoading();
+                    isLoading = true;
+                    currentPage++;
+                    buildingPlanApiService.get_building_plan(buildingId, currentPage);
+                }
+
+                @Override
+                public boolean isLastPage() {
+                    return isLastPage;
+
+                }
+
+                @Override
+                public boolean isLoading() {
+                    return isLoading;
+                }
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,5 +179,14 @@ public class BuildingPlanFragment extends Fragment {
 
         return view;
 
+    }
+
+    @Override
+    public void onRefresh() {
+        itemCount = 0;
+        currentPage = PAGE_START;
+        isLastPage = false;
+        adapter.clear();
+        buildingPlanApiService.get_building_plan(buildingId, currentPage);
     }
 }

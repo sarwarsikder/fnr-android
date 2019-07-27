@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +26,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.apper.sarwar.fnr.adapter.sub_component.SubComponentAdapter;
+import com.apper.sarwar.fnr.adapter.PaginationScrollListener;
+import com.apper.sarwar.fnr.adapter.sub_component.SubComponentPostAdapter;
 import com.apper.sarwar.fnr.model.sub_component.SubComponentModel;
 import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
 import com.apper.sarwar.fnr.service.api_service.SubComponentApiService;
@@ -35,14 +39,25 @@ import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-public class SubComponentActivity extends AppCompatActivity implements SubComponentIService, ProfileIService {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private SubComponentAdapter subComponentAdapter;
+public class SubComponentActivity extends AppCompatActivity implements SubComponentIService, ProfileIService, SwipeRefreshLayout.OnRefreshListener {
+
+    @BindView(R.id.sub_component_recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.sub_component_SwipeRefreshLayout)
+    SwipeRefreshLayout swipeRefresh;
+
+
+    private LinearLayoutManager layoutManager;
+    private SubComponentPostAdapter subComponentAdapter;
     private List<SubComponentModel> list;
 
     private PopupWindow mPopupWindow;
@@ -50,6 +65,7 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
 
     Intent intent;
     Loader loader;
+    Context context;
 
     private SubComponentApiService subComponentApiService;
     private ProfileApiService profileApiService;
@@ -59,6 +75,16 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
 
     private int building_id;
     private String building_number;
+    String currentState;
+    private int componentId;
+
+
+    public static final int PAGE_START = 1;
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private int totalPage = 10;
+    private boolean isLoading = false;
+    int itemCount = 0;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -99,6 +125,9 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_component);
 
+        ButterKnife.bind(this);
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         // Title and subtitle
         toolbar.setTitle(R.string.title_activity_sub_component);
@@ -134,19 +163,136 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
         BottomNavigationView navView = findViewById(R.id.bottom_navigation_drawer);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        int componentId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentComponentId, this);
+        componentId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentComponentId, this);
 
-        String currentState = SharedPreferenceUtil.getDefaults(SharedPreferenceUtil.currentState, this);
+        currentState = SharedPreferenceUtil.getDefaults(SharedPreferenceUtil.currentState, this);
 
+
+        context = this;
+        swipeRefresh.setOnRefreshListener(this);
+        /*recyclerView.setHasFixedSize(true);*/
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        subComponentAdapter = new SubComponentPostAdapter(new ArrayList<SubComponentModel>(), this);
+        recyclerView.setAdapter(subComponentAdapter);
 
         subComponentApiService = new SubComponentApiService(this);
 
         if (currentState.equals("building")) {
             int buildingId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentBuildingId, this);
-            subComponentApiService.get_sub_component(buildingId, componentId);
+            subComponentApiService.get_sub_component(buildingId, componentId, currentPage);
         } else {
             int flatId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentFlatId, this);
-            subComponentApiService.get_sub_component_flat(flatId, componentId);
+            subComponentApiService.get_sub_component_flat(flatId, componentId, currentPage);
+        }
+
+        recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
+            @Override
+            protected void loadMoreItems() {
+
+                subComponentAdapter.addLoading();
+                isLoading = true;
+                currentPage++;
+
+                if (currentState.equals("building")) {
+                    int buildingId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentBuildingId, context);
+                    subComponentApiService.get_sub_component(buildingId, componentId, currentPage);
+                } else {
+                    int flatId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentFlatId, context);
+                    subComponentApiService.get_sub_component_flat(flatId, componentId, currentPage);
+                }
+
+
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
+
+    }
+
+
+    static String getTimeAgo(long time_ago) {
+        time_ago = time_ago / 1000;
+        long cur_time = (Calendar.getInstance().getTimeInMillis()) / 1000;
+        long time_elapsed = cur_time - time_ago;
+        long seconds = time_elapsed;
+        // Seconds
+        if (seconds <= 60) {
+            return "Just now";
+        }
+        //Minutes
+        else {
+            int minutes = Math.round(time_elapsed / 60);
+
+            if (minutes <= 60) {
+                if (minutes == 1) {
+                    return "a minute ago";
+                } else {
+                    return minutes + " minutes ago";
+                }
+            }
+            //Hours
+            else {
+                int hours = Math.round(time_elapsed / 3600);
+                if (hours <= 24) {
+                    if (hours == 1) {
+                        return "An hour ago";
+                    } else {
+                        return hours + " hrs ago";
+                    }
+                }
+                //Days
+                else {
+                    int days = Math.round(time_elapsed / 86400);
+                    if (days <= 7) {
+                        if (days == 1) {
+                            return "Yesterday";
+                        } else {
+                            return days + " days ago";
+                        }
+                    }
+                    //Weeks
+                    else {
+                        int weeks = Math.round(time_elapsed / 604800);
+                        if (weeks <= 4.3) {
+                            if (weeks == 1) {
+                                return "A week ago";
+                            } else {
+                                return weeks + " weeks ago";
+                            }
+                        }
+                        //Months
+                        else {
+                            int months = Math.round(time_elapsed / 2600640);
+                            if (months <= 12) {
+                                if (months == 1) {
+                                    return "A month ago";
+                                } else {
+                                    return months + " months ago";
+                                }
+                            }
+                            //Years
+                            else {
+                                int years = Math.round(time_elapsed / 31207680);
+                                if (years == 1) {
+                                    return "One year ago";
+                                } else {
+                                    return years + " years ago";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
     }
@@ -224,33 +370,46 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                 int id = (int) row.get("id");
                 String name = (String) row.get("name");
                 String description = (String) row.get("description");
+
+                String due_date_value = (String) row.get("updated_at");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = format.parse(due_date_value);
+                String strDate = getTimeAgo(date.getTime());
+
                 SubComponentModel myList = new SubComponentModel(
                         id,
                         name,
                         description,
-                        "2d ago"
+                        strDate
 
                 );
                 list.add(myList);
             }
 
-            runOnUiThread(new Runnable() {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 
                 @Override
                 public void run() {
-                    recyclerView = (RecyclerView) findViewById(R.id.sub_component_recycler_view);
-                    recyclerView.setHasFixedSize(true);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-                    subComponentAdapter = new SubComponentAdapter(list, getApplicationContext());
-                    recyclerView.setAdapter(subComponentAdapter);
+                    try {
 
-/*
-                    loader.stopLoading();
-*/
+                        if (currentPage != PAGE_START) subComponentAdapter.removeLoading();
+                        subComponentAdapter.addAll(list);
+                        swipeRefresh.setRefreshing(false);
+                        if (currentPage < totalPage) subComponentAdapter.addLoading();
+                        else isLastPage = true;
+                        isLoading = false;
+
+
+                        subComponentAdapter.removeLoading();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                 }
-            });
+            }, 1500);
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -259,7 +418,18 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
 
     @Override
     public void onSubComponentFailed(JSONObject jsonObject) {
+        try {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    subComponentAdapter.removeLoading();
+                }
+            }, 1500);
 
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -358,5 +528,22 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
     @Override
     public void onProfileFailed(JSONObject jsonObject) {
 
+    }
+
+    @Override
+    public void onRefresh() {
+
+        itemCount = 0;
+        currentPage = PAGE_START;
+        isLastPage = false;
+        subComponentAdapter.clear();
+
+        if (currentState.equals("building")) {
+            int buildingId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentBuildingId, this);
+            subComponentApiService.get_sub_component(buildingId, componentId, currentPage);
+        } else {
+            int flatId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentFlatId, this);
+            subComponentApiService.get_sub_component_flat(flatId, componentId, currentPage);
+        }
     }
 }

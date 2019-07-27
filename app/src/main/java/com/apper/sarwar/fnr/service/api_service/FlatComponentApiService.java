@@ -31,8 +31,8 @@ public class FlatComponentApiService {
         appConfigRemote = new AppConfigRemote();
     }
 
-    public void get_flat_component(int flatId) {
-        String requestUrl = appConfigRemote.getBASE_URL() + "/api/flat/" + flatId + "/components/";
+    public void get_flat_component(int flatId, int currentPage) {
+        String requestUrl = appConfigRemote.getBASE_URL() + "/api/flat/" + flatId + "/components/?page=" + currentPage;
 
 
         String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);

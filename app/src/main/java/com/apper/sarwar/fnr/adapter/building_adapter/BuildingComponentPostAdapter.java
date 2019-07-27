@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import com.apper.sarwar.fnr.FlatComponentActivity;
 import com.apper.sarwar.fnr.R;
+import com.apper.sarwar.fnr.SubComponentActivity;
 import com.apper.sarwar.fnr.adapter.BaseViewHolder;
 import com.apper.sarwar.fnr.model.building_model.BuildingComponentListModel;
-import com.apper.sarwar.fnr.model.building_model.BuildingFlatListModel;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import java.util.List;
@@ -163,13 +163,12 @@ public class BuildingComponentPostAdapter extends RecyclerView.Adapter<BaseViewH
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int itemFlatId = (int) view.getTag();
-                        Intent intent = new Intent(view.getContext(), FlatComponentActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("EXTRA_FLAT_ID", itemFlatId);
-                        intent.putExtra("FLAT_DATA", bundle);
-                        SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentFlatId, itemFlatId, view.getContext());
+                        int componentId = (int) view.getTag();
+                        SharedPreferenceUtil.setDefaultsId(SharedPreferenceUtil.currentComponentId, componentId, view.getContext());
+                        SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.currentState, "building", view.getContext());
+                        Intent intent = new Intent(view.getContext(), SubComponentActivity.class);
                         view.getContext().startActivity(intent);
+
                     }
                 });
             } catch (Exception e) {
