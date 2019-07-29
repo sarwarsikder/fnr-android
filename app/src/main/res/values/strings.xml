@@ -5,6 +5,7 @@
     <string name="sign_in_text">SIGN IN</string>
     <string name="sign_up_text">SIGN UP</string>
     <string name="email">User Name</string>
+   <!-- <string name="enter_your_mail">enter user name</string>-->
     <string name="enter_your_mail">enter user name</string>
     <string name="password">PASSWORD</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
@@ -69,6 +70,7 @@
     <string name="lbl_month_ago">months ago</string>
     <string name="lbl_oneyear_ago">last year</string>
     <string name="lbl_year_ago">years ago</string>
+    <string name="write_file">This app needs access to your file storage so that it can write files.</string>
 
 
 </resources>

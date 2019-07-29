@@ -4,5 +4,6 @@
         <domain includeSubdomains="true">58.84.34.65</domain>
         <domain includeSubdomains="true">172.18.1.11</domain>
         <domain includeSubdomains="true">www.frprojektman.de</domain>
+        <domain includeSubdomains="true">18.197.139.76</domain>
     </domain-config>
 </network-security-config>

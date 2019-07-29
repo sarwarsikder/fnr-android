@@ -248,6 +248,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
                 recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
                     @Override
                     protected void loadMoreItems() {
+                        adapter.addLoading();
                         isLoading = true;
                         currentPage++;
                         subComponentDetailApiService = new SubComponentDetailApiService(context);
@@ -581,38 +582,15 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
         try {
 
 
-            commentModels = new ArrayList<>();
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 
-            String comments_data = (String) subComponentModel.get("results").toString();
-            comment_count = (int) subComponentModel.get("count");
-
-
-            if (comments_data.length() > 0) {
-                taskDetailsCommentsModel = new ObjectMapper().readValue(comments_data, new TypeReference<ArrayList<TaskDetailsCommentsModel>>() {
-                });
-            }
-
-
-            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-
-                    comment_counter = (TextView) findViewById(R.id.comment_counter);
-                    comment_counter.setText("Nachrichten(" + comment_count + ")");
-
-
                     comment_text.setText("");
-                    recyclerViewComment = (RecyclerView) findViewById(R.id.comment_recycler_view);
-                    recyclerViewComment.setHasFixedSize(true);
-                    recyclerViewComment.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-                    if (!taskDetailsCommentsModel.equals(null)) {
-                        adapterComment = new CommentAdapter(taskDetailsCommentsModel, getApplicationContext());
-                        recyclerViewComment.setAdapter(adapterComment);
-                    }
+                    onRefresh();
 
                 }
-            });
+            }, 500);
 
 
         } catch (Exception e) {
@@ -693,12 +671,20 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
 
                     try {
 
+                        comment_counter.setText("Nachrichten(" + comment_count + ")");
+
+
+
                         if (currentPage != PAGE_START) adapter.removeLoading();
                         adapter.addAll(taskDetailsCommentsModel);
                         swipeRefresh.setRefreshing(false);
                         if (currentPage < totalPage) adapter.addLoading();
                         else isLastPage = true;
                         isLoading = false;
+
+
+
+                        adapter.removeLoading();
 
                     } catch (Exception e) {
                         e.printStackTrace();

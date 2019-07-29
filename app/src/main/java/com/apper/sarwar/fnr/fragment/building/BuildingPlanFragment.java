@@ -1,29 +1,48 @@
 package com.apper.sarwar.fnr.fragment.building;
 
+import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.icu.text.SimpleDateFormat;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.apper.sarwar.fnr.MainActivity;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.adapter.PaginationScrollListener;
 import com.apper.sarwar.fnr.adapter.building_adapter.BuildingPlanPostAdapter;
 import com.apper.sarwar.fnr.model.building_model.BuildingPlanModel;
 import com.apper.sarwar.fnr.service.api_service.BuildingPlanApiService;
 import com.apper.sarwar.fnr.service.iservice.BuildingPlansIService;
+import com.apper.sarwar.fnr.utils.CheckForSDCard;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,6 +50,7 @@ import butterknife.ButterKnife;
 
 
 public class BuildingPlanFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    private static final String TAG = "";
     private LinearLayoutManager layoutManager;
     private BuildingPlanPostAdapter adapter;
     private View view;
@@ -54,6 +74,8 @@ public class BuildingPlanFragment extends Fragment implements SwipeRefreshLayout
     int itemCount = 0;
 
     private int buildingId;
+
+    ImageView building_file_download;
 
 
     @Override
@@ -177,6 +199,7 @@ public class BuildingPlanFragment extends Fragment implements SwipeRefreshLayout
             e.printStackTrace();
         }
 
+
         return view;
 
     }
@@ -189,4 +212,6 @@ public class BuildingPlanFragment extends Fragment implements SwipeRefreshLayout
         adapter.clear();
         buildingPlanApiService.get_building_plan(buildingId, currentPage);
     }
+
+
 }

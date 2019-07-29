@@ -14,6 +14,7 @@ import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.adapter.BaseViewHolder;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.building_model.BuildingPlanModel;
+import com.apper.sarwar.fnr.utils.DownloadTask;
 import com.apper.sarwar.fnr.utils.Image;
 
 import java.io.DataInputStream;
@@ -162,33 +163,19 @@ public class BuildingPlanPostAdapter extends RecyclerView.Adapter<BaseViewHolder
                 appConfigRemote = new AppConfigRemote();
 
 
-                /*buildingFileDownload.setOnClickListener(new View.OnClickListener() {
+                buildingFileDownload.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         try {
-                            URL u = new URL(appConfigRemote.getBASE_URL());
-                            URLConnection conn = u.openConnection();
-                            int contentLength = conn.getContentLength();
+                            String url = appConfigRemote.BASE_URL + "/" + myList.getPlanFile().toString();
 
-                            DataInputStream stream = new DataInputStream(u.openStream());
-
-                            byte[] buffer = new byte[contentLength];
-                            stream.readFully(buffer);
-                            stream.close();
-
-                            DataOutputStream fos = new DataOutputStream(new FileOutputStream(appConfigRemote.getBASE_URL() + "" + myList.getPlanFile()));
-                            fos.write(buffer);
-                            fos.flush();
-                            fos.close();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                            return;
-                        } catch (IOException e) {
+                            /*new DownloadTask(context, url);*/
+                        } catch (Exception e) {
                             e.printStackTrace();
                             return;
                         }
                     }
-                });*/
+                });
 
 
             } catch (Exception e) {

@@ -54,7 +54,7 @@ public class CommentPostAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
                 return new ViewHolder(
-                        LayoutInflater.from(context).inflate(R.layout.comment_list_even, viewGroup, false));
+                        LayoutInflater.from(context).inflate(R.layout.comment_list_odd, viewGroup, false));
             case VIEW_TYPE_LOADING:
                 return new FooterHolder(
                         LayoutInflater.from(context).inflate(R.layout.item_loading, viewGroup, false));
@@ -167,7 +167,6 @@ public class CommentPostAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 if (commentModel.getUser() != null) {
                     Picasso.with(context)
                             .load(appConfigRemote.getBASE_URL() + "" + commentModel.getUser().getAvatar())
-                            .placeholder(R.drawable.fnr_logo)
                             .resize(106, 106)
                             .into(comment_user, new Callback() {
                                 @Override

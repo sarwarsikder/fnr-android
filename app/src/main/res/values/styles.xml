@@ -6,6 +6,10 @@
         <item>@color/colorPrimaryDark</item>
     </array>
 
+    <style name="Theme_AlertDialog" parent="Animation.Design.BottomSheetDialog">
+
+    </style>
+
     <style name="TransparentToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:windowActionBarOverlay">true</item>
         <!-- Support Library compability -->
