@@ -298,6 +298,13 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
                 }
             });
 
+
+            due_date_image = (ImageView) findViewById(R.id.due_date_image);
+
+            if (!SharedPreferenceUtil.getDefaultsBool(SharedPreferenceUtil.isStaff, context)) {
+                due_date_image.setClickable(false);
+            }
+
 /*
             subComponentDetailApiService.get_sub_component_details(268);
 */
@@ -535,7 +542,6 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
 
                     Picasso.with(getApplicationContext())
                             .load(appConfigRemote.getBASE_URL() + "" + user_image)
-                            .placeholder(R.drawable.fnr_logo)
                             .resize(106, 106)
                             .into(assignee_image, new Callback() {
                                 @Override
@@ -674,14 +680,12 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
                         comment_counter.setText("Nachrichten(" + comment_count + ")");
 
 
-
                         if (currentPage != PAGE_START) adapter.removeLoading();
                         adapter.addAll(taskDetailsCommentsModel);
                         swipeRefresh.setRefreshing(false);
                         if (currentPage < totalPage) adapter.addLoading();
                         else isLastPage = true;
                         isLoading = false;
-
 
 
                         adapter.removeLoading();

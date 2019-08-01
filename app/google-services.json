@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "639407916912",
+    "firebase_url": "https://workspace-31ae9.firebaseio.com",
+    "project_id": "workspace-31ae9",
+    "storage_bucket": "workspace-31ae9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639407916912:android:7402e1c46206f11f",
+        "android_client_info": {
+          "package_name": "com.apper.sarwar.fnr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "639407916912-b47r6ukj0b67o6b0pov82adbb1qhgg5o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apper.sarwar.fnr",
+            "certificate_hash": "7d1573e166b0ad0c8993c99698448bceced61752"
+          }
+        },
+        {
+          "client_id": "639407916912-b2e9k81fte4it4k7m72d4mu9182a4vs5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCxcQZDUr5R6Ux--lG1mRL0BGxKjYnwVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "639407916912-b2e9k81fte4it4k7m72d4mu9182a4vs5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

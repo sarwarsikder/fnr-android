@@ -92,8 +92,16 @@ public class BuildingComponentFragment extends Fragment implements SwipeRefreshL
 
                                         int component_id = (int) row.get("component_id");
                                         String name = (String) row.get("name");
-                                        int total_tasks = (int) row.get("total_tasks");
-                                        int tasks_done = (int) row.get("tasks_done");
+
+                                        int total_tasks = 0;
+                                        if (!row.get("total_tasks").equals(null)) {
+                                            total_tasks = (int) row.get("total_tasks");
+                                        }
+
+                                        int tasks_done = 0;
+                                        if (!row.get("tasks_done").equals(null)) {
+                                            tasks_done = (int) row.get("tasks_done");
+                                        }
 
 
                                         System.out.println("Testing" + i);

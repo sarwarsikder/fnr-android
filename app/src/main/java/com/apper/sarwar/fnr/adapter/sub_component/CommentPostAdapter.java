@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -17,12 +19,14 @@ import android.widget.TextView;
 
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.adapter.BaseViewHolder;
+import com.apper.sarwar.fnr.adapter.MyGridAdapter;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentFileTypeModel;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentsModel;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,6 +42,9 @@ public class CommentPostAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public List<TaskDetailsCommentsModel> commentModelList;
     public Context context;
     AppConfigRemote appConfigRemote;
+
+    private MyGridAdapter myGridAdapter;
+    GridView gridView;
 
 
     private View view;
@@ -150,6 +157,9 @@ public class CommentPostAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @BindView(R.id.comment_image_layout)
         public LinearLayout comment_image_layout;
 
+        @BindView(R.id.gridview)
+        public GridView gridview;
+
         public ViewHolder(@NonNull View itemView) {
 
             super(itemView);
@@ -186,7 +196,23 @@ public class CommentPostAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 }
 
                 if (commentModel.getFile_type() != null) {
-                    if (position % 2 == 0) {
+
+
+                    ArrayList<TaskDetailsCommentFileTypeModel> taskDetailsCommentFileTypeModel = commentModel.getFile_type();
+
+                    myGridAdapter = new MyGridAdapter(context, taskDetailsCommentFileTypeModel);
+
+
+                    gridView.setAdapter(myGridAdapter);
+
+                    int x = 0;
+
+                   /* setImageInList(commentModel.getFile_type(), (ImageView) comment_image_layout.findViewById(R.id.iv_one), 1);
+                    setImageInList(commentModel.getFile_type(), (ImageView) comment_image_layout.findViewById(R.id.iv_two), 2);
+                    setImageInList(commentModel.getFile_type(), (ImageView) comment_image_layout.findViewById(R.id.iv_three), 3);
+                    setImageInList(commentModel.getFile_type(), (ImageView) comment_image_layout.findViewById(R.id.iv_four), 4);*/
+
+                    /*if (position % 2 == 0) {
                         setImageInList(commentModel.getFile_type(), (ImageView) comment_image_layout.findViewById(R.id.iv_one), 1);
                         setImageInList(commentModel.getFile_type(), (ImageView) comment_image_layout.findViewById(R.id.iv_two), 2);
                         setImageInList(commentModel.getFile_type(), (ImageView) comment_image_layout.findViewById(R.id.iv_three), 3);
@@ -197,7 +223,7 @@ public class CommentPostAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                         setImageInList(commentModel.getFile_type(), (ImageView) comment_image_layout.findViewById(R.id.iv_three), 2);
                         setImageInList(commentModel.getFile_type(), (ImageView) comment_image_layout.findViewById(R.id.iv_two), 3);
                         setImageInList(commentModel.getFile_type(), (ImageView) comment_image_layout.findViewById(R.id.iv_one), 4);
-                    }
+                    }*/
 
                 } else {
                     comment_image_layout.setVisibility(LinearLayout.GONE);

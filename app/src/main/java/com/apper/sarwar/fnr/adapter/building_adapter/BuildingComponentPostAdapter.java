@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.SubComponentActivity;
 import com.apper.sarwar.fnr.adapter.BaseViewHolder;
+import com.apper.sarwar.fnr.adapter.MyGridAdapter;
 import com.apper.sarwar.fnr.model.building_model.BuildingComponentListModel;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
@@ -20,6 +21,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 public class BuildingComponentPostAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
@@ -31,6 +33,7 @@ public class BuildingComponentPostAdapter extends RecyclerView.Adapter<BaseViewH
     public List<BuildingComponentListModel> buildingComponentListModels;
     private Context context;
     private SharedPreferenceUtil sharedPreferenceUtil;
+
 
     public BuildingComponentPostAdapter(List<BuildingComponentListModel> adapterList, Context context) {
         this.buildingComponentListModels = adapterList;
@@ -154,8 +157,16 @@ public class BuildingComponentPostAdapter extends RecyclerView.Adapter<BaseViewH
 
                 BuildingComponentListModel myList = buildingComponentListModels.get(position);
                 componentName.setText(myList.getComponentName());
+
                 componentCount.setText(myList.getTotalTask() + "");
                 componentProgress.setProgress(myList.getTaskDone());
+
+                if (!SharedPreferenceUtil.getDefaultsBool(SharedPreferenceUtil.isStaff, context)) {
+                    componentCount.setVisibility(View.GONE);
+                    componentProgress.setVisibility(View.GONE);
+                }
+
+
                 itemView.setTag(myList.getId());
 
                 itemView.setOnClickListener(new View.OnClickListener() {

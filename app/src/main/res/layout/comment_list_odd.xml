@@ -31,37 +31,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/iv_one"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_comeneted_image_componenet_details"
-                app:srcCompat="@drawable/ic_man_user" />
+            <GridView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/gridview"
+                android:columnWidth="120dp"
+                android:verticalSpacing="10dp"
+                android:numColumns="auto_fit">
 
-            <ImageView
-                android:id="@+id/iv_two"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_comeneted_image_componenet_details"
-                app:srcCompat="@drawable/ic_man_user" />
-
-            <ImageView
-                android:id="@+id/iv_three"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_comeneted_image_componenet_details"
-                app:srcCompat="@drawable/ic_man_user" />
-
-            <ImageView
-                android:id="@+id/iv_four"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_comeneted_image_componenet_details"
-                app:srcCompat="@drawable/ic_man_user" />
+            </GridView>
         </LinearLayout>
 
     </LinearLayout>
