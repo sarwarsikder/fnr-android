@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="4dp"
-            android:text="Full Name"
+            android:text="@string/full_name"
             android:theme="@style/MyProfileLabel"
             tools:layout_editor_absoluteY="380dp" />
 
@@ -125,7 +125,7 @@
             android:layout_marginEnd="4dp"
             android:height="17dp"
             android:lineSpacingMultiplier="1.25"
-            android:text="User Name"
+            android:text="@string/user_name"
             android:theme="@style/MyProfileLabel" />
 
         <TextView
@@ -161,7 +161,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="8dp"
             android:lineSpacingMultiplier="1.25"
-            android:text="Email"
+            android:text="@string/email"
             android:theme="@style/MyProfileLabel" />
 
         <TextView
@@ -188,8 +188,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"></LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>

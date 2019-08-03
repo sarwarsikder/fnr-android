@@ -6,27 +6,27 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.apper.sarwar.fnr.adapter.ImageAdapter;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.adapter.BaseViewHolder;
-import com.apper.sarwar.fnr.adapter.MyGridAdapter;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentFileTypeModel;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentsModel;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -43,8 +43,10 @@ public class CommentPostAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public Context context;
     AppConfigRemote appConfigRemote;
 
-    private MyGridAdapter myGridAdapter;
-    GridView gridView;
+
+    LinearLayoutManager linearLayoutManager;
+    RecyclerView recyclerView;
+    private ImageAdapter adapter;
 
 
     private View view;
@@ -157,8 +159,8 @@ public class CommentPostAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @BindView(R.id.comment_image_layout)
         public LinearLayout comment_image_layout;
 
-        @BindView(R.id.gridview)
-        public GridView gridview;
+       /* @BindView(R.id.gridview)
+        public GridView gridview;*/
 
         public ViewHolder(@NonNull View itemView) {
 
@@ -198,12 +200,16 @@ public class CommentPostAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 if (commentModel.getFile_type() != null) {
 
 
-                    ArrayList<TaskDetailsCommentFileTypeModel> taskDetailsCommentFileTypeModel = commentModel.getFile_type();
+                    List<TaskDetailsCommentFileTypeModel> taskDetailsCommentFileTypeModel = commentModel.getFile_type();
 
-                    myGridAdapter = new MyGridAdapter(context, taskDetailsCommentFileTypeModel);
+                    recyclerView = (RecyclerView) itemView.findViewById(R.id.image_rec);
 
-
-                    gridView.setAdapter(myGridAdapter);
+                    linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+                    recyclerView.setLayoutManager(linearLayoutManager);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
+                    adapter = new ImageAdapter(taskDetailsCommentFileTypeModel, context);
+                    recyclerView.setAdapter(adapter);
 
                     int x = 0;
 

@@ -1,184 +1,99 @@
 package com.apper.sarwar.fnr.utils;
 
-import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.Handler;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.view.ContextThemeWrapper;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.apper.sarwar.fnr.R;
+import android.os.PowerManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class DownloadTask {
-    private static final String TAG = "Download Task";
+public class DownloadTask extends AsyncTask<String, Integer, String> {
+
     private Context context;
+    private PowerManager.WakeLock mWakeLock;
 
-    private String downloadUrl = "", downloadFileName = "";
-    private ProgressDialog progressDialog;
-
-    public DownloadTask(Context context, String downloadUrl) {
+    public DownloadTask(Context context) {
         this.context = context;
-
-        this.downloadUrl = downloadUrl;
-
-
-        downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'), downloadUrl.length());//Create file name by picking download file name from URL
-        Log.e(TAG, downloadFileName);
-
-        //Start Downloading Task
-        new DownloadingTask().execute();
     }
 
-    private class DownloadingTask extends AsyncTask<Void, Void, Void> {
+    @Override
+    protected String doInBackground(String... sUrl) {
+        InputStream input = null;
+        OutputStream output = null;
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(sUrl[0]);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.connect();
 
-        File apkStorage = null;
-        File outputFile = null;
+            // expect HTTP 200 OK, so we don't mistakenly save error report
+            // instead of the file
+            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                return "Server returned HTTP " + connection.getResponseCode()
+                        + " " + connection.getResponseMessage();
+            }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(context);
-            progressDialog.setMessage("Downloading...");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
+            // this will be useful to display download percentage
+            // might be -1: server did not report the length
+            int fileLength = connection.getContentLength();
 
-        @Override
-        protected void onPostExecute(Void result) {
+            // download the file
+
+
+            File root = android.os.Environment.getExternalStorageDirectory();
+
+            File dir = new File(root.getAbsolutePath() + "/fnr/"); //it is my root directory
+
             try {
-                if (outputFile != null) {
-                    progressDialog.dismiss();
-                    ContextThemeWrapper ctw = new ContextThemeWrapper(context, R.style.Theme_AlertDialog);
-                    final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctw);
-                    alertDialogBuilder.setTitle("Document  ");
-                    alertDialogBuilder.setMessage("Document Downloaded Successfully ");
-                    alertDialogBuilder.setCancelable(false);
-                    alertDialogBuilder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
-                    });
-
-                    alertDialogBuilder.setNegativeButton("Open report", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            File pdfFile = new File(Environment.getExternalStorageDirectory() + "/fnr/" + downloadFileName);  // -> filename = maven.pdf
-                            Uri path = Uri.fromFile(pdfFile);
-                            Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
-                            pdfIntent.setDataAndType(path, "application/image");
-                            pdfIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            try {
-                                context.startActivity(pdfIntent);
-                            } catch (ActivityNotFoundException e) {
-                                Toast.makeText(context, "No Application available to view PDF", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                    alertDialogBuilder.show();
-//                    Toast.makeText(context, "Document Downloaded Successfully", Toast.LENGTH_SHORT).show();
-                } else {
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                        }
-                    }, 3000);
-
-                    Log.e(TAG, "Download Failed");
-
+                if (dir.exists() == false) {
+                    dir.mkdirs();
                 }
+
+                input = connection.getInputStream();
+                output = new FileOutputStream(dir.getAbsolutePath() + "/fnr.png");
+
             } catch (Exception e) {
                 e.printStackTrace();
-
-                //Change button text if exception occurs
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                }, 3000);
-                Log.e(TAG, "Download Failed with Exception - " + e.getLocalizedMessage());
 
             }
 
 
-            super.onPostExecute(result);
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
+            byte data[] = new byte[4096];
+            long total = 0;
+            int count;
+            while ((count = input.read(data)) != -1) {
+                // allow canceling with back button
+                if (isCancelled()) {
+                    input.close();
+                    return null;
+                }
+                total += count;
+                // publishing the progress....
+                if (fileLength > 0) // only if total length is known
+                    publishProgress((int) (total * 100 / fileLength));
+                output.write(data, 0, count);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.toString();
+        } finally {
             try {
-                URL url = new URL(downloadUrl);//Create Download URl
-                HttpURLConnection c = (HttpURLConnection) url.openConnection();//Open Url Connection
-                c.setRequestMethod("GET");//Set Request Method to "GET" since we are grtting data
-                c.connect();//connect the URL Connection
-
-                //If Connection response is not OK then show Logs
-                if (c.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    Log.e(TAG, "Server returned HTTP " + c.getResponseCode()
-                            + " " + c.getResponseMessage());
-
-                }
-
-
-                //Get File if SD card is present
-                if (new CheckForSDCard().isSDCardPresent()) {
-
-                    apkStorage = new File(Environment.getExternalStorageDirectory() + "/" + "fnr");
-                } else
-                    Toast.makeText(context, "Oops!! There is no SD Card.", Toast.LENGTH_SHORT).show();
-
-                //If File is not present create directory
-                if (!apkStorage.exists()) {
-                    apkStorage.mkdir();
-                    Log.e(TAG, "Directory Created.");
-                }
-
-                outputFile = new File(apkStorage, downloadFileName);//Create Output file in Main File
-
-                //Create New File if not present
-                if (!outputFile.exists()) {
-                    outputFile.createNewFile();
-                    Log.e(TAG, "File Created");
-                }
-
-                FileOutputStream fos = new FileOutputStream(outputFile);//Get OutputStream for NewFile Location
-
-                InputStream is = c.getInputStream();//Get InputStream for connection
-
-                byte[] buffer = new byte[1024];//Set buffer type
-                int len1 = 0;//init length
-                while ((len1 = is.read(buffer)) != -1) {
-                    fos.write(buffer, 0, len1);//Write new file
-                }
-
-                //Close all connection after doing task
-                fos.close();
-                is.close();
-
-            } catch (Exception e) {
-
-                //Read exception if something went wrong
-                e.printStackTrace();
-                outputFile = null;
-                Log.e(TAG, "Download Error Exception " + e.getMessage());
+                if (output != null)
+                    output.close();
+                if (input != null)
+                    input.close();
+            } catch (IOException ignored) {
             }
 
-            return null;
+            if (connection != null)
+                connection.disconnect();
         }
+        return null;
     }
 }

@@ -2,14 +2,14 @@
     <string name="app_name">FNR</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="logo">logo</string>
-    <string name="sign_in_text">SIGN IN</string>
-    <string name="sign_up_text">SIGN UP</string>
-    <string name="email">User Name</string>
+    <string name="sign_in_text">EINLOGGEN</string>
+    <string name="sign_up_text">ANMELDEN</string>
+    <string name="email">Nutzername</string>
    <!-- <string name="enter_your_mail">enter user name</string>-->
-    <string name="enter_your_mail">enter user name</string>
-    <string name="password">PASSWORD</string>
+    <string name="enter_your_mail">Benutzername eingeben</string>
+    <string name="password">PASSWORT</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
-    <string name="scan_skip"><u>SKIP</u></string>
+    <string name="scan_skip"><u>ÜBERSPRINGEN</u></string>
     <string name="plan">Plannen</string>
 
 
@@ -71,6 +71,14 @@
     <string name="lbl_oneyear_ago">last year</string>
     <string name="lbl_year_ago">years ago</string>
     <string name="write_file">This app needs access to your file storage so that it can write files.</string>
+    <string name="scan_text">Bitte stellen Sie Ihr Telefon vor das Haus, um alle Ihre Arbeiten zu scannen und zu sehen</string>
+    <string name="information">INFORMATION</string>
+    <string name="project_name">PROJEKTNAME</string>
+    <string name="building_name">GEBÄUDENAME</string>
+    <string name="flat_name">FLACHER NAME</string>
+    <string name="full_name">Vollständiger Name</string>
+    <string name="user_name">Nutzername</string>
+    <string name="log_out">Ausloggen</string>
 
 
 </resources>

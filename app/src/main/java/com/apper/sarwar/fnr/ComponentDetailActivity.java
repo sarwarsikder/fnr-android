@@ -1,12 +1,8 @@
 package com.apper.sarwar.fnr;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.ClipData;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -26,7 +22,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -58,7 +53,6 @@ import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
 import com.apper.sarwar.fnr.service.api_service.SubComponentDetailApiService;
 import com.apper.sarwar.fnr.service.iservice.ProfileIService;
 import com.apper.sarwar.fnr.service.iservice.SubComponentDetailIService;
-import com.apper.sarwar.fnr.utils.Image;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -319,44 +313,6 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = new DateTimePickerFragment();
         newFragment.show(getSupportFragmentManager(), "datePicker");
-    }
-
-    private List<String> paths = new ArrayList<>();
-
-    @Override
-    protected void onActivityResult(int reqCode, int resCode, Intent data) {
-        paths = new ArrayList<>();
-        if (resCode == Activity.RESULT_OK && data != null) {
-            if (data.getClipData() != null) {
-                ClipData clipData = data.getClipData();
-                for (int c = 0; c < clipData.getItemCount(); c++) {
-                    String imagePath = Image.getAndroidImagePath(ComponentDetailActivity.this, clipData.getItemAt(c).getUri());
-                    paths.add(imagePath);
-                    Log.i("Imager", imagePath);
-
-                }
-            } else if (data.getData() != null) {
-                String imagePath = Image.getAndroidImagePath(ComponentDetailActivity.this, data.getData());
-                paths.add(imagePath);
-                Log.i("Imager", imagePath);
-            }
-        }
-        if (paths.size() > 0) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Are you want to upload images?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    subComponentDetailApiService.uploadImageFile(subComponentId, paths, commentText);
-                    paths = new ArrayList<>();
-                }
-            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                    paths = new ArrayList<>();
-                }
-            }).show();
-        }
     }
 
     @Override

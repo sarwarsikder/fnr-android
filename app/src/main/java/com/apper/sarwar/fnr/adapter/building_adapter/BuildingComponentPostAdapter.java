@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.SubComponentActivity;
 import com.apper.sarwar.fnr.adapter.BaseViewHolder;
-import com.apper.sarwar.fnr.adapter.MyGridAdapter;
 import com.apper.sarwar.fnr.model.building_model.BuildingComponentListModel;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 

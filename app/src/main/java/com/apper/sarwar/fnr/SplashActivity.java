@@ -38,19 +38,28 @@ public class SplashActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+                /*Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                 startActivity(intent);
                 finish();
+*/
+                if (SharedPreferenceUtil.isLoggedIn(getApplicationContext())) {
+                    Intent intentData = getIntent();
+                    if (intentData.hasExtra("pushnotification")) {
+                        Intent intent = new Intent(getApplicationContext(), NotificationActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), ScanActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
 
-                /*if (SharedPreferenceUtil.isLoggedIn(getApplicationContext())) {
-                    Intent intent = new Intent(getApplicationContext(), ScanActivity.class);
-                    startActivity(intent);
                 } else {
                     Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                     startActivity(intent);
                     finish();
                 }
-*/
+
             }
         }).start();
 

@@ -14,16 +14,7 @@ import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.adapter.BaseViewHolder;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.building_model.BuildingPlanModel;
-import com.apper.sarwar.fnr.utils.DownloadTask;
-import com.apper.sarwar.fnr.utils.Image;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.List;
 
 import butterknife.BindView;

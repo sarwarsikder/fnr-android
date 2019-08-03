@@ -179,7 +179,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
         long seconds = time_elapsed;
         // Seconds
         if (seconds <= 60) {
-            return "Just now";
+            return "Gerade jetzt";
         }
         //Minutes
         else {
@@ -187,9 +187,9 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
 
             if (minutes <= 60) {
                 if (minutes == 1) {
-                    return "a minute ago";
+                    return "Vor einer Minute";
                 } else {
-                    return minutes + " minutes ago";
+                    return minutes + " Vor ein paar Minuten";
                 }
             }
             //Hours
@@ -197,9 +197,9 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
                 int hours = Math.round(time_elapsed / 3600);
                 if (hours <= 24) {
                     if (hours == 1) {
-                        return "An hour ago";
+                        return "Vor einer Stunde";
                     } else {
-                        return hours + " hrs ago";
+                        return hours + " vor std";
                     }
                 }
                 //Days
@@ -207,9 +207,9 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
                     int days = Math.round(time_elapsed / 86400);
                     if (days <= 7) {
                         if (days == 1) {
-                            return "Yesterday";
+                            return "Gestern";
                         } else {
-                            return days + " days ago";
+                            return days + " Vor Tagen";
                         }
                     }
                     //Weeks
@@ -217,9 +217,9 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
                         int weeks = Math.round(time_elapsed / 604800);
                         if (weeks <= 4.3) {
                             if (weeks == 1) {
-                                return "A week ago";
+                                return "Vor einer Woche";
                             } else {
-                                return weeks + " weeks ago";
+                                return weeks + " vor Wochen";
                             }
                         }
                         //Months
@@ -227,18 +227,18 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
                             int months = Math.round(time_elapsed / 2600640);
                             if (months <= 12) {
                                 if (months == 1) {
-                                    return "A month ago";
+                                    return "Vor einem Monat";
                                 } else {
-                                    return months + " months ago";
+                                    return months + " vor wenigen Monaten";
                                 }
                             }
                             //Years
                             else {
                                 int years = Math.round(time_elapsed / 31207680);
                                 if (years == 1) {
-                                    return "One year ago";
+                                    return "Vor einem Jahr";
                                 } else {
-                                    return years + " years ago";
+                                    return years + " vor Jahren";
                                 }
                             }
                         }
