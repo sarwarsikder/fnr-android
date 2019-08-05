@@ -12,15 +12,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.apper.sarwar.fnr.adapter.ImageAdapter;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.adapter.BaseViewHolder;
+import com.apper.sarwar.fnr.adapter.ImageAdapter;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentFileTypeModel;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentsModel;

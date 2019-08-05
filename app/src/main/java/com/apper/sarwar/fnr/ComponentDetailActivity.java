@@ -488,6 +488,14 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
                                 subComponentDetailApiService.sub_component_status_change(subComponentId, option);
                             }
 
+                            if(i==0){
+                                task_status.setBackgroundResource(R.drawable.shape_spinner_green);
+                            }else if (i==1){
+                                task_status.setBackgroundResource(R.drawable.shape_spinner_yellow);
+                            }else {
+                                task_status.setBackgroundResource(R.drawable.shape_spinner_grey);
+                            }
+
                         }
 
                         @Override

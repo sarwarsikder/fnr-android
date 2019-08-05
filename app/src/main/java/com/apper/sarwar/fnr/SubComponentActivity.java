@@ -180,7 +180,7 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
 
         if (currentState.equals("building")) {
             int buildingId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentBuildingId, this);
-            subComponentApiService.get_sub_component(buildingId, componentId, currentPage);
+             subComponentApiService.get_sub_component(buildingId, componentId, currentPage);
         } else {
             int flatId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentFlatId, this);
             subComponentApiService.get_sub_component_flat(flatId, componentId, currentPage);
@@ -371,16 +371,28 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                 String name = (String) row.get("name");
                 String description = (String) row.get("description");
 
-                String due_date_value = (String) row.get("updated_at");
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                Date date = format.parse(due_date_value);
-                String strDate = getTimeAgo(date.getTime());
+                String update_date_value = (String) row.get("updated_at");
+                SimpleDateFormat update_date_format = new SimpleDateFormat("yyyy-MM-dd");
+                Date update_date = update_date_format.parse(update_date_value);
+                String strDate = getTimeAgo(update_date.getTime());
+
+                Date due_date = new Date();
+
+                if (!row.get("due_date").equals(null)) {
+                    String due_date_value = (String) row.get("due_date");
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    due_date = format.parse(due_date_value);
+                }else {
+                    due_date=null;
+                }
+
 
                 SubComponentModel myList = new SubComponentModel(
                         id,
                         name,
                         description,
-                        strDate
+                        strDate,
+                        due_date
 
                 );
                 list.add(myList);

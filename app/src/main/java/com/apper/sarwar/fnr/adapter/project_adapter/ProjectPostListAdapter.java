@@ -157,12 +157,21 @@ public class ProjectPostListAdapter extends RecyclerView.Adapter<BaseViewHolder>
                 ProjectListModel myList = projectAdapterList.get(position);
                 textProjectTitle.setText(myList.getProject_name());
                 textProjectLocation.setText(myList.getAddress());
+
                 textProjectProgressCount.setText(myList.getTasks_done() + "/" + myList.getTotal_tasks());
                 int progress = 0;
                 if (myList.getTotal_tasks() > 0) {
                     progress = (myList.getTasks_done() * 100) / myList.getTotal_tasks();
                 }
+
                 textProjectProgress.setProgress(progress);
+
+
+                if (!SharedPreferenceUtil.getDefaultsBool(SharedPreferenceUtil.isStaff, context)) {
+                    textProjectProgressCount.setVisibility(View.GONE);
+                    textProjectProgress.setVisibility(View.GONE);
+                }
+
                 itemView.setTag(myList.getId());
 
 
@@ -190,7 +199,6 @@ public class ProjectPostListAdapter extends RecyclerView.Adapter<BaseViewHolder>
 
         }
     }
-
 
 
     public class FooterHolder extends BaseViewHolder {

@@ -5,16 +5,16 @@
     <string name="sign_in_text">EINLOGGEN</string>
     <string name="sign_up_text">ANMELDEN</string>
     <string name="email">Nutzername</string>
-   <!-- <string name="enter_your_mail">enter user name</string>-->
+    <!-- <string name="enter_your_mail">enter user name</string>-->
     <string name="enter_your_mail">Benutzername eingeben</string>
     <string name="password">PASSWORT</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="scan_skip"><u>ÜBERSPRINGEN</u></string>
-    <string name="plan">Plannen</string>
+    <string name="plan">Pläne</string>
 
 
     <!--ToolBar Text-->
-    <string name="title_activity_project">PROJEKTLISTE</string>
+    <string name="title_activity_project">Aktuelles Projekt</string>
     <string name="title_activity_bottom_nav">BottomNavActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -24,7 +24,7 @@
 
 
     <!--Building Title and Names-->
-    <string name="title_activity_building">HAUSER</string>
+    <string name="title_activity_building">Häuser</string>
 
     <!--Building Title and Names-->
     <string name="title_activity_building_component">HAUS</string>
@@ -37,10 +37,10 @@
 
 
     <!--Sub Component Related String-->
-    <string name="title_activity_sub_component">Unterkomponenten</string>
+    <string name="title_activity_sub_component">Unter Katagorie</string>
 
     <!--Component Details-->
-    <string name="title_activity_component_detail">Komponentendetail</string>
+    <string name="title_activity_component_detail">Detail</string>
 
     <!--Component Details-->
     <string name="title_activity_profile">Mein Profil</string>
@@ -72,10 +72,10 @@
     <string name="lbl_year_ago">years ago</string>
     <string name="write_file">This app needs access to your file storage so that it can write files.</string>
     <string name="scan_text">Bitte stellen Sie Ihr Telefon vor das Haus, um alle Ihre Arbeiten zu scannen und zu sehen</string>
-    <string name="information">INFORMATION</string>
-    <string name="project_name">PROJEKTNAME</string>
-    <string name="building_name">GEBÄUDENAME</string>
-    <string name="flat_name">FLACHER NAME</string>
+    <string name="information">Informationen</string>
+    <string name="project_name">Projekt</string>
+    <string name="building_name">Haus</string>
+    <string name="flat_name">Wohnung</string>
     <string name="full_name">Vollständiger Name</string>
     <string name="user_name">Nutzername</string>
     <string name="log_out">Ausloggen</string>

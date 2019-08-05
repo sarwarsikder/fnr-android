@@ -156,8 +156,15 @@ public class FlatComponentPostAdapter extends RecyclerView.Adapter<BaseViewHolde
             try {
                 final FlatComponentListModel myList = flatComponentListModels.get(position);
                 componentName.setText(myList.getComponentName());
+
                 componentCount.setText(myList.getTaskDone() + "/" + myList.getTotalTask());
                 componentProgress.setProgress(0);
+
+                if (!SharedPreferenceUtil.getDefaultsBool(SharedPreferenceUtil.isStaff, context)) {
+                    componentCount.setVisibility(View.GONE);
+                    componentProgress.setVisibility(View.GONE);
+                }
+
                 itemView.setTag(myList.getId());
 
                 itemView.setOnClickListener(new View.OnClickListener() {

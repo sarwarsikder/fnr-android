@@ -155,7 +155,11 @@ public class BuildingFlatPostAdapter extends RecyclerView.Adapter<BaseViewHolder
                 componentCount = (TextView) itemView.findViewById(R.id.building_flat_component);
 
                 flatName.setText(myList.getFlatNumber());
-                componentCount.setText(myList.getFlatTotalTask() + "");
+                componentCount.setText(myList.getFlatTotalTaskDone() + "/" + myList.getFlatTotalTask() + "");
+
+                if (!SharedPreferenceUtil.getDefaultsBool(SharedPreferenceUtil.isStaff, context)) {
+                    componentCount.setVisibility(View.GONE);
+                }
 
                 itemView.setTag(myList.getId());
 

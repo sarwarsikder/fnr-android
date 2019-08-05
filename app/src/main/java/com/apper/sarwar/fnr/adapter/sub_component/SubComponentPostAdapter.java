@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,6 +18,11 @@ import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.sub_component.SubComponentModel;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -136,10 +142,15 @@ public class SubComponentPostAdapter extends RecyclerView.Adapter<BaseViewHolder
 
         @BindView(R.id.sub_component_name)
         public TextView subComponentName;
+
         @BindView(R.id.sub_component_description)
         public TextView subComponentDescription;
+
         @BindView(R.id.created_time)
         public TextView createdTime;
+
+        @BindView(R.id.sub_component_status)
+        public ImageView subComponentStatus;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -150,13 +161,36 @@ public class SubComponentPostAdapter extends RecyclerView.Adapter<BaseViewHolder
         }
 
         public void onBind(int position) {
+
             super.onBind(position);
+
             try {
+
                 SubComponentModel componentModel = subComponentModels.get(position);
+
                 subComponentName.setText(componentModel.getComponentName());
                 subComponentDescription.setText(componentModel.getComponentDescription());
                 createdTime.setText(componentModel.getCreatedTime());
+
+
+                if (componentModel.getDue_date() != null) {
+
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+                    Date today = dateFormat.parse(dateFormat.format(new Date()));
+
+                    if (today.after(componentModel.getDue_date())) {
+                        System.out.println("today() is after getDue_date()");
+                        subComponentStatus.setImageResource(R.drawable.ic_component_red_status);
+                    } else {
+                        subComponentStatus.setImageResource(R.drawable.ic_component_blue_status);
+                    }
+                } else {
+                    subComponentStatus.setImageResource(R.drawable.ic_component_green_status);
+                }
+
+
                 itemView.setTag(componentModel.getId());
+
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

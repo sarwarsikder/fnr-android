@@ -53,7 +53,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:text="YANIK RIEDL"
+                        android:text="Zugehörig"
                         android:textAlignment="viewStart"
                         android:theme="@style/SubComponentDetails.ComponentNameLabel" />
 
@@ -161,7 +161,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginStart="10dp"
-                            android:background="@drawable/shape_spinner"
+                            android:background="@drawable/shape_spinner_green"
                             android:clickable="true"
                             android:gravity="center_vertical"
                             android:spinnerMode="dialog"
@@ -195,7 +195,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="4dp"
                         android:gravity="left"
-                        android:text="We are storytellers. We have the freedom to develop in a direction that is true to us, but also be there for others when they need us; sharing our skills."
+                        android:text=""
                         android:theme="@style/SubComponentDetails.ComponentText" />
                 </LinearLayout>
             </LinearLayout>

@@ -157,7 +157,7 @@ public class BuildingComponentPostAdapter extends RecyclerView.Adapter<BaseViewH
                 BuildingComponentListModel myList = buildingComponentListModels.get(position);
                 componentName.setText(myList.getComponentName());
 
-                componentCount.setText(myList.getTotalTask() + "");
+                componentCount.setText(myList.getTaskDone() + "/" + myList.getTotalTask() + "");
                 componentProgress.setProgress(myList.getTaskDone());
 
                 if (!SharedPreferenceUtil.getDefaultsBool(SharedPreferenceUtil.isStaff, context)) {
