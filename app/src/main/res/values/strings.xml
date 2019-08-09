@@ -4,7 +4,7 @@
     <string name="logo">logo</string>
     <string name="sign_in_text">EINLOGGEN</string>
     <string name="sign_up_text">ANMELDEN</string>
-    <string name="email">Nutzername</string>
+    <string name="email">email</string>
     <!-- <string name="enter_your_mail">enter user name</string>-->
     <string name="enter_your_mail">Benutzername eingeben</string>
     <string name="password">PASSWORT</string>

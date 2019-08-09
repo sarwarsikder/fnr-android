@@ -1,5 +1,6 @@
 package com.apper.sarwar.fnr.adapter.sub_component;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,6 +24,7 @@ import com.apper.sarwar.fnr.adapter.ImageAdapter;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentFileTypeModel;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentsModel;
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -171,7 +173,7 @@ public class CommentPostAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public void onBind(int position) {
             super.onBind(position);
             try {
-                TaskDetailsCommentsModel commentModel = commentModelList.get(position);
+                final TaskDetailsCommentsModel commentModel = commentModelList.get(position);
 
                 comment_text.setText(commentModel.getText());
 
@@ -199,16 +201,30 @@ public class CommentPostAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 if (commentModel.getFile_type() != null) {
 
 
-                    List<TaskDetailsCommentFileTypeModel> taskDetailsCommentFileTypeModel = commentModel.getFile_type();
+                    ((Activity) context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<TaskDetailsCommentFileTypeModel> taskDetailsCommentFileTypeModel = commentModel.getFile_type();
 
-                    recyclerView = (RecyclerView) itemView.findViewById(R.id.image_rec);
 
-                    linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-                    recyclerView.setLayoutManager(linearLayoutManager);
-                    recyclerView.setHasFixedSize(true);
-                    recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
-                    adapter = new ImageAdapter(taskDetailsCommentFileTypeModel, context);
-                    recyclerView.setAdapter(adapter);
+                            recyclerView = (RecyclerView) itemView.findViewById(R.id.image_rec);
+
+                            linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+                            recyclerView.setLayoutManager(linearLayoutManager);
+                            recyclerView.setHasFixedSize(true);
+                            recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
+                            adapter = new ImageAdapter(taskDetailsCommentFileTypeModel, context);
+/*
+                            final int targetCacheSize = 2;
+                            recyclerView.setItemViewCacheSize(Integer.MIN_VALUE);
+                            recyclerView.getRecycledViewPool().clear();
+                            recyclerView.setItemViewCacheSize(targetCacheSize);*/
+
+                            recyclerView.setAdapter(adapter);
+
+                        }
+                    });
+
 
                     int x = 0;
 

@@ -13,9 +13,15 @@ import android.widget.ImageView;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentFileTypeModel;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.data.DataFetcher;
+import com.bumptech.glide.load.model.ModelLoader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -49,13 +55,28 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull final ImageAdapter.ViewHolder viewHolder, int position) {
         TaskDetailsCommentFileTypeModel myList = taskDetailsCommentFileTypeModels.get(position);
 
-        Picasso.with(context)
+
+        try {
+
+             /* Picasso.with(context)
                 .load(appConfigRemote.getBASE_URL() + myList.getPath())
                 .placeholder(R.raw.loading)
                 .error(R.drawable.error)
-                .into(viewHolder.ImageName);
+                .into(viewHolder.ImageName);*/
 
-        viewHolder.itemView.setTag(appConfigRemote.getBASE_URL() + myList.getPath());
+            Glide
+                    .with(context)
+                    .load(appConfigRemote.getBASE_URL() + myList.getPath())
+                    .centerCrop()
+                    .placeholder(R.raw.loading)
+                    .into(viewHolder.ImageName);
+
+
+            viewHolder.itemView.setTag(appConfigRemote.getBASE_URL() + myList.getPath());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -75,6 +96,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             ImageName = (ImageView) itemView.findViewById(R.id.image);
         }
     }
+
 }
 
 

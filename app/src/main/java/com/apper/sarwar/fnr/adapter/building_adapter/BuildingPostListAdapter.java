@@ -161,7 +161,7 @@ public class BuildingPostListAdapter extends RecyclerView.Adapter<BaseViewHolder
 
                 }
 
-                buildingTask.setText(String.valueOf(myList.getTasksDone() + "/" + myList.getTotalTasks()) + " Task");
+                buildingTask.setText(String.valueOf(myList.getTasksDone() + "/" + myList.getTotalTasks()));
                 buildingFlat.setText(String.valueOf(myList.getTotalFlats()));
 
                 itemView.setTag(myList.getId());
