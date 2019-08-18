@@ -69,6 +69,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                     .load(appConfigRemote.getBASE_URL() + myList.getPath())
                     .centerCrop()
                     .placeholder(R.raw.loading)
+                    .priority(Priority.IMMEDIATE)
                     .into(viewHolder.ImageName);
 
 

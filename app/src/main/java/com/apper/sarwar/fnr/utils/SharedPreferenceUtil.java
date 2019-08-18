@@ -18,6 +18,7 @@ public class SharedPreferenceUtil {
     public static final String currentSubComponentId = "currentSubComponent";
     public static final String currentState = "currentState";
     public static final String isStaff = "isStaff";
+    public static final String refresh_token = "refresh_token";
 
 
     public static void setDefaults(String key, String value, Context context) {

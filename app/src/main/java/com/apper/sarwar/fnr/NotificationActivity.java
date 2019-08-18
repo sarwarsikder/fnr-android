@@ -315,7 +315,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
                     }
 
                 }
-            }, 1500);
+            }, 500);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -332,7 +332,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
                 public void run() {
                     adapter.removeLoading();
                 }
-            }, 1500);
+            }, 500);
 
 
         } catch (Exception e) {

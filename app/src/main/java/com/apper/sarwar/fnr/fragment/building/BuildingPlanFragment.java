@@ -137,7 +137,7 @@ public class BuildingPlanFragment extends Fragment implements SwipeRefreshLayout
                                 }
 
                             }
-                        }, 1500);
+                        }, 500);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -154,7 +154,7 @@ public class BuildingPlanFragment extends Fragment implements SwipeRefreshLayout
                             public void run() {
                                 adapter.removeLoading();
                             }
-                        }, 1500);
+                        }, 500);
 
 
                     } catch (Exception e) {

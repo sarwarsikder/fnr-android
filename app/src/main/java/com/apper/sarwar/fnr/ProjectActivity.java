@@ -256,7 +256,7 @@ public class ProjectActivity extends AppCompatActivity implements SwipeRefreshLa
                     }
 
                 }
-            }, 1500);
+            }, 500);
 
 
         } catch (Exception e) {
@@ -273,7 +273,7 @@ public class ProjectActivity extends AppCompatActivity implements SwipeRefreshLa
                 public void run() {
                     adapter.removeLoading();
                 }
-            }, 1500);
+            }, 500);
 
 
         } catch (Exception e) {

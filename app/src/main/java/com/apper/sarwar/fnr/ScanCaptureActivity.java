@@ -103,7 +103,7 @@ public class ScanCaptureActivity extends AppCompatActivity implements ZXingScann
         String scanData1 = rawResult.getText();
 
         if (scanData.isEmpty()) {
-            Toast.makeText(this, "Empty scan content!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Leerer Scan-Inhalt!", Toast.LENGTH_SHORT).show();
         } else {
             scanApiService = new ScanApiService(this);
             scanApiService.get_scan_data(scanData1);
@@ -177,7 +177,11 @@ public class ScanCaptureActivity extends AppCompatActivity implements ZXingScann
                             }
 
                         } else {
-                            Toast.makeText(ScanCaptureActivity.this, "Authentication Failed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ScanCaptureActivity.this, "Du hast keine Erlaubnis.", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context
+                                    , ScanActivity.class);
+                            startActivity(intent);
+                            finish();
                         }
 
                     } catch (Exception e) {
@@ -199,7 +203,11 @@ public class ScanCaptureActivity extends AppCompatActivity implements ZXingScann
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(ScanCaptureActivity.this, "Authentication Failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ScanCaptureActivity.this, "Du hast keine Erlaubnis.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context
+                        , ScanActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

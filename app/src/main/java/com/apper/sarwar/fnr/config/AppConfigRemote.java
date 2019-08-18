@@ -18,7 +18,11 @@ public class AppConfigRemote {
     public String CLIENT_SECRET = "sf0StOUHolyCjKa0QlYO277treMsNdYivxpV7NUplsn56v3qvFRot1EYryLvIiJz6rVIEoy2lcPi5NWi94oen4NMpofM8vRzihRnmyNtBR4cxS0nrGMPrVQxq0qwdNJF";
     public String BASE_URL = "http://18.197.139.76:8006";
 
+
     public String GRANT_TYPE = "password";
+
+    public String GRANT_TYPE_REFRESH = "refresh_token";
+
 
     public AppConfigRemote(String ACCESS_TOKEN, String CLIENT_ID, String CLIENT_SECRET, String BASE_URL, String GRANT_TYPE) {
         this.ACCESS_TOKEN = ACCESS_TOKEN;
@@ -38,6 +42,15 @@ public class AppConfigRemote {
     public void setACCESS_TOKEN(String ACCESS_TOKEN) {
         this.ACCESS_TOKEN = ACCESS_TOKEN;
     }
+
+    public String getGRANT_TYPE_REFRESH() {
+        return GRANT_TYPE_REFRESH;
+    }
+
+    public void setGRANT_TYPE_REFRESH(String GRANT_TYPE_REFRESH) {
+        this.GRANT_TYPE_REFRESH = GRANT_TYPE_REFRESH;
+    }
+
 
     public String getCLIENT_ID() {
         return CLIENT_ID;

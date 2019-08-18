@@ -231,25 +231,21 @@ public class BuildingPlanPostAdapter extends RecyclerView.Adapter<BaseViewHolder
             pd.show();
         }
 
-
-        public String getFilename(String fileExt) {
-            String filepath = Environment.getExternalStorageDirectory().getPath();
-            File file = new File(filepath + "/fnr");
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-            return (file.getAbsolutePath() + "/" + System.currentTimeMillis() + ".mp4");
-        }
-
         @Override
         protected String doInBackground(String... f_url) {
             int count;
 
             try {
 
-                pathFolder = Environment.getExternalStorageDirectory() + "/Downloads/";
 
-                pathFile = pathFolder + System.currentTimeMillis() + f_url[1];
+                // File myFile= new File(Environment.getExternalStorageDirectory() + "/fnr");
+
+
+                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+                File file = new File(path, System.currentTimeMillis() + "." + f_url[1]);
+
+                /*pathFolder = Environment.getExternalStorageDirectory().getAbsolutePath();*/
+
 
                 /*String filepath = Environment.getExternalStorageDirectory().getPath();
                 File file = new File(filepath + "/fnr" );
@@ -258,10 +254,10 @@ public class BuildingPlanPostAdapter extends RecyclerView.Adapter<BaseViewHolder
                 }
                  (file.getAbsolutePath() + "/" + System.currentTimeMillis() + ".mp4");
                 */
-                File futureStudioIconFile = new File(pathFolder);
+               /* File futureStudioIconFile = new File(pathFolder);
                 if (!futureStudioIconFile.exists()) {
                     futureStudioIconFile.mkdirs();
-                }
+                }*/
 
                 URL url = new URL(f_url[0]);
                 URLConnection connection = url.openConnection();
@@ -273,7 +269,7 @@ public class BuildingPlanPostAdapter extends RecyclerView.Adapter<BaseViewHolder
 
                 // download the file
                 InputStream input = new BufferedInputStream(url.openStream());
-                FileOutputStream output = new FileOutputStream(pathFile);
+                FileOutputStream output = new FileOutputStream(file);
 
                 byte data[] = new byte[1024]; //anybody know what 1024 means ?
                 long total = 0;

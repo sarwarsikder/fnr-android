@@ -372,7 +372,7 @@ public class BuildingListActivity extends AppCompatActivity implements SwipeRefr
                     }
 
                 }
-            }, 1500);
+            }, 500);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -387,7 +387,7 @@ public class BuildingListActivity extends AppCompatActivity implements SwipeRefr
                 public void run() {
                     adapter.removeLoading();
                 }
-            }, 1500);
+            }, 500);
 
 
         } catch (Exception e) {

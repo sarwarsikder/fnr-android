@@ -705,7 +705,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
                             }
 
                         }
-                    }, 1500);
+                    }, 500);
                 }
             });
         } catch (Exception e) {
@@ -721,7 +721,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
                 public void run() {
                     adapter.removeLoading();
                 }
-            }, 1500);
+            }, 500);
 
 
         } catch (Exception e) {

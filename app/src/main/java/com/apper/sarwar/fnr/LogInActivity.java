@@ -91,6 +91,7 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
                     loader.stopLoading();
                     Log.d(TAG, "onLoginSuccess: " + loginModel.getAccess_token());
                     SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.access_token, loginModel.getAccess_token(), getApplicationContext());
+                    SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.refresh_token, loginModel.getRefresh_token(), getApplicationContext());
                     profileApiService.get_profile();
                     Intent intent = new Intent(getApplicationContext(), ScanActivity.class);
                     startActivity(intent);

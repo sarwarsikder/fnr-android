@@ -50,10 +50,10 @@ public class ProjectApiService {
                     failResponse.put("response_body", "");
                     failResponse.put("response_code", 404);
                     failResponse.put("response_message", "login failed");
+                    projectIServiceListener.onProjectFailed(failResponse);
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
-                projectIServiceListener.onProjectFailed(failResponse);
             }
 
             @Override

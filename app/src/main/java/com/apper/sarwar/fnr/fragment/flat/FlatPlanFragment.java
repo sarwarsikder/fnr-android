@@ -116,7 +116,7 @@ public class FlatPlanFragment extends Fragment implements SwipeRefreshLayout.OnR
                                 }
 
                             }
-                        }, 1500);
+                        }, 500);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -133,7 +133,7 @@ public class FlatPlanFragment extends Fragment implements SwipeRefreshLayout.OnR
                             public void run() {
                                 adapter.removeLoading();
                             }
-                        }, 1500);
+                        }, 500);
 
 
                     } catch (Exception e) {

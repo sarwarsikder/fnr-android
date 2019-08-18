@@ -24,7 +24,6 @@ import com.apper.sarwar.fnr.adapter.ImageAdapter;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentFileTypeModel;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentsModel;
-import com.bumptech.glide.Glide;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 

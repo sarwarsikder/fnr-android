@@ -133,7 +133,7 @@ public class BuildingComponentFragment extends Fragment implements SwipeRefreshL
 
 
                             }
-                        }, 1500);
+                        }, 500);
 
 
                     } catch (Exception e) {
@@ -150,7 +150,7 @@ public class BuildingComponentFragment extends Fragment implements SwipeRefreshL
                             public void run() {
                                 adapter.removeLoading();
                             }
-                        }, 1500);
+                        }, 500);
 
 
                     } catch (Exception e) {

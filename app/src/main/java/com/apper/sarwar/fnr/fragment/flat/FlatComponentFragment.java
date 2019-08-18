@@ -139,7 +139,7 @@ public class FlatComponentFragment extends Fragment implements SwipeRefreshLayou
 
 
                             }
-                        }, 1500);
+                        }, 500);
 
 
                     } catch (Exception e) {
@@ -156,7 +156,7 @@ public class FlatComponentFragment extends Fragment implements SwipeRefreshLayou
                             public void run() {
                                 adapter.removeLoading();
                             }
-                        }, 1500);
+                        }, 500);
 
 
                     } catch (Exception e) {

@@ -420,7 +420,7 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                     }
 
                 }
-            }, 1500);
+            }, 500);
 
 
         } catch (Exception e) {
@@ -436,7 +436,7 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                 public void run() {
                     subComponentAdapter.removeLoading();
                 }
-            }, 1500);
+            }, 500);
 
 
         } catch (Exception e) {
