@@ -155,6 +155,7 @@ public class FlatComponentPostAdapter extends RecyclerView.Adapter<BaseViewHolde
             super.onBind(position);
             try {
                 final FlatComponentListModel myList = flatComponentListModels.get(position);
+                System.out.println(myList.getComponentName());
                 componentName.setText(myList.getComponentName());
 
                 componentCount.setText(myList.getTaskDone() + "/" + myList.getTotalTask());

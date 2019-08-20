@@ -172,7 +172,6 @@ public class NotificationListPostAdapter extends RecyclerView.Adapter<BaseViewHo
 
                 Picasso.with(context)
                         .load(appConfigRemote.getBASE_URL() + "" + listModel.getUserPic())
-                        .placeholder(R.drawable.fnr_logo)
                         .resize(106, 106)
                         .into(textUserPic, new Callback() {
                             @Override

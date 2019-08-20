@@ -18,10 +18,7 @@ import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.sub_component.SubComponentModel;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -173,19 +170,21 @@ public class SubComponentPostAdapter extends RecyclerView.Adapter<BaseViewHolder
                 createdTime.setText(componentModel.getCreatedTime());
 
 
-                if (componentModel.getDue_date() != null) {
+                if (componentModel.getStatus().equals("in_progress")) {
 
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
                     Date today = dateFormat.parse(dateFormat.format(new Date()));
 
-                    if (today.after(componentModel.getDue_date())) {
+                    if (componentModel.getDue_date() != null && today.after(componentModel.getDue_date()) && componentModel.getStatus().equals("in_progress")) {
                         System.out.println("today() is after getDue_date()");
                         subComponentStatus.setImageResource(R.drawable.ic_component_red_status);
                     } else {
-                        subComponentStatus.setImageResource(R.drawable.ic_component_blue_status);
+                        subComponentStatus.setImageResource(R.drawable.ic_component_in_progress_status);
                     }
+                } else if (componentModel.getStatus().equals("to_do")) {
+                    subComponentStatus.setImageResource(R.drawable.ic_component_to_do_status);
                 } else {
-                    subComponentStatus.setImageResource(R.drawable.ic_component_green_status);
+                    subComponentStatus.setImageResource(R.drawable.ic_component_done_status);
                 }
 
 

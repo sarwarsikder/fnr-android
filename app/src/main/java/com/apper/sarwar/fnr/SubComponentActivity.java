@@ -106,12 +106,10 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                     startActivity(intent);
                     return true;
                 case R.id.navigation_notifications:
-                    Toast.makeText(getApplicationContext(), "Hello Notification!", Toast.LENGTH_SHORT).show();
                     intent = new Intent(getApplicationContext(), NotificationActivity.class);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_profile:
-                    Toast.makeText(getApplicationContext(), "Hello Profile!", Toast.LENGTH_SHORT).show();
                     intent = new Intent(getApplicationContext(), ProfileActivity.class);
                     startActivity(intent);
                     return true;
@@ -180,7 +178,7 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
 
         if (currentState.equals("building")) {
             int buildingId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentBuildingId, this);
-             subComponentApiService.get_sub_component(buildingId, componentId, currentPage);
+            subComponentApiService.get_sub_component(buildingId, componentId, currentPage);
         } else {
             int flatId = SharedPreferenceUtil.getDefaultsId(SharedPreferenceUtil.currentFlatId, this);
             subComponentApiService.get_sub_component_flat(flatId, componentId, currentPage);
@@ -227,7 +225,7 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
         long seconds = time_elapsed;
         // Seconds
         if (seconds <= 60) {
-            return "Just now";
+            return "Gerade jetzt";
         }
         //Minutes
         else {
@@ -235,9 +233,9 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
 
             if (minutes <= 60) {
                 if (minutes == 1) {
-                    return "a minute ago";
+                    return "Vor einer Minute";
                 } else {
-                    return minutes + " minutes ago";
+                    return minutes + " Vor ein paar Minuten";
                 }
             }
             //Hours
@@ -245,9 +243,9 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                 int hours = Math.round(time_elapsed / 3600);
                 if (hours <= 24) {
                     if (hours == 1) {
-                        return "An hour ago";
+                        return "Vor einer Stunde";
                     } else {
-                        return hours + " hrs ago";
+                        return hours + " vor std";
                     }
                 }
                 //Days
@@ -255,9 +253,9 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                     int days = Math.round(time_elapsed / 86400);
                     if (days <= 7) {
                         if (days == 1) {
-                            return "Yesterday";
+                            return "Gestern";
                         } else {
-                            return days + " days ago";
+                            return days + " Vor Tagen";
                         }
                     }
                     //Weeks
@@ -265,9 +263,9 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                         int weeks = Math.round(time_elapsed / 604800);
                         if (weeks <= 4.3) {
                             if (weeks == 1) {
-                                return "A week ago";
+                                return "Vor einer Woche";
                             } else {
-                                return weeks + " weeks ago";
+                                return weeks + " vor Wochen";
                             }
                         }
                         //Months
@@ -275,18 +273,18 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                             int months = Math.round(time_elapsed / 2600640);
                             if (months <= 12) {
                                 if (months == 1) {
-                                    return "A month ago";
+                                    return "Vor einem Monat";
                                 } else {
-                                    return months + " months ago";
+                                    return months + " vor wenigen Monaten";
                                 }
                             }
                             //Years
                             else {
                                 int years = Math.round(time_elapsed / 31207680);
                                 if (years == 1) {
-                                    return "One year ago";
+                                    return "Vor einem Jahr";
                                 } else {
-                                    return years + " years ago";
+                                    return years + " vor Jahren";
                                 }
                             }
                         }
@@ -382,9 +380,11 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                     String due_date_value = (String) row.get("due_date");
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     due_date = format.parse(due_date_value);
-                }else {
-                    due_date=null;
+                } else {
+                    due_date = null;
                 }
+
+                String task_status = (String) row.get("status");
 
 
                 SubComponentModel myList = new SubComponentModel(
@@ -392,7 +392,8 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                         name,
                         description,
                         strDate,
-                        due_date
+                        due_date,
+                        task_status
 
                 );
                 list.add(myList);

@@ -159,12 +159,10 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
                     startActivity(intent);
                     return true;
                 case R.id.navigation_notifications:
-                    Toast.makeText(getApplicationContext(), "Hello Notification!", Toast.LENGTH_SHORT).show();
                     intent = new Intent(getApplicationContext(), NotificationActivity.class);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_profile:
-                    Toast.makeText(getApplicationContext(), "Hello Profile!", Toast.LENGTH_SHORT).show();
                     intent = new Intent(getApplicationContext(), ProfileActivity.class);
                     startActivity(intent);
                     return true;
@@ -845,5 +843,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
         isLastPage = false;
         adapter.clear();
         subComponentDetailApiService.get_sub_component_comment(subComponentId, currentPage);
+        //swipeRefresh.setRefreshing(false);
+
     }
 }

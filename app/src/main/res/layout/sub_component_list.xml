@@ -29,7 +29,7 @@
                 android:layout_marginTop="28dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_component_green_status" />
+                app:srcCompat="@drawable/ic_component_to_do_status" />
 
             <TextView
                 android:id="@+id/sub_component_name"

@@ -22,6 +22,7 @@ import com.apper.sarwar.fnr.adapter.BaseViewHolder;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.building_model.BuildingPlanModel;
 
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,6 +30,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -171,9 +173,9 @@ public class BuildingPlanPostAdapter extends RecyclerView.Adapter<BaseViewHolder
                     @Override
                     public void onClick(View v) {
                         try {
-                            String url = appConfigRemote.BASE_URL + myList.getPlanFile().toString();
 
-                            new DownloadFileFromURL().execute(url, myList.getFileType().toString());
+                            String url = appConfigRemote.BASE_URL + myList.getPlanFile().toString();
+                            new DownloadFileFromURL().execute(url, myList.getPlanName() + "." + myList.getFileType().toString());
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -241,8 +243,8 @@ public class BuildingPlanPostAdapter extends RecyclerView.Adapter<BaseViewHolder
                 // File myFile= new File(Environment.getExternalStorageDirectory() + "/fnr");
 
 
-                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-                File file = new File(path, System.currentTimeMillis() + "." + f_url[1]);
+                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+                File file = new File(path, f_url[1]);
 
                 /*pathFolder = Environment.getExternalStorageDirectory().getAbsolutePath();*/
 

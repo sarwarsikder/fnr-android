@@ -13,14 +13,16 @@ public class SubComponentModel implements Serializable {
     private String componentDescription;
     private String CreatedTime;
     private Date due_date;
+    private String status;
 
 
-    public SubComponentModel(int id, String componentName, String componentDescription, String createdTime, Date due_date) {
+    public SubComponentModel(int id, String componentName, String componentDescription, String createdTime, Date due_date, String status) {
         Id = id;
         this.componentName = componentName;
         this.componentDescription = componentDescription;
         CreatedTime = createdTime;
         this.due_date = due_date;
+        this.status = status;
     }
 
     public SubComponentModel() {
@@ -64,5 +66,13 @@ public class SubComponentModel implements Serializable {
 
     public void setCreatedTime(String createdTime) {
         CreatedTime = createdTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
