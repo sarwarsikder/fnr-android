@@ -176,7 +176,11 @@ public class ProfileActivity extends AppCompatActivity implements ProfileIServic
 
                                 @Override
                                 public void onError() {
-                                    profile_image.setImageResource(R.drawable.fnr_logo);
+                                    if (SharedPreferenceUtil.getDefaultsBool(SharedPreferenceUtil.isStaff, getApplicationContext())) {
+                                        profile_image.setImageResource(R.drawable.ic_staff_user);
+                                    } else {
+                                        profile_image.setImageResource(R.drawable.ic_workder);
+                                    }
                                 }
                             });
                 }

@@ -148,8 +148,7 @@ public class NotificationListPostAdapter extends RecyclerView.Adapter<BaseViewHo
         @BindView(R.id.notification_time)
         public TextView textNotificationCreatedTime;
 
-        AppConfigRemote appConfigRemote=new AppConfigRemote();
-
+        AppConfigRemote appConfigRemote = new AppConfigRemote();
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -185,7 +184,11 @@ public class NotificationListPostAdapter extends RecyclerView.Adapter<BaseViewHo
 
                             @Override
                             public void onError() {
-                                textUserPic.setImageResource(R.drawable.ic_man_user);
+                                if (SharedPreferenceUtil.getDefaultsBool(SharedPreferenceUtil.isStaff, context)) {
+                                    textUserPic.setImageResource(R.drawable.ic_staff_user);
+                                } else {
+                                    textUserPic.setImageResource(R.drawable.ic_workder);
+                                }
                             }
                         });
 

@@ -561,7 +561,12 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
 
                                 @Override
                                 public void onError() {
-                                    assignee_image.setImageResource(R.drawable.ic_man_user);
+
+                                    if (SharedPreferenceUtil.getDefaultsBool(SharedPreferenceUtil.isStaff, context)) {
+                                        assignee_image.setImageResource(R.drawable.ic_staff_user);
+                                    } else {
+                                        assignee_image.setImageResource(R.drawable.ic_workder);
+                                    }
                                 }
                             });
 

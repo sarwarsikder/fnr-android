@@ -24,6 +24,7 @@ import com.apper.sarwar.fnr.adapter.ImageAdapter;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentFileTypeModel;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentsModel;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -192,7 +193,11 @@ public class CommentPostAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                                 @Override
                                 public void onError() {
-                                    comment_user.setImageResource(R.drawable.ic_man_user);
+                                    if (SharedPreferenceUtil.getDefaultsBool(SharedPreferenceUtil.isStaff, context)) {
+                                        comment_user.setImageResource(R.drawable.ic_staff_user);
+                                    } else {
+                                        comment_user.setImageResource(R.drawable.ic_workder);
+                                    }
                                 }
                             });
                 }
