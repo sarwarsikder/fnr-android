@@ -10,6 +10,7 @@ import com.apper.sarwar.fnr.utils.Loader;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class LoginApiService {
     private Context context;
     private AppConfigRemote appConfigRemote;
     private Loader loader;
+
     public LoginApiService(Context context) {
         this.context = context;
         loginIServiceListener = (LoginIServiceListener) context;
@@ -105,6 +107,69 @@ public class LoginApiService {
 
 
     }
+
+
+    public void device_notification_insert(String device, String endpoint) {
+        try {
+
+
+            String authorization = "Bearer " + SharedPreferenceUtil.getDefaults("access_token", context);
+            String requestUrl = appConfigRemote.getBASE_URL() + "/api/user-device-info/";
+            MediaType JSON = MediaType.parse("application/json");
+            JSONObject postData = new JSONObject();
+/*
+            RequestBody requestBody = new FormBody.Builder()
+                    .add("due_date", text)
+                    .build();*/
+            try {
+                postData.put("device", device);
+                postData.put("endpoint", endpoint);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            RequestBody requestBody = RequestBody.create(JSON, postData.toString());
+            Request httpRequest = new Request.Builder()
+                    .header("Authorization", authorization)
+                    .header("Accept", "application/json")
+                    .header("Content-Type", "application/json")
+                    .url(requestUrl)
+                    .post(requestBody)
+                    .build();
+
+
+            final OkHttpClient okHttpClient = new OkHttpClient();
+            okHttpClient.newCall(httpRequest).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    System.out.println("onFailure()");
+                    call.cancel();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    try {
+                        System.out.println("onResponse()");
+                        String responseBody = response.body().string();
+                        /*JSONObject responseObject = new JSONObject(responseBody);*/
+                        if (response.code() == 200) {
+                            System.out.println("All Okay!");
+                        } else {
+                            System.out.println("All Not Okay!");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "onResponse: " + e.getMessage());
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "signUp: " + e.getMessage());
+        }
+    }
+
 
     public void log_out() {
         try {

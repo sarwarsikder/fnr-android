@@ -195,6 +195,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="4dp"
                         android:gravity="left"
+                        android:scrollbars="vertical"
                         android:text=""
                         android:theme="@style/SubComponentDetails.ComponentText" />
                 </LinearLayout>
@@ -214,7 +215,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Nachrichten(17)"
+                android:text=""
                 android:theme="@style/SubComponentDetails.CommentLabel" />
 
             <android.support.v4.widget.SwipeRefreshLayout

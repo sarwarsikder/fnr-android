@@ -2,6 +2,7 @@ package com.apper.sarwar.fnr;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,8 @@ import com.apper.sarwar.fnr.service.iservice.LoginIServiceListener;
 import com.apper.sarwar.fnr.service.iservice.ProfileIService;
 import com.apper.sarwar.fnr.utils.Loader;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
+import com.google.android.gms.common.internal.Constants;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
@@ -79,6 +82,7 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
         if (!validPass) {
             password.setError("Enter valid password");
         }
+
         return validName && validPass;
     }
 
@@ -93,6 +97,12 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
                     SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.access_token, loginModel.getAccess_token(), getApplicationContext());
                     SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.refresh_token, loginModel.getRefresh_token(), getApplicationContext());
                     profileApiService.get_profile();
+
+                    /*String device = Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                            Settings.Secure.ANDROID_ID);
+                    String token = FirebaseInstanceId.getInstance().getToken();
+                    loginApiService.device_notification_insert(device, token);*/
+
                     Intent intent = new Intent(getApplicationContext(), ScanActivity.class);
                     startActivity(intent);
                     finish();

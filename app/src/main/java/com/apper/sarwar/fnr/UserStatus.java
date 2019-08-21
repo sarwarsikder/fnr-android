@@ -74,6 +74,7 @@ public class UserStatus extends FirebaseMessagingService {
 
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);//For Android Version Orio and greater than orio.
+
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 int importance = NotificationManager.IMPORTANCE_LOW;
                 NotificationChannel mChannel = new NotificationChannel("Sesame", "Sesame", importance);
@@ -85,6 +86,7 @@ public class UserStatus extends FirebaseMessagingService {
 
                 mNotifyManager.createNotificationChannel(mChannel);
             }//For Android Version lower than oreo.
+
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "Seasame");
             mBuilder.setContentTitle(title)
                     .setContentText(messageBody)

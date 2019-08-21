@@ -2,8 +2,12 @@ package com.apper.sarwar.fnr.adapter;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +17,11 @@ import android.widget.ImageView;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentFileTypeModel;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.data.DataFetcher;
-import com.bumptech.glide.load.model.ModelLoader;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.stfalcon.frescoimageviewer.ImageViewer;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 
@@ -58,22 +58,49 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
         try {
 
-             /* Picasso.with(context)
-                .load(appConfigRemote.getBASE_URL() + myList.getPath())
-                .placeholder(R.raw.loading)
-                .error(R.drawable.error)
-                .into(viewHolder.ImageName);*/
+          /*  Picasso.with(context)
+                    .load(appConfigRemote.getBASE_URL() + myList.getPath())
+                    .placeholder(R.raw.loading)
+                    .error(R.drawable.error)
+                    .into(viewHolder.ImageName);*/
 
-            Glide
+            Picasso.with(context)
+                    .load(appConfigRemote.getBASE_URL() + myList.getPath())
+                    .into(viewHolder.ImageName, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Bitmap imageBitmap = ((BitmapDrawable) viewHolder.ImageName.getDrawable()).getBitmap();
+                            RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), imageBitmap);
+                            viewHolder.ImageName.setImageDrawable(imageDrawable);
+                        }
+
+                        @Override
+                        public void onError() {
+                            viewHolder.ImageName.setImageResource(R.drawable.error);
+                        }
+                    });
+
+            /*Glide
                     .with(context)
                     .load(appConfigRemote.getBASE_URL() + myList.getPath())
                     .centerCrop()
                     .placeholder(R.raw.loading)
                     .priority(Priority.IMMEDIATE)
-                    .into(viewHolder.ImageName);
+                    .into(viewHolder.ImageName);*/
+
+
 
 
             viewHolder.itemView.setTag(appConfigRemote.getBASE_URL() + myList.getPath());
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new ImageViewer.Builder(context, viewHolder.itemView.getTag())
+                            .show();
+                }
+
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
