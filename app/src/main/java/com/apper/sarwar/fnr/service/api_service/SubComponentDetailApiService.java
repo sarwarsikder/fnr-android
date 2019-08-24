@@ -195,7 +195,7 @@ public class SubComponentDetailApiService {
                     } catch (Exception ex) {
                         ((Activity) context).runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(context, "Server Failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Server Timeout! try again", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

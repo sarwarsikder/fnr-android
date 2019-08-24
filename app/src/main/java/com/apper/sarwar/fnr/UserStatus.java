@@ -70,7 +70,7 @@ public class UserStatus extends FirebaseMessagingService {
             Intent intent = new Intent(getApplicationContext(), SplashActivity.class);  //you can use your launcher Activity insted of SplashActivity, But if the Activity you used here is not launcher Activty than its not work when App is in background.
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//Add Any key-value to pass extras to intent
             intent.putExtra("pushnotification", "yes");
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);//For Android Version Orio and greater than orio.

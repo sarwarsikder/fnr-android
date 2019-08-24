@@ -18,7 +18,6 @@ public class AppConfigRemote {
     public String CLIENT_SECRET = "sf0StOUHolyCjKa0QlYO277treMsNdYivxpV7NUplsn56v3qvFRot1EYryLvIiJz6rVIEoy2lcPi5NWi94oen4NMpofM8vRzihRnmyNtBR4cxS0nrGMPrVQxq0qwdNJF";
     public String BASE_URL = "http://18.197.139.76:8006";
 
-
     public String GRANT_TYPE = "password";
 
     public String GRANT_TYPE_REFRESH = "refresh_token";

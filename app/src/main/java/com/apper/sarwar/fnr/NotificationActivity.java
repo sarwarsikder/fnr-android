@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apper.sarwar.fnr.adapter.PaginationScrollListener;
 import com.apper.sarwar.fnr.adapter.notification.NotificationListAdapter;
@@ -28,6 +29,7 @@ import com.apper.sarwar.fnr.model.project_model.ProjectListModel;
 import com.apper.sarwar.fnr.service.api_service.NotificationApiService;
 import com.apper.sarwar.fnr.service.api_service.ProjectApiService;
 import com.apper.sarwar.fnr.service.iservice.NotificationIService;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -76,8 +78,9 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
                     startActivity(intent);
                     return true;
                 case R.id.navigation_current_activity:
-                    intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
-                    startActivity(intent);
+                    /*intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
+                    startActivity(intent);*/
+                    onCurrentState();
                     return true;
                 case R.id.navigation_scan:
                     intent = new Intent(getApplicationContext(), ScanCaptureActivity.class);
@@ -169,6 +172,19 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
             e.printStackTrace();
         }
 
+
+    }
+
+    public void onCurrentState() {
+
+        String currentState = SharedPreferenceUtil.getDefaults(SharedPreferenceUtil.currentState, this);
+
+        if (currentState == null || currentState == "") {
+            Toast.makeText(this, "You don't have any activity yet.", Toast.LENGTH_SHORT).show();
+        } else {
+            intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
+            startActivity(intent);
+        }
 
     }
 

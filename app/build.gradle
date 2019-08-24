@@ -59,4 +59,6 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:8.8.1"
 
     implementation 'com.github.stfalcon:frescoimageviewer:0.3.1'
+
+    implementation 'com.github.chrisbanes:PhotoView:2.1.3'
 }

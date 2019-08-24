@@ -169,11 +169,10 @@ public class SubComponentPostAdapter extends RecyclerView.Adapter<BaseViewHolder
                 subComponentDescription.setText(componentModel.getComponentDescription());
                 createdTime.setText(componentModel.getCreatedTime());
 
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+                Date today = dateFormat.parse(dateFormat.format(new Date()));
 
                 if (componentModel.getStatus().equals("in_progress")) {
-
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-                    Date today = dateFormat.parse(dateFormat.format(new Date()));
 
                     if (componentModel.getDue_date() != null && today.after(componentModel.getDue_date()) && componentModel.getStatus().equals("in_progress")) {
                         System.out.println("today() is after getDue_date()");
@@ -182,7 +181,12 @@ public class SubComponentPostAdapter extends RecyclerView.Adapter<BaseViewHolder
                         subComponentStatus.setImageResource(R.drawable.ic_component_in_progress_status);
                     }
                 } else if (componentModel.getStatus().equals("to_do")) {
-                    subComponentStatus.setImageResource(R.drawable.ic_component_to_do_status);
+                    if (componentModel.getDue_date() != null && today.after(componentModel.getDue_date()) && componentModel.getStatus().equals("in_progress")) {
+                        System.out.println("today() is after getDue_date()");
+                        subComponentStatus.setImageResource(R.drawable.ic_component_red_status);
+                    } else {
+                        subComponentStatus.setImageResource(R.drawable.ic_component_to_do_status);
+                    }
                 } else {
                     subComponentStatus.setImageResource(R.drawable.ic_component_done_status);
                 }

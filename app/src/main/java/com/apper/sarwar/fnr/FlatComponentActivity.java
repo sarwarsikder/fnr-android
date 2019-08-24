@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.apper.sarwar.fnr.fragment.tabs_adapter.FlatTabsAdapter;
 import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
 import com.apper.sarwar.fnr.service.iservice.ProfileIService;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import org.json.JSONObject;
 
@@ -56,8 +57,9 @@ public class FlatComponentActivity extends AppCompatActivity implements ProfileI
                     startActivity(intent);
                     return true;
                 case R.id.navigation_current_activity:
-                    intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
-                    startActivity(intent);
+                    /*intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
+                    startActivity(intent);*/
+                    onCurrentState();
                     return true;
                 case R.id.navigation_scan:
                     intent = new Intent(getApplicationContext(), ScanCaptureActivity.class);
@@ -66,6 +68,7 @@ public class FlatComponentActivity extends AppCompatActivity implements ProfileI
                 case R.id.navigation_notifications:
                     intent = new Intent(getApplicationContext(), NotificationActivity.class);
                     startActivity(intent);
+                    onCurrentState();
                     return true;
                 case R.id.navigation_profile:
                     intent = new Intent(getApplicationContext(), ProfileActivity.class);
@@ -155,6 +158,19 @@ public class FlatComponentActivity extends AppCompatActivity implements ProfileI
             e.printStackTrace();
         }
 
+
+    }
+
+    public void onCurrentState() {
+
+        String currentState = SharedPreferenceUtil.getDefaults(SharedPreferenceUtil.currentState, this);
+
+        if (currentState == null || currentState == "") {
+            Toast.makeText(this, "You don't have any activity yet.", Toast.LENGTH_SHORT).show();
+        } else {
+            intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
+            startActivity(intent);
+        }
 
     }
 

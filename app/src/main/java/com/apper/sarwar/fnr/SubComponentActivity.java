@@ -98,8 +98,9 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                     startActivity(intent);
                     return true;
                 case R.id.navigation_current_activity:
-                    intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
-                    startActivity(intent);
+                    /*intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
+                    startActivity(intent);*/
+                    onCurrentState();
                     return true;
                 case R.id.navigation_scan:
                     intent = new Intent(getApplicationContext(), ScanCaptureActivity.class);
@@ -214,6 +215,19 @@ public class SubComponentActivity extends AppCompatActivity implements SubCompon
                 return isLoading;
             }
         });
+
+    }
+
+    public void onCurrentState() {
+
+        String currentState = SharedPreferenceUtil.getDefaults(SharedPreferenceUtil.currentState, this);
+
+        if (currentState == null || currentState == "") {
+            Toast.makeText(this, "You don't have any activity yet.", Toast.LENGTH_SHORT).show();
+        } else {
+            intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
+            startActivity(intent);
+        }
 
     }
 

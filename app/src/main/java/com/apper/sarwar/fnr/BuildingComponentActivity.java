@@ -34,6 +34,7 @@ import com.apper.sarwar.fnr.model.building_model.BuildingFlatListModel;
 import com.apper.sarwar.fnr.service.api_service.ProfileApiService;
 import com.apper.sarwar.fnr.service.iservice.ProfileIService;
 import com.apper.sarwar.fnr.utils.Loader;
+import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import org.json.JSONObject;
 
@@ -88,8 +89,9 @@ public class BuildingComponentActivity extends AppCompatActivity implements Prof
                     startActivity(intent);
                     return true;
                 case R.id.navigation_current_activity:
-                    intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
-                    startActivity(intent);
+                        /*intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
+                    startActivity(intent);*/
+                    onCurrentState();
                     return true;
                 case R.id.navigation_scan:
                     intent = new Intent(getApplicationContext(), ScanCaptureActivity.class);
@@ -107,6 +109,19 @@ public class BuildingComponentActivity extends AppCompatActivity implements Prof
             return false;
         }
     };
+
+    public void onCurrentState() {
+
+        String currentState = SharedPreferenceUtil.getDefaults(SharedPreferenceUtil.currentState, this);
+
+        if (currentState == null || currentState == "") {
+            Toast.makeText(this, "You don't have any activity yet.", Toast.LENGTH_SHORT).show();
+        } else {
+            intent = new Intent(getApplicationContext(), CurrentStateActivity.class);
+            startActivity(intent);
+        }
+
+    }
 
 
     @Override

@@ -18,8 +18,9 @@ import com.apper.sarwar.fnr.service.iservice.LoginIServiceListener;
 import com.apper.sarwar.fnr.service.iservice.ProfileIService;
 import com.apper.sarwar.fnr.utils.Loader;
 import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
-import com.google.android.gms.common.internal.Constants;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONObject;
 
@@ -33,6 +34,7 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
     EditText user_name;
     EditText password;
     String text_user_name, text_password;
+    private String device;
 
 
     @Override
@@ -92,16 +94,30 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
             @Override
             public void run() {
                 try {
+
                     loader.stopLoading();
                     Log.d(TAG, "onLoginSuccess: " + loginModel.getAccess_token());
                     SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.access_token, loginModel.getAccess_token(), getApplicationContext());
                     SharedPreferenceUtil.setDefaults(SharedPreferenceUtil.refresh_token, loginModel.getRefresh_token(), getApplicationContext());
                     profileApiService.get_profile();
 
-                    /*String device = Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                    device = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                             Settings.Secure.ANDROID_ID);
-                    String token = FirebaseInstanceId.getInstance().getToken();
-                    loginApiService.device_notification_insert(device, token);*/
+
+                    Log.e("device", device);
+
+
+                    FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(LogInActivity.this,
+                            new OnSuccessListener<InstanceIdResult>() {
+                                @Override
+                                public void onSuccess(InstanceIdResult instanceIdResult) {
+                                    String newToken = instanceIdResult.getToken();
+                                    loginApiService.device_notification_insert(device, newToken);
+
+                                    Log.e("newToken", newToken);
+                                }
+                            });
+
 
                     Intent intent = new Intent(getApplicationContext(), ScanActivity.class);
                     startActivity(intent);
