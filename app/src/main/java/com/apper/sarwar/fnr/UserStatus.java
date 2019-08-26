@@ -90,7 +90,7 @@ public class UserStatus extends FirebaseMessagingService {
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "Seasame");
             mBuilder.setContentTitle(title)
                     .setContentText(messageBody)
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.drawable.ic_round_icon)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                     .setAutoCancel(true)
                     .setSound(defaultSoundUri)

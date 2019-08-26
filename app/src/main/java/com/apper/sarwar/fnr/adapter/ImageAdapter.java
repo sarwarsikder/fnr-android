@@ -22,7 +22,6 @@ import android.widget.PopupWindow;
 import com.apper.sarwar.fnr.R;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.sub_component.TaskDetailsCommentFileTypeModel;
-import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
