@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FNR</string>
+    <string name="app_name">FR Projekt</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="logo">logo</string>
     <string name="sign_in_text">EINLOGGEN</string>
