@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -37,6 +39,7 @@ import com.apper.sarwar.fnr.utils.SharedPreferenceUtil;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -364,5 +367,27 @@ public class BuildingComponentActivity extends AppCompatActivity implements Prof
     @Override
     public void onProfileFailed(JSONObject jsonObject) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            if (getIntent().getExtras().getInt("file-open") == 1) {
+                File file = new File(getIntent().getExtras().getString("file-name"));
+                Uri uri_path = Uri.fromFile(file);
+                String mimeType = file.toURL().openConnection().getContentType();
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
+                intent.setType(mimeType);
+                intent.setDataAndType(uri_path, mimeType);
+                startActivity(intent);
+                getIntent().removeExtra("file-open");
+                getIntent().removeExtra("file-name");
+            } else if (getIntent().getExtras().getInt("file-open") == 10) {
+                getIntent().putExtra("file-open", 1);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

@@ -18,15 +18,15 @@
         android:strokeColor="#00000000" />
     <path
         android:fillAlpha="0.38"
-        android:fillColor="#FF9800"
+        android:fillColor="#808080"
         android:fillType="evenOdd"
         android:pathData="M9,9m-7,0a7,7 0,1 1,14 0a7,7 0,1 1,-14 0"
         android:strokeWidth="1"
         android:strokeColor="#00000000" />
     <path
-        android:fillColor="#FF9800"
+        android:fillColor="#808080"
         android:fillType="evenOdd"
         android:pathData="M9,9m-7,0a7,7 0,1 1,14 0a7,7 0,1 1,-14 0"
         android:strokeWidth="1"
-        android:strokeColor="#FF9800" />
+        android:strokeColor="#808080" />
 </vector>

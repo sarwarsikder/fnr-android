@@ -1,13 +1,21 @@
 package com.apper.sarwar.fnr.adapter.building_adapter;
 
+import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,15 +30,14 @@ import com.apper.sarwar.fnr.adapter.BaseViewHolder;
 import com.apper.sarwar.fnr.config.AppConfigRemote;
 import com.apper.sarwar.fnr.model.building_model.BuildingPlanModel;
 
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -220,6 +227,7 @@ public class BuildingPlanPostAdapter extends RecyclerView.Adapter<BaseViewHolder
         ProgressDialog pd;
         String pathFolder = "";
         String pathFile = "";
+        String saveFilePath="";
 
         @Override
         protected void onPreExecute() {
@@ -239,28 +247,9 @@ public class BuildingPlanPostAdapter extends RecyclerView.Adapter<BaseViewHolder
 
             try {
 
-
-                // File myFile= new File(Environment.getExternalStorageDirectory() + "/fnr");
-
-
                 String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
                 File file = new File(path, f_url[1]);
-
-                /*pathFolder = Environment.getExternalStorageDirectory().getAbsolutePath();*/
-
-
-                /*String filepath = Environment.getExternalStorageDirectory().getPath();
-                File file = new File(filepath + "/fnr" );
-                if (!file.exists()) {
-                    file.mkdirs();
-                }
-                 (file.getAbsolutePath() + "/" + System.currentTimeMillis() + ".mp4");
-                */
-               /* File futureStudioIconFile = new File(pathFolder);
-                if (!futureStudioIconFile.exists()) {
-                    futureStudioIconFile.mkdirs();
-                }*/
-
+                saveFilePath=file.getAbsolutePath();
                 URL url = new URL(f_url[0]);
                 URLConnection connection = url.openConnection();
                 connection.connect();
@@ -310,6 +299,7 @@ public class BuildingPlanPostAdapter extends RecyclerView.Adapter<BaseViewHolder
         protected void onPostExecute(String file_url) {
             if (pd != null) {
                 pd.dismiss();
+                sendNotification("Download Complete", saveFilePath);
             }
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
@@ -317,8 +307,49 @@ public class BuildingPlanPostAdapter extends RecyclerView.Adapter<BaseViewHolder
 
             i.setDataAndType(Uri.fromFile(new File(file_url)), "application/vnd.android.package-archive");
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
             context.startActivity(i);
+        }
+
+    }
+
+    private void sendNotification(String title, String messageBody) {
+
+        try {
+            Intent intent = ((Activity) context).getIntent();
+            intent.putExtra("file-open", 10);
+            intent.putExtra("file-name", messageBody);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);//For Android Version Orio and greater than orio.
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                int importance = NotificationManager.IMPORTANCE_LOW;
+                NotificationChannel mChannel = new NotificationChannel("Sesame", "Sesame", importance);
+                mChannel.setDescription("");
+                mChannel.enableLights(true);
+                mChannel.setLightColor(Color.RED);
+                mChannel.enableVibration(true);
+                mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+
+                mNotifyManager.createNotificationChannel(mChannel);
+            }
+
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "Seasame");
+            mBuilder.setContentTitle(title)
+                    .setContentText("")
+                    .setSmallIcon(R.drawable.ic_round_icon)
+                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+                    .setAutoCancel(true)
+                    .setSound(defaultSoundUri)
+                    .setColor(Color.parseColor("#FFD600"))
+                    .setContentIntent(pendingIntent)
+                    .setChannelId("Sesame")
+                    .setPriority(NotificationCompat.PRIORITY_LOW);
+
+            mNotifyManager.notify(new Date().getSeconds(), mBuilder.build());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

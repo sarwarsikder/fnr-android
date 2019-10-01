@@ -121,6 +121,8 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
     DatePickerDialog datePickerDialog;
     List<String> varSpinnerData;
     private boolean isSpinnerInitial = true;
+    private boolean selectTrigger = false;
+
 
     @BindView(R.id.comment_recycler_view)
     RecyclerView recyclerView;
@@ -532,6 +534,7 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
                     spinnerArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
                     task_status.setAdapter(spinnerArrayAdapter);
 
+
                     task_status.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -541,8 +544,12 @@ public class ComponentDetailActivity extends AppCompatActivity implements SwipeR
                                 int index = (int) myArraySpinnerOption.indexOf(taskDetailsModel.getStatus());
                                 task_status.setSelection(index);
                             } else {
-                                String option = myArraySpinnerOption.get(i).toString();
-                                subComponentDetailApiService.sub_component_status_change(subComponentId, option);
+
+                                if (selectTrigger) {
+                                    String option = myArraySpinnerOption.get(i).toString();
+                                    subComponentDetailApiService.sub_component_status_change(subComponentId, option);
+                                }
+                                selectTrigger = true;
                             }
 
                             if (i == 0) {
