@@ -59,8 +59,17 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
                     text_user_name = user_name.getText().toString().trim();
                     text_password = password.getText().toString().trim();
 
+                    /**
+                     * Calling Login Validation method
+                     */
+
                     if (isValidForm(text_user_name, text_password)) {
                         loader.startLoading(view.getContext());
+
+                        /**
+                         * Calling API to check register user
+                         */
+
                         loginApiService.login(text_user_name, text_password);
                     }
                 }
@@ -72,6 +81,11 @@ public class LogInActivity extends AppCompatActivity implements LoginIServiceLis
 
     }
 
+    /**
+     * Login form validation
+     * @param  nameTxt, passwordTxt
+     * @return True Or False
+     */
 
     public boolean isValidForm(String nameTxt, String passwordTxt) {
         boolean validName = !nameTxt.isEmpty();
