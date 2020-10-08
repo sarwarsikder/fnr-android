@@ -209,6 +209,9 @@ public class BuildingListActivity extends AppCompatActivity implements SwipeRefr
             adapter = new BuildingPostListAdapter(new ArrayList<BuildingListModel>(), this);
             recyclerView.setAdapter(adapter);
 
+            /**
+             * Get building by Project Id and Pagination
+             */
             buildingApiService = new BuildingApiService(context);
             buildingApiService.get_building(project_id, currentPage);
 
@@ -218,6 +221,9 @@ public class BuildingListActivity extends AppCompatActivity implements SwipeRefr
                 protected void loadMoreItems() {
                     isLoading = true;
                     currentPage++;
+                    /**
+                     * Get building by Project Id and Pagination
+                     */
                     buildingApiService = new BuildingApiService(context);
                     buildingApiService.get_building(project_id, currentPage);
                     adapter.addLoading();

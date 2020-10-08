@@ -178,6 +178,9 @@ public class BuildingComponentActivity extends AppCompatActivity implements Prof
 
             building_tab_layout.setTabGravity(TabLayout.GRAVITY_FILL);
             viewPager = (ViewPager) findViewById(R.id.view_pager);
+            /**
+             * Building Tabs Adapter , there are 3 tabs in the building
+             */
             buildingTabsAdapter = new BuildingTabsAdapter(getSupportFragmentManager(), building_tab_layout.getTabCount());
             tabsAdapter = buildingTabsAdapter;
 

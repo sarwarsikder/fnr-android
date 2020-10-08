@@ -140,6 +140,9 @@ public class ProjectActivity extends AppCompatActivity implements SwipeRefreshLa
             adapter = new ProjectPostListAdapter(new ArrayList<ProjectListModel>(), this);
             recyclerView.setAdapter(adapter);
 
+            /**
+             * Calling Project Api to get Project list
+             */
             projectApiService = new ProjectApiService(this);
             projectApiService.get_projects(currentPage);
 
@@ -187,6 +190,11 @@ public class ProjectActivity extends AppCompatActivity implements SwipeRefreshLa
     }
 
 
+    /**
+     * After Api call on success
+     * @param  projectListJson
+     * @return Return a Adapter Recycle view to load project list in the view.
+     */
     @Override
     public void onProjectSuccess(final JSONObject projectListJson) {
 
@@ -265,6 +273,12 @@ public class ProjectActivity extends AppCompatActivity implements SwipeRefreshLa
 
     }
 
+    /**
+     * After Api call on Failed
+     * @param  jsonObject
+     * @return Handle Project Get API failed error and Adapter Remove Adapter Loading
+     */
+
     @Override
     public void onProjectFailed(JSONObject jsonObject) {
         try {
@@ -281,6 +295,9 @@ public class ProjectActivity extends AppCompatActivity implements SwipeRefreshLa
         }
     }
 
+    /**
+     * Project Screen on refresh
+     */
     @Override
     public void onRefresh() {
         itemCount = 0;
